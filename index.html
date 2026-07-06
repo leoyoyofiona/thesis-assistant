@@ -57,9 +57,12 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .breadcrumb span{cursor:pointer;transition:color .15s}
 .breadcrumb span:hover{color:var(--primary)}
 .breadcrumb .sep{color:var(--border);cursor:default}
-.search-btn{margin-left:auto;display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;font-size:13px;color:var(--text-muted);cursor:pointer;transition:all .2s;background:var(--bg);font-family:var(--font-sans)}
+.search-btn{margin-left:12px;display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;font-size:13px;color:var(--text-muted);cursor:pointer;transition:all .2s;background:var(--bg);font-family:var(--font-sans)}
 .search-btn:hover{border-color:var(--primary);color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,.08)}
 .search-btn kbd{display:inline-block;padding:1px 5px;background:var(--border-light);border-radius:3px;font-size:11px;font-family:var(--font-sans);border:1px solid var(--border)}
+.search-hint{margin-left:auto;display:flex;align-items:center;gap:6px;padding:4px 14px;background:linear-gradient(135deg,#fff7ed,#fff1f2);border:1.5px solid #f59e0b;border-radius:20px;font-size:12px;font-weight:600;color:#d97706;white-space:nowrap;animation:pulseHint 2.5s ease-in-out infinite}
+.search-hint svg{flex-shrink:0}
+@keyframes pulseHint{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.35)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
 .content-scroll{flex:1;overflow-y:auto;padding:0}
 
 /* ===== Search Overlay ===== */
@@ -223,6 +226,10 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 <main class="main">
   <header class="header">
     <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="search-hint">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+      有困难，请检索
+    </div>
     <button class="search-btn" onclick="openSearch()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       搜索全部内容<kbd>Ctrl+K</kbd>
