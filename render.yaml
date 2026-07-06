@@ -1,10 +1,6 @@
 services:
-  - type: web
+  - type: static
     name: thesis-assistant
     env: static
     buildCommand: ""
-    publishDirectory: .
-    routes:
-      - type: rewrite
-        source: /*
-        destination: /thesis-assistant.html
+    staticPublishPath: .
