@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>毕业论文写作助手 — 浙江师范大学行知学院商学院</title>
+<style>
+/* ===== Reset & Variables ===== */
+:root {
+  --primary: #1a56db; --primary-light: #e8f0fe; --primary-dark: #0e3fa9;
+  --bg: #f8fafc; --sidebar-bg: #ffffff; --card-bg: #ffffff;
+  --text: #1e293b; --text-secondary: #64748b; --text-muted: #94a3b8;
+  --border: #e2e8f0; --border-light: #f1f5f9;
+  --success: #059669; --warning: #d97706; --danger: #dc2626;
+  --radius: 8px; --radius-lg: 12px;
+  --shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
+  --shadow-lg: 0 4px 16px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
+  --sidebar-width: 280px; --header-height: 64px;
+  --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.6;display:flex;min-height:100vh;overflow:hidden}
+
+/* ===== Sidebar (Progress Tracker) ===== */
+.sidebar{width:var(--sidebar-width);height:100vh;position:fixed;left:0;top:0;background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow:hidden}
+.sidebar-brand{padding:20px 24px;border-bottom:1px solid var(--border)}
+.sidebar-brand h1{font-size:16px;font-weight:700;color:var(--primary);line-height:1.4}
+.sidebar-brand p{font-size:11px;color:var(--text-muted);margin-top:2px}
+.progress-bar-wrap{padding:16px 24px 0;border-bottom:1px solid var(--border-light)}
+.progress-info{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px;color:var(--text-muted)}
+.progress-track{height:4px;background:var(--border-light);border-radius:2px;margin-bottom:16px;overflow:hidden}
+.progress-fill{height:100%;background:var(--primary);border-radius:2px;transition:width .5s ease;width:0%}
+.sidebar-nav{flex:1;overflow-y:auto;padding:8px 0}
+.stage-group{margin-bottom:4px}
+.stage-header{display:flex;align-items:center;padding:10px 24px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);transition:all .15s;border-left:3px solid transparent;user-select:none;gap:10px}
+.stage-header:hover{background:var(--bg)}
+.stage-header .stage-num{width:26px;height:26px;border-radius:50%;background:var(--border-light);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--text-muted);flex-shrink:0;transition:all .2s}
+.stage-header.active{background:var(--primary-light);color:var(--primary);border-left-color:var(--primary)}
+.stage-header.active .stage-num{background:var(--primary);color:#fff}
+.stage-header.completed .stage-num{background:var(--success);color:#fff}
+.stage-header .chevron{margin-left:auto;transition:transform .2s;width:16px;height:16px;color:var(--text-muted)}
+.stage-header.expanded .chevron{transform:rotate(90deg)}
+.stage-sub{display:none;background:var(--bg)}
+.stage-sub.show{display:block}
+.sub-item{display:flex;align-items:center;padding:7px 24px 7px 60px;cursor:pointer;font-size:13px;color:var(--text-secondary);transition:all .12s;border-left:3px solid transparent;text-decoration:none}
+.sub-item:hover{color:var(--primary);background:var(--primary-light)}
+.sub-item.active{color:var(--primary);font-weight:600;background:var(--primary-light);border-left-color:var(--primary)}
+.sidebar-footer{padding:12px 24px;border-top:1px solid var(--border);display:flex;gap:8px}
+.sidebar-footer button{flex:1;padding:8px 0;border:1px solid var(--border);border-radius:var(--radius);font-size:12px;cursor:pointer;transition:all .15s;background:#fff;color:var(--text-secondary);font-family:var(--font-sans)}
+.sidebar-footer button:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
+
+/* ===== Main ===== */
+.main{margin-left:var(--sidebar-width);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.header{height:var(--header-height);background:var(--card-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 32px;gap:16px;flex-shrink:0;position:relative;z-index:50}
+.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);flex-shrink:0}
+.breadcrumb span{cursor:pointer;transition:color .15s}
+.breadcrumb span:hover{color:var(--primary)}
+.breadcrumb .sep{color:var(--border);cursor:default}
+.search-btn{margin-left:auto;display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;font-size:13px;color:var(--text-muted);cursor:pointer;transition:all .2s;background:var(--bg);font-family:var(--font-sans)}
+.search-btn:hover{border-color:var(--primary);color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,.08)}
+.search-btn kbd{display:inline-block;padding:1px 5px;background:var(--border-light);border-radius:3px;font-size:11px;font-family:var(--font-sans);border:1px solid var(--border)}
+.content-scroll{flex:1;overflow-y:auto;padding:0}
+
+/* ===== Search Overlay ===== */
+.search-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:300;display:none;align-items:flex-start;justify-content:center;padding-top:80px}
+.search-overlay.show{display:flex}
+.search-panel{width:600px;max-width:95vw;background:#fff;border-radius:var(--radius-lg);box-shadow:0 20px 60px rgba(0,0,0,.15);overflow:hidden;display:flex;flex-direction:column;max-height:70vh}
+.search-panel-header{display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid var(--border);gap:12px}
+.search-panel-header input{flex:1;border:none;outline:none;font-size:16px;font-family:var(--font-sans);color:var(--text);background:transparent}
+.search-panel-header input::placeholder{color:var(--text-muted)}
+.search-close{width:32px;height:32px;border-radius:50%;border:none;background:transparent;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--text-muted);transition:all .15s}
+.search-close:hover{background:var(--bg);color:var(--text)}
+.search-panel-body{flex:1;overflow-y:auto}
+.search-back-btn{display:flex;align-items:center;padding:10px 20px;font-size:13px;color:var(--primary);cursor:pointer;border-bottom:1px solid var(--border-light);position:sticky;top:0;background:#fff;z-index:1;gap:6px}
+.search-back-btn:hover{background:var(--primary-light)}
+.search-result-item{padding:14px 20px;cursor:pointer;border-bottom:1px solid var(--border-light);font-size:13px;transition:background .1s}
+.search-result-item:hover{background:var(--primary-light)}
+.search-result-item .rt{font-weight:600;color:var(--text);margin-bottom:3px}
+.search-result-item .rc{color:var(--text-secondary);font-size:12px;line-height:1.5}
+.search-result-item .rs{font-size:11px;color:var(--primary);margin-top:4px;display:flex;align-items:center;gap:4px}
+.search-result-item mark{background:#fef08a;color:inherit;padding:0 2px;border-radius:2px}
+.no-results{padding:32px;text-align:center;color:var(--text-muted);font-size:13px}
+
+/* ===== Stage Content ===== */
+.stage{display:none}
+.stage.active{display:block}
+.stage-hero{background:linear-gradient(135deg,#f0f4ff 0%,#e8f0fe 100%);padding:36px 40px;border-bottom:1px solid var(--border)}
+.stage-hero h2{font-size:26px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.01em}
+.stage-hero p{font-size:14px;color:var(--text-secondary);max-width:650px}
+.stage-hero .stage-meta{display:flex;gap:20px;margin-top:14px;font-size:12px;color:var(--text-muted)}
+.stage-meta span{display:flex;align-items:center;gap:4px}
+.stage-body{padding:32px 40px;max-width:880px}
+.stage-body .card{background:var(--card-bg);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:20px;box-shadow:var(--shadow)}
+.stage-body .card h3{font-size:16px;font-weight:700;margin-bottom:12px;color:var(--text);display:flex;align-items:center;gap:8px}
+.stage-body .card h3 .card-icon{width:20px;height:20px;flex-shrink:0}
+.stage-body .card h4{font-size:14px;font-weight:600;margin:16px 0 8px;color:var(--text)}
+.stage-body ul,.stage-body ol{padding-left:20px;font-size:13px;color:var(--text-secondary);line-height:2}
+.stage-body table{width:100%;border-collapse:collapse;font-size:13px;margin:12px 0}
+.stage-body table th{text-align:left;padding:10px 14px;background:var(--bg);color:var(--text);font-weight:600;border-bottom:2px solid var(--border);font-size:12px}
+.stage-body table td{padding:10px 14px;border-bottom:1px solid var(--border-light);color:var(--text-secondary)}
+.stage-body table .label{color:var(--text);font-weight:500}
+
+/* Alert types */
+.alert{padding:14px 18px;border-radius:var(--radius);font-size:13px;line-height:1.7;margin:12px 0}
+.alert-info{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af}
+.alert-warning{background:#fffbeb;border:1px solid #fde68a;color:#92400e}
+.alert-danger{background:#fef2f2;border:1px solid #fecaca;color:#991b1b}
+.alert-success{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534}
+.alert strong{display:block;margin-bottom:4px}
+
+/* Demo boxes */
+.demo-box{background:var(--bg);border:1px dashed var(--border);border-radius:var(--radius);padding:18px 22px;font-family:"SimSun","Songti SC",serif;font-size:13px;line-height:2;margin:12px 0}
+.demo-box .demo-label{font-size:11px;color:var(--text-muted);margin-bottom:8px;font-family:var(--font-sans)}
+
+/* Structure example */
+.struct-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin:10px 0;font-size:13px;font-family:"SimSun","Songti SC",serif;line-height:2.2;cursor:default}
+.struct-card h4{font-family:var(--font-sans);font-size:14px;margin-bottom:10px}
+
+/* Navigation buttons at bottom */
+.stage-nav{display:flex;justify-content:space-between;padding:20px 40px 40px;max-width:880px;gap:16px}
+.stage-nav button{padding:10px 24px;border-radius:var(--radius);font-size:14px;cursor:pointer;transition:all .2s;font-family:var(--font-sans);display:flex;align-items:center;gap:6px}
+.btn-prev{background:#fff;border:1px solid var(--border);color:var(--text-secondary)}
+.btn-prev:hover{background:var(--bg);color:var(--text)}
+.btn-next{background:var(--primary);border:1px solid var(--primary);color:#fff;margin-left:auto}
+.btn-next:hover{background:var(--primary-dark)}
+
+/* Tabs within stage */
+.tabs-wrap{display:flex;gap:4px;margin-bottom:16px;border-bottom:1px solid var(--border);padding-bottom:0}
+.tab-btn{padding:8px 16px;border:none;background:transparent;cursor:pointer;font-size:13px;color:var(--text-secondary);border-bottom:2px solid transparent;transition:all .15s;font-family:var(--font-sans);margin-bottom:-1px}
+.tab-btn.active{color:var(--primary);border-bottom-color:var(--primary);font-weight:600}
+.tab-btn:hover{color:var(--primary)}
+.tab-content-area{display:none}
+.tab-content-area.active{display:block}
+
+/* Highlight box */
+.hl-box{background:var(--primary-light);border-left:3px solid var(--primary);border-radius:0 var(--radius) var(--radius) 0;padding:14px 18px;font-size:13px;line-height:1.8;margin:12px 0}
+.hl-box strong{color:var(--primary)}
+
+/* 3-line table demo */
+.tbl-demo{width:100%;border-collapse:collapse;font-size:12px;margin:12px 0;font-family:"SimSun","Songti SC",serif}
+.tbl-demo thead{border-top:2px solid #000;border-bottom:.75px solid #000}
+.tbl-demo th{padding:8px 10px;text-align:center;font-weight:600}
+.tbl-demo td{padding:7px 10px;text-align:center}
+.tbl-demo tbody{border-bottom:2px solid #000}
+.tbl-demo .tbl-caption{text-align:center;font-size:12px;font-weight:600;padding:4px}
+.tbl-demo .tbl-src{text-align:left;font-size:11px;color:var(--text-muted);padding:4px 0;font-family:var(--font-sans)}
+
+/* Mobile toggle */
+.mobile-toggle{display:none;position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-size:20px;cursor:pointer;z-index:200;box-shadow:0 2px 12px rgba(26,86,219,.3)}
+
+/* Step list */
+.step-list{counter-reset:step;list-style:none;padding:0}
+.step-list li{counter-increment:step;display:flex;align-items:flex-start;gap:14px;padding:12px 0;border-bottom:1px solid var(--border-light);font-size:13px;color:var(--text-secondary);line-height:1.7}
+.step-list li::before{content:counter(step);width:28px;height:28px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0}
+
+/* Checklist */
+.checklist{list-style:none;padding:0}
+.checklist li{padding:8px 0;border-bottom:1px solid var(--border-light);font-size:13px;color:var(--text-secondary);display:flex;align-items:flex-start;gap:10px;cursor:pointer;transition:all .15s}
+.checklist li:hover{background:var(--bg);padding-left:8px;border-radius:4px}
+.checklist li .check{width:20px;height:20px;border-radius:4px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;margin-top:2px;font-size:12px;color:transparent}
+.checklist li.checked .check{border-color:var(--success);background:var(--success);color:#fff}
+.checklist li.checked{color:var(--text);text-decoration:line-through;text-decoration-color:var(--text-muted)}
+
+/* Inline code */
+code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:12px;color:var(--danger);font-family:var(--font-sans)}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
+
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);transition:transform .3s}
+  .sidebar.open{transform:translateX(0)}
+  .main{margin-left:0}
+  .mobile-toggle{display:flex;align-items:center;justify-content:center}
+  .header{padding:0 16px}
+  .stage-hero{padding:24px 20px}
+  .stage-body{padding:20px}
+  .stage-nav{padding:12px 20px 24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== Search Overlay ===== -->
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-panel">
+    <div class="search-panel-header">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text-muted)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchOverlayInput" placeholder="搜索任何问题，如：三线表怎么做、参考文献格式、匿名抽检稿…" autocomplete="off">
+      <button class="search-close" id="searchCloseBtn">&times;</button>
+    </div>
+    <div class="search-panel-body" id="searchPanelBody">
+      <div class="no-results" id="searchHint">输入关键词开始搜索…</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Sidebar ===== -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <h1>毕业论文写作助手</h1>
+    <p>浙江师范大学行知学院商学院 · 2027届</p>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="progress-info"><span>论文进度</span><span id="progressPct">第 1/6 阶段</span></div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav">
+    <!-- Built dynamically -->
+  </nav>
+  <div class="sidebar-footer">
+    <button onclick="openSearch()" title="搜索 Ctrl+K">🔍 搜索</button>
+    <button onclick="resetAll()" title="重置进度">↻ 重置</button>
+  </div>
+</aside>
+
+<!-- ===== Main Content ===== -->
+<main class="main">
+  <header class="header">
+    <div class="breadcrumb" id="breadcrumb"></div>
+    <button class="search-btn" onclick="openSearch()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      搜索全部内容<kbd>Ctrl+K</kbd>
+    </button>
+  </header>
+  <div class="content-scroll" id="contentScroll">
+
+    <!-- ================================================================ -->
+    <!-- STAGE 1: 选题与任务书 -->
+    <!-- ================================================================ -->
+    <section class="stage active" id="stage-1">
+      <div class="stage-hero">
+        <h2>阶段一：选题与任务书</h2>
+        <p>确定研究方向，完成选题申报和任务书填写。这是论文的起点，选题质量直接决定论文成败。</p>
+        <div class="stage-meta">
+          <span>📅 2026年7月6日 — 9月21日</span>
+          <span>📋 任务：申报课题 + 任务书</span>
+          <span>🔗 维普系统</span>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <!-- 选题要求 -->
+        <div class="card">
+          <h3>1. 选题基本要求</h3>
+          <ul>
+            <li><strong>一人一题</strong>，不可与他人雷同。选题由指导教师和学生共同商定。</li>
+            <li>选题须与<strong>电子商务/国际贸易专业方向</strong>紧密契合，具有理论或实践意义。</li>
+            <li>题目表述应<strong>准确、规范、简洁</strong>，一般不超过 20 字。</li>
+            <li>选题难度适中，能在规定时间内完成，不得过大或过小。</li>
+            <li>题目一经确定，原则上不得更改。确需更改须经指导教师和学院批准。</li>
+          </ul>
+        </div>
+
+        <!-- 选题类型推荐 -->
+        <div class="card">
+          <h3>2. 电商/国贸专业选题方向推荐</h3>
+          <div class="tabs-wrap">
+            <button class="tab-btn active" onclick="switchInnerTab(this,'topic-ecommerce')">电子商务方向</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'topic-trade')">国际贸易方向</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'topic-cross')">交叉方向</button>
+          </div>
+          <div class="tab-content-area active" id="topic-ecommerce">
+            <ul>
+              <li>直播电商对消费者购买意愿的影响研究——以××平台为例</li>
+              <li>社交电商用户粘性影响因素实证分析</li>
+              <li>跨境电商平台服务质量与顾客满意度关系研究</li>
+              <li>短视频营销对Z世代消费行为的影响</li>
+              <li>私域流量运营策略研究——以××品牌为例</li>
+              <li>农村电商物流最后一公里问题与对策</li>
+              <li>AIGC在电商内容营销中的应用与挑战</li>
+            </ul>
+          </div>
+          <div class="tab-content-area" id="topic-trade">
+            <ul>
+              <li>RCEP框架下中国对东盟农产品出口贸易效应分析</li>
+              <li>数字贸易规则对中国服务贸易竞争力的影响</li>
+              <li>一带一路背景下中国制造业出口技术复杂度研究</li>
+              <li>碳关税对中国出口贸易的影响及应对策略</li>
+              <li>跨境电商综试区政策效应评估</li>
+            </ul>
+          </div>
+          <div class="tab-content-area" id="topic-cross">
+            <ul>
+              <li>数字贸易壁垒对跨境电商发展的影响研究</li>
+              <li>跨境直播电商的供应链协同机制研究</li>
+              <li>海外仓模式对中国跨境电商出口效率的影响</li>
+              <li>数字人民币在跨境支付中的应用前景与挑战</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 任务书写作指南 -->
+        <div class="card">
+          <h3>3. 任务书写作规范</h3>
+          <div class="alert alert-info">
+            <strong>任务书是什么？</strong>
+            任务书是指导教师向学生下达的正式文件，明确论文的<strong>选题背景、研究内容、基本要求、主要参考文献、进度安排</strong>等。它是论文工作的"施工蓝图"。
+          </div>
+          <h4>任务书包含要素：</h4>
+          <table>
+            <thead><tr><th>要素</th><th>写作要求</th></tr></thead>
+            <tbody>
+              <tr><td class="label">选题背景与意义</td><td>200-300字，说明选题的现实背景、理论/实践意义</td></tr>
+              <tr><td class="label">研究内容</td><td>列出论文要解决的核心问题，3-5个要点</td></tr>
+              <tr><td class="label">基本要求</td><td>包括正文字数≥10,000字、参考文献≥10篇（含≥2篇外文）、独立完成等</td></tr>
+              <tr><td class="label">主要参考文献</td><td>列出8-10篇核心参考文献，按GB/T 7714格式</td></tr>
+              <tr><td class="label">进度安排</td><td>按学校进程表填写各阶段起止时间</td></tr>
+              <tr><td class="label">指导教师信息</td><td>填写指导教师姓名、职称</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 任务书范文 -->
+        <div class="card">
+          <h3>4. 任务书范文参考</h3>
+          <div class="demo-box">
+            <div class="demo-label">📄 任务书"研究内容"部分示例</div>
+            <p><strong>论文题目：</strong>直播电商中KOL特征对消费者购买意愿的影响研究</p>
+            <p><strong>研究内容：</strong></p>
+            <p>（1）梳理直播电商与消费者购买意愿的相关文献，构建理论模型；</p>
+            <p>（2）识别KOL特征的关键维度（专业性、吸引力、信任度、互动性）；</p>
+            <p>（3）基于问卷调研数据，实证检验KOL特征对购买意愿的影响路径；</p>
+            <p>（4）分析感知价值的中介作用和产品类型的调节作用；</p>
+            <p>（5）为电商企业和KOL提供针对性的营销策略建议。</p>
+          </div>
+        </div>
+
+        <!-- 操作指南 -->
+        <div class="card">
+          <h3>5. 维普系统操作：申报课题</h3>
+          <ol class="step-list">
+            <li>登录维普系统 <code>vpcs.cqvip.com/organ/lib/xzzjnu/</code>，账号为<strong>学号</strong></li>
+            <li>点击左侧菜单「过程管理」→「申报课题」</li>
+            <li>填写课题名称、课题类型、课题来源等信息</li>
+            <li>上传相关附件（如有），确认无误后提交</li>
+            <li>等待指导教师审核通过</li>
+            <li>审核通过后，进入「过程管理」→「任务书」环节</li>
+          </ol>
+          <div class="alert alert-warning">
+            <strong>注意：</strong>课题申报须在 <strong>2026年9月8日前</strong> 完成。任务书须在 <strong>2026年9月21日前</strong> 提交并审核通过。逾期系统将关闭！
+          </div>
+        </div>
+
+        <!-- 常见错误 -->
+        <div class="card">
+          <h3>6. 选题阶段常见错误（送审反馈）</h3>
+          <div class="alert alert-danger">
+            <strong>选题过大</strong>：如"中国电子商务发展研究"——范围太广，无法深入。应聚焦到具体行业/平台/人群。
+          </div>
+          <div class="alert alert-danger">
+            <strong>选题无新意</strong>：选题应在已有研究基础上有所推进，不能是教材知识点的简单复述。
+          </div>
+          <div class="alert alert-danger">
+            <strong>选题与专业无关</strong>：题目必须与电商/国贸专业方向相关，不可写纯管理类/计算机类题目。
+          </div>
+        </div>
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" disabled>← 上一阶段</button>
+        <button class="btn-next" onclick="goStage(2)">下一阶段：开题报告 →</button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- STAGE 2: 开题报告 -->
+    <!-- ================================================================ -->
+    <section class="stage" id="stage-2">
+      <div class="stage-hero">
+        <h2>阶段二：开题报告</h2>
+        <p>撰写开题报告（≥3,000字），进行文献综述和研究方案设计，并参加开题答辩。</p>
+        <div class="stage-meta">
+          <span>📅 2026年9月22日 — 10月18日</span>
+          <span>📋 任务：开题报告 + 开题答辩</span>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <div class="card">
+          <h3>1. 开题报告七要素</h3>
+          <table>
+            <thead><tr><th>要素</th><th>具体要求</th></tr></thead>
+            <tbody>
+              <tr><td class="label">① 选题背景与意义</td><td>说明为什么选这个题，理论和实践意义何在。约500-800字。</td></tr>
+              <tr><td class="label">② 国内外研究现状</td><td>文献综述，梳理已有研究成果，指出研究空白。约1,000-1,500字。</td></tr>
+              <tr><td class="label">③ 研究内容与方法</td><td>列出具体研究问题，说明采用什么方法（问卷/案例/实证分析）。</td></tr>
+              <tr><td class="label">④ 技术路线</td><td>用流程图展示研究步骤，从选题到结论的完整路径。</td></tr>
+              <tr><td class="label">⑤ 创新点与难点</td><td>指出本研究的创新之处，以及可能遇到的困难。</td></tr>
+              <tr><td class="label">⑥ 进度安排</td><td>与学校进程表一致的时间规划。</td></tr>
+              <tr><td class="label">⑦ 参考文献</td><td>≥10篇，含≥2篇外文，格式为GB/T 7714-2015。</td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-info" style="margin-top:12px;">
+            <strong>字数要求：</strong>开题报告正文<strong>不少于3,000字</strong>。文献综述是最重要、占比最大的部分，需充分展开。
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>2. 开题报告范文结构</h3>
+          <div class="demo-box">
+            <div class="demo-label">📄 开题报告推荐结构</div>
+            <p style="font-weight:700;text-align:center;">××××××研究</p>
+            <p style="font-weight:700;text-align:center;">开题报告</p>
+            <p><strong>一、选题背景与研究意义</strong></p>
+            <p>（一）选题背景</p>
+            <p>（二）研究意义（理论意义 + 实践意义）</p>
+            <p><strong>二、国内外研究现状</strong></p>
+            <p>（一）国外研究现状（按主题梳理，≥5篇外文文献）</p>
+            <p>（二）国内研究现状（按主题梳理，≥5篇中文文献）</p>
+            <p>（三）研究述评（指出现有研究的不足）</p>
+            <p><strong>三、研究内容与方法</strong></p>
+            <p>（一）研究内容（3-5个具体问题）</p>
+            <p>（二）研究方法（问卷法/案例法/实证分析法）</p>
+            <p>（三）技术路线图</p>
+            <p><strong>四、创新点与难点</strong></p>
+            <p><strong>五、研究进度安排</strong></p>
+            <p><strong>六、参考文献</strong></p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>3. 文献综述写作指南</h3>
+          <div class="alert alert-danger">
+            <strong>送审高频问题：</strong>文献综述不是文献的"流水账"！不能"×××（2020）研究了A。×××（2021）研究了B"这样简单罗列。必须<strong>按主题分类、对比分析、指出不足</strong>。
+          </div>
+          <h4>正确的文献综述写法：</h4>
+          <ul>
+            <li><strong>分主题归类</strong>：把文献按研究主题分组讨论，而非按时间顺序罗列</li>
+            <li><strong>对比评述</strong>：指出不同研究之间的异同、争议和共识</li>
+            <li><strong>指出空白</strong>：明确说明已有研究忽略了什么问题，你的研究如何填补</li>
+            <li><strong>引用新文献</strong>：避免过度引用10年以上的老文献，优先引用近5年文献</li>
+            <li><strong>外文占比</strong>：外文文献不少于总文献的30%</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>4. 技术路线图绘制指南</h3>
+          <div class="alert alert-info">
+            <strong>工具推荐：</strong>使用 Word 自带的 SmartArt 或 Visio、ProcessOn、draw.io 绘制。不可使用截图，必须原创。
+          </div>
+          <div class="demo-box">
+            <div class="demo-label">📐 技术路线图基本流程</div>
+            <p style="text-align:center;">选题确定 → 文献梳理 → 理论模型构建 → 问卷设计/数据收集 → 数据分析 → 结论与建议</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>5. 开题答辩准备</h3>
+          <ul>
+            <li><strong>答辩时间</strong>：2026年10月14日—18日</li>
+            <li><strong>答辩形式</strong>：PPT汇报（5-8分钟），重点讲选题意义、研究内容、研究方法</li>
+            <li><strong>常见问题：</strong>"你为什么选这个题？""研究方法可行吗？""创新点在哪里？"</li>
+            <li><strong>准备要点：</strong>熟读自己的开题报告，想清楚每个研究决策的理由</li>
+          </ul>
+          <div class="alert alert-warning">
+            <strong>注意：</strong>开题报告须在答辩前通过指导教师审核并在维普系统提交。未参加开题答辩或答辩不通过者，不得进入后续环节。
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>6. 维普系统操作：开题报告提交</h3>
+          <ol class="step-list">
+            <li>登录维普系统 → 过程管理</li>
+            <li>进入「开题报告」环节，在线填写或上传开题报告文档</li>
+            <li>填写完毕后提交，等待指导教师审核</li>
+            <li>审核通过后可下载打印用于开题答辩</li>
+            <li>如为毕业设计替代学生：在此环节提交「替代论文初稿」</li>
+          </ol>
+        </div>
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" onclick="goStage(1)">← 上一阶段：选题与任务书</button>
+        <button class="btn-next" onclick="goStage(3)">下一阶段：论文撰写 →</button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- STAGE 3: 论文撰写 -->
+    <!-- ================================================================ -->
+    <section class="stage" id="stage-3">
+      <div class="stage-hero">
+        <h2>阶段三：论文撰写</h2>
+        <p>正文写作是论文工作的核心。掌握写作规范、结构模板和格式要求，高效完成≥10,000字正文。</p>
+        <div class="stage-meta">
+          <span>📅 2026年9月 — 11月中旬</span>
+          <span>📋 任务：正文写作，导师指导≥5次</span>
+          <span>📝 ≥10,000字</span>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <!-- 格式速查 -->
+        <div class="card">
+          <h3>1. 格式规范速查表</h3>
+          <table>
+            <thead><tr><th>项目</th><th>规范</th></tr></thead>
+            <tbody>
+              <tr><td class="label">页面设置</td><td>A4纸（210mm×297mm）；上3cm、下2.5cm、左3cm、右2.5cm</td></tr>
+              <tr><td class="label">正文中文</td><td>小四号宋体（12pt），行间距<strong>1.5倍</strong></td></tr>
+              <tr><td class="label">正文英文/数字</td><td>Times New Roman，与中文同字号</td></tr>
+              <tr><td class="label">一级标题</td><td>三号黑体（16pt），居中，段前段后各1行</td></tr>
+              <tr><td class="label">二级标题</td><td>四号黑体（14pt），居左，段前段后各0.5行</td></tr>
+              <tr><td class="label">三级标题</td><td>小四号黑体（12pt），居左</td></tr>
+              <tr><td class="label">标题编号</td><td>一、（一）1.（1）1）——最多5级</td></tr>
+              <tr><td class="label">标点</td><td>正文用全角标点；参考文献用半角标点</td></tr>
+              <tr><td class="label">页眉页脚</td><td>页眉标注论文题目（小五号宋体）；页脚标注页码（居中）</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 推荐结构 -->
+        <div class="card">
+          <h3>2. 论文结构模板推荐</h3>
+          <div class="tabs-wrap">
+            <button class="tab-btn active" onclick="switchInnerTab(this,'struct-empirical')">实证型（推荐）</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'struct-case')">案例型</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'struct-survey')">调研型</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'struct-classic')">经典综述型</button>
+          </div>
+
+          <div class="tab-content-area active" id="struct-empirical">
+            <div class="struct-card">
+              <h4>实证型论文结构（适用于问卷调研+数据分析）</h4>
+              <p><strong>一、引言</strong></p>
+              <p>（一）研究背景 （二）研究意义 （三）研究问题与方法 （四）论文结构</p>
+              <p><strong>二、文献综述与理论基础</strong></p>
+              <p>（一）核心概念界定 （二）国内外研究现状 （三）理论基础 （四）研究假设</p>
+              <p><strong>三、研究设计</strong></p>
+              <p>（一）变量测量 （二）问卷设计 （三）数据收集 （四）样本描述</p>
+              <p><strong>四、数据分析与假设检验</strong></p>
+              <p>（一）信效度检验 （二）描述性统计 （三）相关性分析 （四）回归分析/结构方程</p>
+              <p><strong>五、结论与建议</strong></p>
+              <p>（一）研究结论 （二）对策建议 （三）研究局限与展望</p>
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="struct-case">
+            <div class="struct-card">
+              <h4>案例型论文结构（适用于企业/平台案例分析）</h4>
+              <p><strong>一、引言</strong></p>
+              <p>（一）研究背景与意义 （二）研究方法 （三）案例选择说明</p>
+              <p><strong>二、文献综述</strong></p>
+              <p>（一）相关概念界定 （二）国内外研究现状 （三）分析框架构建</p>
+              <p><strong>三、案例描述</strong></p>
+              <p>（一）企业/平台概况 （二）发展历程 （三）商业模式/运营现状</p>
+              <p><strong>四、案例分析</strong></p>
+              <p>（一）问题识别 （二）原因分析 （三）多维度深度分析</p>
+              <p><strong>五、对策建议与结论</strong></p>
+              <p>（一）改进策略 （二）实施建议 （三）研究结论与展望</p>
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="struct-survey">
+            <div class="struct-card">
+              <h4>调研型论文结构（适用于实地调研+现状分析）</h4>
+              <p><strong>一、引言</strong></p>
+              <p>（一）研究背景 （二）研究目的与意义 （三）调研方案</p>
+              <p><strong>二、文献综述</strong></p>
+              <p>（一）理论基础 （二）相关研究回顾</p>
+              <p><strong>三、调研设计与实施</strong></p>
+              <p>（一）调研对象与方法 （二）调研过程 （三）样本情况</p>
+              <p><strong>四、调研结果与分析</strong></p>
+              <p>（一）现状描述 （二）问题分析 （三）原因探究</p>
+              <p><strong>五、对策建议与结论</strong></p>
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="struct-classic">
+            <div class="struct-card">
+              <h4>经典综述型论文结构（适用于理论梳理+政策分析）</h4>
+              <p><strong>一、引言</strong></p>
+              <p><strong>二、文献综述（重点章节，占全文40-50%）</strong></p>
+              <p><strong>三、理论框架与分析方法</strong></p>
+              <p><strong>四、现状与问题分析</strong></p>
+              <p><strong>五、对策建议</strong></p>
+              <p><strong>六、结论</strong></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 各章节写作指引 -->
+        <div class="card">
+          <h3>3. 各章节写作指引</h3>
+          <div class="tabs-wrap">
+            <button class="tab-btn active" onclick="switchInnerTab(this,'write-abstract')">摘要</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'write-intro')">引言</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'write-lit')">文献综述</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'write-body')">正文/分析</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'write-conclusion')">结论/结语</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'write-ack')">致谢</button>
+          </div>
+
+          <div class="tab-content-area active" id="write-abstract">
+            <div class="hl-box"><strong>写作公式：</strong>背景（1-2句）→ 目的（1句）→ 方法（2-3句）→ 结论（2-3句）→ 意义（1句）</div>
+            <div class="alert alert-info">
+              <strong>要求：</strong>≤300字，不加注释和评论，独立短文。须包含<strong>研究背景、目的、方法、主要结论</strong>。要有<strong>英文翻译</strong>。
+            </div>
+            <div class="alert alert-danger">
+              <strong>送审常见缺陷：</strong>摘要缺少研究方法、缺少具体结论（只写"进行了分析"不写"发现了什么"）、缺少创新点。必须四要素齐全。
+            </div>
+            <div class="demo-box">
+              <div class="demo-label">✅ 正确示例片段</div>
+              <p>本文以SOR理论为框架，基于对286名消费者的问卷调查数据，运用结构方程模型实证分析了直播电商中KOL特征对消费者购买意愿的影响……研究发现：KOL的专业性和信任度对购买意愿有显著正向影响，感知价值起部分中介作用。</p>
+            </div>
+            <div class="demo-box">
+              <div class="demo-label">❌ 错误示例片段（缺少研究方法+结论）</div>
+              <p>本文研究了直播电商对消费者购买意愿的影响。通过分析，得出了一些结论，并提出了相关建议。</p>
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="write-intro">
+            <div class="hl-box"><strong>结构：</strong>大背景 → 具体问题 → 研究缺口 → 本文要做什么 → 论文结构预览</div>
+            <div class="alert alert-info">
+              <strong>引言不是"罗列背景"！</strong>引言的核心逻辑是"漏斗式"：从大背景逐步收敛到你的具体研究问题。
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="write-lit">
+            <div class="alert alert-danger">
+              <strong>送审高频红线：</strong>文献综述不能做成"流水账"！要<strong>按主题分类</strong>、<strong>对比评述</strong>、<strong>指出研究空白</strong>。送审专家最反感"A（2020）认为……B（2021）提出……C（2022）指出……"这样机械罗列。
+            </div>
+            <div class="alert alert-danger">
+              <strong>理论与分析两张皮：</strong>文献综述中提到的理论，必须在后续分析中<strong>真正使用</strong>——用于解剖研究对象，而不是摆在那里当装饰。
+            </div>
+            <div class="hl-box"><strong>正确做法：</strong>按主题归类文献 → 对比不同研究的发现/争议 → 明确说出"已有研究忽略了X，本文将从Y角度切入"</div>
+          </div>
+
+          <div class="tab-content-area" id="write-body">
+            <div class="hl-box"><strong>关键原则：</strong>各章节之间要有<strong>逻辑递进</strong>，每个章节开头应有过渡段落。数据分析必须<strong>有解读、有讨论</strong>，不只呈现数字。</div>
+            <div class="alert alert-warning">
+              <strong>送审常见问题：</strong>数据堆砌无分析、分析表面化、问题与对策不对应（问题说了A和B，对策却讲C和D）。
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="write-conclusion">
+            <div class="alert alert-danger">
+              <strong>送审致命缺陷：</strong>缺少独立的"结论"章节。很多学生最后一章写"对策建议"就结束了，缺少对全文结论的集中提炼！结论应包含四要素：<strong>①主要发现 ②理论贡献 ③实践启示 ④研究局限与展望</strong>。
+            </div>
+            <div class="hl-box">结语不是各章小结的简单重复，应提炼出<strong>整体性</strong>的结论，回应引言中提出的问题。</div>
+          </div>
+
+          <div class="tab-content-area" id="write-ack">
+            <div class="alert alert-info">
+              <strong>致谢要求：</strong>表达对指导教师及在论文工作中提供帮助的人员的感谢，语言真诚得体，约200-400字。
+            </div>
+          </div>
+        </div>
+
+        <!-- 图表规范 -->
+        <div class="card">
+          <h3>4. 图表与公式规范</h3>
+          <div class="tabs-wrap">
+            <button class="tab-btn active" onclick="switchInnerTab(this,'fig-table')">三线表</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'fig-illustration')">插图</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'fig-formula')">公式</button>
+          </div>
+
+          <div class="tab-content-area active" id="fig-table">
+            <div class="alert alert-info">
+              <strong>三线表制作（Word）：</strong>1.插入表格 → 表格属性 → 边框和底纹<br>
+              2.顶线 <strong>1.5磅</strong>（粗）、栏目线 <strong>0.75磅</strong>（细）、底线 <strong>1.5磅</strong>（粗）<br>
+              3.取消所有左右竖线和内部横线。表格允许下页接写，接写时表头重复，右上方标注"续表×-×"。
+            </div>
+            <div class="tbl-demo">
+              <div class="tbl-caption">表1-1 ××××××</div>
+              <table style="width:100%">
+                <thead><tr><th>变量</th><th>均值</th><th>标准差</th><th>最小值</th><th>最大值</th></tr></thead>
+                <tbody>
+                  <tr><td>专业性</td><td>3.82</td><td>0.76</td><td>1.00</td><td>5.00</td></tr>
+                  <tr><td>吸引力</td><td>3.65</td><td>0.83</td><td>1.00</td><td>5.00</td></tr>
+                  <tr><td>购买意愿</td><td>3.71</td><td>0.79</td><td>1.00</td><td>5.00</td></tr>
+                </tbody>
+              </table>
+              <div class="tbl-src">数据来源：根据问卷调研结果整理</div>
+            </div>
+            <div class="alert alert-danger" style="margin-top:12px;">
+              <strong>送审高频问题：</strong>图表须注明<strong>具体数据来源</strong>，不能笼统写"数据来源：自行整理"。表格行间距须统一、美观。
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="fig-illustration">
+            <div class="alert alert-danger">
+              <strong>严禁截图！</strong>所有插图必须用计算机<strong>重新独立绘制</strong>（Word图形/Excel图表/Visio/draw.io等），绝不可直接截取网页、手机或软件截图。
+            </div>
+            <div class="alert alert-warning">
+              <strong>送审警告：</strong>单年数据不能推导趋势！插图须注明<strong>数据来源</strong>，且来源描述须具体（比如"数据来源：国家统计局网站（2020-2025年）"而非笼统写"数据来源：统计局"）。
+            </div>
+            <div class="hl-box"><strong>插图规范：</strong>图序+图名置于图正下方，居中。图中文字须清晰可辨，字号不宜过小。</div>
+          </div>
+
+          <div class="tab-content-area" id="fig-formula">
+            <div class="hl-box"><strong>公式规范：</strong>用公式编辑器（MathType或Word自带）输入。公式按章节编号，如(2-1)、(2-2)。编号右对齐置于公式最右侧。</div>
+          </div>
+        </div>
+
+        <!-- 参考文献 -->
+        <div class="card">
+          <h3>5. 参考文献格式规范</h3>
+          <div class="alert alert-info">
+            <strong>标准：GB/T 7714-2015。</strong>在正文引用处以<strong>上标[1][2][3]</strong>标记，文末参考文献按<strong>引用顺序</strong>排列。≥10篇，含≥2篇外文。
+          </div>
+          <div class="alert alert-danger">
+            <strong>送审三大雷区：</strong><br>
+            ① 文献DOI中的<strong>下划线</strong>会导致格式错乱，须手动清除；<br>
+            ② 引用文献<strong>不可过老</strong>（避免大量引用10年以上的文献）；<br>
+            ③ 正文中引用的文献必须出现在参考文献列表中，<strong>一一对应</strong>。
+          </div>
+          <table>
+            <thead><tr><th>类型</th><th>代码</th><th>格式示例</th></tr></thead>
+            <tbody>
+              <tr><td class="label">期刊</td><td>J</td><td style="font-size:12px">[1] 张三,李四.直播电商中KOL特征研究[J].电子商务学报,2024,35(2):45-52.</td></tr>
+              <tr><td class="label">专著</td><td>M</td><td style="font-size:12px">[2] 王五.跨境电商运营管理[M].北京:清华大学出版社,2023:88-102.</td></tr>
+              <tr><td class="label">学位论文</td><td>D</td><td style="font-size:12px">[3] 赵六.社交电商用户行为研究[D].杭州:浙江大学,2023.</td></tr>
+              <tr><td class="label">网络资源</td><td>EB/OL</td><td style="font-size:12px">[4] 商务部.中国电子商务报告(2024)[EB/OL].(2025-05-20)[2026-07-01].http://...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" onclick="goStage(2)">← 上一阶段：开题报告</button>
+        <button class="btn-next" onclick="goStage(4)">下一阶段：中期检查 →</button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- STAGE 4: 中期检查 -->
+    <!-- ================================================================ -->
+    <section class="stage" id="stage-4">
+      <div class="stage-hero">
+        <h2>阶段四：中期检查</h2>
+        <p>自查论文进度，提交中期检查表，确保按计划推进。</p>
+        <div class="stage-meta">
+          <span>📅 2026年11月3日 — 11月7日</span>
+          <span>📋 任务：中期检查表</span>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <div class="card">
+          <h3>1. 中期检查内容</h3>
+          <ul>
+            <li><strong>进度自查</strong>：论文初稿是否已完成？各章节是否齐全？</li>
+            <li><strong>质量自查</strong>：字数是否达标（≥10,000字）？格式是否规范？</li>
+            <li><strong>指导教师评价</strong>：导师对已完成部分的审核意见</li>
+            <li><strong>后续计划</strong>：剩余工作的安排和时间节点</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>2. 中期检查材料</h3>
+          <table>
+            <thead><tr><th>材料</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td class="label">论文初稿</td><td>已完成全部章节的草稿（可未最终定稿）</td></tr>
+              <tr><td class="label">中期检查表</td><td>在维普系统中填写，含进度、问题、后续计划</td></tr>
+              <tr><td class="label">指导记录</td><td>指导教师至少已完成3次以上的指导</td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-warning" style="margin-top:12px;">
+            <strong>注意：</strong>中期检查是阶段性审核，不及时提交将影响后续答辩资格。请务必在 <strong>11月7日前</strong> 完成。
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>3. 中期检查常见问题（送审反馈）</h3>
+          <div class="alert alert-danger">
+            <strong>进度严重滞后</strong>：到中期检查时仅完成了不到一半的章节，后续压力巨大。
+          </div>
+          <div class="alert alert-danger">
+            <strong>初稿质量差</strong>：参考文献格式混乱、缺少数据分析、章节逻辑断裂。
+          </div>
+          <div class="alert alert-danger">
+            <strong>指导教师联系不足</strong>：指导记录少于3次，或导师对论文进展不知情。
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>4. 维普系统操作：中期检查</h3>
+          <ol class="step-list">
+            <li>登录维普系统 → 过程管理 → 中期检查</li>
+            <li>在线填写中期检查表，包括：已完成工作、存在问题、后续计划</li>
+            <li>提交后等待指导教师审核</li>
+            <li>审核不通过需修改后重新提交</li>
+          </ol>
+        </div>
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" onclick="goStage(3)">← 上一阶段：论文撰写</button>
+        <button class="btn-next" onclick="goStage(5)">下一阶段：答辩准备 →</button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- STAGE 5: 答辩准备 -->
+    <!-- ================================================================ -->
+    <section class="stage" id="stage-5">
+      <div class="stage-hero">
+        <h2>阶段五：答辩准备</h2>
+        <p>提交答辩稿，申请答辩资格，参加答辩并完成评分。</p>
+        <div class="stage-meta">
+          <span>📅 2026年11月17日 — 12月19日</span>
+          <span>📋 任务：答辩稿 → 答辩申请 → 答辩记录 → 评分</span>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <div class="card">
+          <h3>1. 答辩前准备工作</h3>
+          <table>
+            <thead><tr><th>步骤</th><th>时间</th><th>操作</th></tr></thead>
+            <tbody>
+              <tr><td class="label">提交答辩稿</td><td>11月17日—12月5日</td><td>维普系统 → 过程管理 → 答辩稿</td></tr>
+              <tr><td class="label">查重检测</td><td>提交答辩稿后</td><td>复制比≤25%方可申请答辩（免费检测2次）</td></tr>
+              <tr><td class="label">答辩申请</td><td>12月7日—13日</td><td>维普系统 → 过程管理 → 答辩申请</td></tr>
+              <tr><td class="label">正式答辩</td><td>12月14日—19日</td><td>PPT汇报 + 评委提问</td></tr>
+              <tr><td class="label">答辩记录</td><td>答辩后</td><td>指导教师录入答辩记录和成绩</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>2. 答辩稿格式要求</h3>
+          <ul>
+            <li>论文各部分齐全：封面、目录、中英文摘要、正文、参考文献、致谢</li>
+            <li>格式完全符合写作手册要求</li>
+            <li>复制比≤25%</li>
+            <li>AIGC检测值≤30%（参考指标）</li>
+            <li>答辩稿须与检测版本<strong>完全一致</strong></li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>3. 答辩注意事项</h3>
+          <div class="hl-box"><strong>PPT汇报要点（5-8分钟）：</strong>选题背景→研究问题→理论框架→研究方法→主要发现→结论与建议</div>
+          <ul>
+            <li>提前到答辩教室测试PPT播放</li>
+            <li>准备纸质版论文供评委翻阅</li>
+            <li>对评委提问先肯定再回答，态度诚恳</li>
+            <li>不熟悉的问题坦诚承认，说明后续如何改进</li>
+            <li>常见问题："创新点是什么？""数据如何收集？""结论的依据是什么？"</li>
+          </ul>
+        </div>
+
+        <div class="card">
+          <h3>4. 维普系统操作：答辩流程</h3>
+          <ol class="step-list">
+            <li>提交答辩稿：过程管理 → 答辩稿 → 上传论文 → 提交</li>
+            <li>查重检测：系统自动检测，查看检测结果</li>
+            <li>申请答辩：过程管理 → 答辩申请 → 填写信息 → 提交</li>
+            <li>查看答辩安排：关注学院通知，确认答辩时间和地点</li>
+            <li>答辩记录：由答辩组长/秘书录入，学生可在系统中查看结果</li>
+          </ol>
+        </div>
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" onclick="goStage(4)">← 上一阶段：中期检查</button>
+        <button class="btn-next" onclick="goStage(6)">下一阶段：最终提交 →</button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- STAGE 6: 最终提交 -->
+    <!-- ================================================================ -->
+    <section class="stage" id="stage-6">
+      <div class="stage-hero">
+        <h2>阶段六：最终提交</h2>
+        <p>根据答辩意见修改论文，提交最终稿和匿名抽检稿，完成查重检测。</p>
+        <div class="stage-meta">
+          <span>📅 2026年12月22日 — 2027年4月10日</span>
+          <span>📋 任务：最终稿 + 匿名抽检稿 + 终稿查重</span>
+          <span>⚠️ 4月10日截止，逾期延迟领证</span>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <div class="card">
+          <h3>1. 最终稿提交要求</h3>
+          <ul>
+            <li>根据答辩评委意见完成全部修改</li>
+            <li>通过指导教师最终审核</li>
+            <li>提交最终稿：维普系统 → 过程管理 → 最终稿</li>
+            <li>终稿查重检测 1 次（免费）</li>
+            <li><strong>截止时间：2026年12月29日</strong></li>
+          </ul>
+          <div class="alert alert-danger">
+            <strong>最终截止日：2027年4月10日。</strong>逾期未提交全部材料者，延迟领取毕业证和学位证。
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>2. 匿名抽检稿处理指南</h3>
+          <div class="alert alert-danger">
+            <strong>抽检稿必须匿名！</strong>抽检稿送校外专家盲审，须<strong>彻底去除</strong>以下身份信息：
+          </div>
+          <div class="hl-box">
+            <strong>须去除的内容（10项核对清单）：</strong>
+          </div>
+          <ul class="checklist" id="anonymCheck">
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学生姓名、学号</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除指导教师姓名</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学校名称（含"浙江师范大学行知学院"）</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学院、专业信息</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>页眉：去除可能含姓名/学校的页眉</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>致谢：去除指导教师姓名、学校名称</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>正文中引用自己已发表的论文时，需匿名处理</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>用<strong>序号代替</strong>姓名：如"学生A""教师B"</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>文件属性：右键→属性→详细信息→删除作者信息</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>上传路径：维普系统 → 过程管理 → 抽检稿</li>
+          </ul>
+          <div class="alert alert-warning" style="margin-top:12px;">
+            <strong>操作建议：</strong>在最终稿上另存一份 → 逐项删除身份信息 → 全文搜索自己的姓名/学号/学校名确保无遗漏 → 保存为新文件 → 上传。
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>3. 学术诚信与查重要求</h3>
+          <table>
+            <thead><tr><th>检测项</th><th>标准</th><th>说明</th></tr></thead>
+            <tbody>
+              <tr><td class="label">总文字复制比</td><td style="color:var(--danger);font-weight:700;">≤ 25%</td><td>硬性红线，超过不通过</td></tr>
+              <tr><td class="label">AIGC检测</td><td style="color:var(--warning);font-weight:600;">≤ 30%</td><td>参考指标，指导教师评定参考</td></tr>
+              <tr><td class="label">检测系统</td><td>维普大学生版</td><td>vpcs.cqvip.com</td></tr>
+              <tr><td class="label">免费次数</td><td>答辩2次 + 终稿1次</td><td>共3次，超出需自费</td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-danger">
+            <strong>学术红线：</strong>坚决杜绝抄袭、剽窃、数据造假。一经查实，取消成绩并按学校规定处理。
+          </div>
+          <h4 style="margin-top:16px;">降重策略（5个有效方法）：</h4>
+          <ul>
+            <li><strong>改写重组</strong>：读原文 → 用自己的话重新表达 → 调整语序和句式</li>
+            <li><strong>同义替换</strong>：关键词用近义词替换，改变表达方式</li>
+            <li><strong>扩展论述</strong>：对引用观点补充自己的分析和评论</li>
+            <li><strong>图表转化</strong>：将他人文字描述转为自制的图表</li>
+            <li><strong>多源整合</strong>：综合多个文献的观点，形成自己的论述</li>
+          </ul>
+          <div class="alert alert-warning">
+            <strong>AIGC规避提醒：</strong>不要整段复制AI生成内容。AI可辅助<strong>提供思路、整理框架、润色表达</strong>，但核心分析和结论须自行撰写。
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>4. 维普系统操作：最终提交</h3>
+          <ol class="step-list">
+            <li>修改答辩稿 → 指导教师确认 → 上传最终稿（过程管理 → 最终稿）</li>
+            <li>终稿查重检测（系统自动，免费1次）</li>
+            <li>制作匿名抽检稿（去除所有身份信息，用序号代替）</li>
+            <li>上传抽检稿（过程管理 → 抽检稿）</li>
+            <li>确认全部材料已提交</li>
+          </ol>
+          <div style="background:#fef2f2;padding:16px;border-radius:var(--radius);border:1px solid #fecaca;margin-top:12px;">
+            <strong style="color:#991b1b;">⏰ 最终截止日：2027年4月10日。</strong><br>
+            <span style="font-size:13px;color:#991b1b;">逾期未完成全部材料提交者，将延迟领取毕业证和学位证。请务必在此日期前完成所有上传和审核。</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>5. 评分标准速查</h3>
+          <table>
+            <thead><tr><th>评分维度</th><th>分值</th><th>要点</th></tr></thead>
+            <tbody>
+              <tr><td class="label">选题质量</td><td>15分</td><td>选题的新颖性、与专业的契合度、难度适中</td></tr>
+              <tr><td class="label">文献综述</td><td>15分</td><td>文献覆盖率、分类梳理、外文文献使用、评述深度</td></tr>
+              <tr><td class="label">研究能力</td><td>25分</td><td>方法合理性、数据收集、分析深度、逻辑论证</td></tr>
+              <tr><td class="label">创新性</td><td>15分</td><td>观点/方法/视角的新颖程度</td></tr>
+              <tr><td class="label">学术规范</td><td>20分</td><td>格式规范、引用规范、文字表达、图表质量</td></tr>
+              <tr><td class="label">答辩表现</td><td>10分</td><td>汇报清晰度、回答问题质量</td></tr>
+              <tr style="font-weight:700;color:var(--text);"><td class="label">总分</td><td>100分</td><td>60分及格，90分以上优秀</td></tr>
+            </tbody>
+          </table>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">成绩评定：指导教师评分(40%) + 评阅教师评分(30%) + 答辩评分(30%)</p>
+        </div>
+
+        <div class="card">
+          <h3>6. 毕业设计替代通道</h3>
+          <div class="alert alert-info">
+            <strong>适用学生：</strong>持有学科竞赛获奖作品（须为核心成员）的学生，可申请以竞赛作品替代毕业论文正文。
+          </div>
+          <ul>
+            <li>替代申请须在<strong>7月10日前</strong>提交材料至综合办 2-435</li>
+            <li>仅替代正文部分，封面/摘要/目录/参考文献/致谢等仍需按论文规范完成</li>
+            <li>替代论文同样需要<strong>参加开题答辩和结题答辩</strong></li>
+            <li>同样需要<strong>接受查重检测</strong>（≤25%）</li>
+            <li>提交入口：维普系统 → 过程管理 → 开题报告（替代论文初稿）</li>
+          </ul>
+        </div>
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" onclick="goStage(5)">← 上一阶段：答辩准备</button>
+        <button class="btn-prev" onclick="goStage(1)" style="background:var(--success);border-color:var(--success);color:#fff;margin-left:auto;">✅ 回到起点</button>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- Mobile toggle -->
+<button class="mobile-toggle" id="mobileToggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
+
+<script>
+// ===== State =====
+const stages = [
+  { id: 1, title: '选题与任务书', sub: ['选题要求','选题方向','任务书规范','任务书范文','申报课题操作','选题阶段避坑'] },
+  { id: 2, title: '开题报告', sub: ['开题要素','开题范文','文献综述写作','技术路线图','答辩准备','维普提交'] },
+  { id: 3, title: '论文撰写', sub: ['格式速查','结构模板','摘要写作','引言写作','文献综述','正文写作','结论写作','致谢写作','三线表','插图规范','公式规范','参考文献'] },
+  { id: 4, title: '中期检查', sub: ['检查内容','提交材料','常见问题','维普操作'] },
+  { id: 5, title: '答辩准备', sub: ['答辩流程','答辩稿要求','答辩注意事项','维普操作'] },
+  { id: 6, title: '最终提交', sub: ['最终稿','匿名抽检稿','学术诚信','查重要求','降重策略','维普提交','评分标准','替代通道'] }
+];
+
+let currentStage = 1;
+let visitedStages = new Set([1]);
+let searchHistory = [];
+let viewHistory = [];
+
+// ===== Build Sidebar =====
+function buildSidebar() {
+  const nav = document.getElementById('sidebarNav');
+  nav.innerHTML = stages.map(s => `
+    <div class="stage-group">
+      <div class="stage-header${currentStage === s.id ? ' active expanded' : ''}${visitedStages.has(s.id) ? ' completed' : ''}"
+           data-stage="${s.id}" onclick="toggleStage(${s.id})">
+        <span class="stage-num">${s.id}</span>
+        <span>${s.title}</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="stage-sub${currentStage === s.id ? ' show' : ''}" id="sub-${s.id}">
+        ${s.sub.map((sub, i) => `<div class="sub-item" data-stage="${s.id}" data-sub="${i}" onclick="scrollToSub(${s.id},${i})">${sub}</div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+  updateProgress();
+}
+
+function toggleStage(id) {
+  const sub = document.getElementById('sub-' + id);
+  const header = document.querySelector(`.stage-header[data-stage="${id}"]`);
+  sub.classList.toggle('show');
+  header.classList.toggle('expanded');
+  if (currentStage !== id) navigateStage(id);
+}
+
+function navigateStage(id) {
+  currentStage = id;
+  visitedStages.add(id);
+  viewHistory.push(id);
+  if (viewHistory.length > 50) viewHistory.shift();
+
+  // Update stage visibility
+  document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+  const target = document.getElementById('stage-' + id);
+  if (target) {
+    target.classList.add('active');
+    document.getElementById('contentScroll').scrollTop = 0;
+  }
+
+  // Update sidebar
+  document.querySelectorAll('.stage-header').forEach(h => {
+    h.classList.toggle('active', parseInt(h.dataset.stage) === id);
+    if (parseInt(h.dataset.stage) === id) h.classList.add('expanded');
+  });
+  document.querySelectorAll('.stage-sub').forEach(s => {
+    s.classList.toggle('show', s.id === 'sub-' + id);
+  });
+  updateProgress();
+  updateBreadcrumb();
+}
+
+function goStage(id) {
+  navigateStage(id);
+  // Ensure sub is visible
+  const sub = document.getElementById('sub-' + id);
+  if (sub) sub.classList.add('show');
+  const header = document.querySelector(`.stage-header[data-stage="${id}"]`);
+  if (header) header.classList.add('expanded');
+}
+
+// ===== Search System =====
+const searchIndex = [];
+
+function buildSearchIndex() {
+  document.querySelectorAll('.stage').forEach(stage => {
+    const stageId = stage.id.replace('stage-', '');
+    const stageTitle = stage.querySelector('.stage-hero h2')?.textContent || '';
+    const allText = stage.textContent.replace(/\s+/g, ' ').trim();
+
+    // Index by cards/alerts
+    stage.querySelectorAll('.card,.alert,.hl-box,.demo-box,.struct-card').forEach(block => {
+      const blockTitle = block.querySelector('h3')?.textContent || block.querySelector('h4')?.textContent || '';
+      const blockText = block.textContent.replace(/\s+/g, ' ').trim();
+      searchIndex.push({ stage: stageId, stageTitle, title: blockTitle, text: blockText, block });
+    });
+  });
+}
+
+function search(query) {
+  if (!query.trim()) return [];
+  const q = query.toLowerCase().trim();
+  const results = [];
+  searchIndex.forEach(item => {
+    const st = (item.title + ' ' + item.text).toLowerCase();
+    if (st.includes(q)) {
+      let score = 0;
+      if (item.title.toLowerCase().includes(q)) score += 10;
+      const re = new RegExp(q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+      const matches = (st.match(re) || []).length;
+      score += matches * 2;
+      results.push({ ...item, score });
+    }
+  });
+  results.sort((a, b) => b.score - a.score);
+  const seen = new Set();
+  return results.filter(r => {
+    const k = r.text.substring(0, 60);
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  }).slice(0, 12);
+}
+
+function highlightText(text, query) {
+  const esc = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return text.replace(new RegExp(`(${esc})`, 'gi'), '<mark>$1</mark>');
+}
+
+function showSearchResults(results, query) {
+  const body = document.getElementById('searchPanelBody');
+  if (results.length === 0 && query.trim()) {
+    body.innerHTML = '<div class="no-results">未找到相关结果，请尝试其他关键词</div>';
+    return;
+  }
+  if (results.length === 0) {
+    body.innerHTML = '<div class="no-results" id="searchHint">输入关键词开始搜索…</div>';
+    return;
+  }
+
+  body.innerHTML = results.map(r => `
+    <div class="search-result-item" data-stage="${r.stage}" data-text="${encodeURIComponent(r.text.substring(0, 200))}">
+      <div class="rt">${highlightText(r.title || r.stageTitle, query)}</div>
+      <div class="rc">${highlightText(r.text.substring(0, 150) + '…', query)}</div>
+      <div class="rs"><span>📂</span> ${r.stageTitle}</div>
+    </div>
+  `).join('');
+}
+
+// ===== Search Overlay =====
+function openSearch() {
+  document.getElementById('searchOverlay').classList.add('show');
+  document.getElementById('searchOverlayInput').focus();
+  document.getElementById('searchPanelBody').innerHTML = '<div class="no-results" id="searchHint">输入关键词开始搜索…</div>';
+  searchHistory = [];
+}
+
+function closeSearch() {
+  document.getElementById('searchOverlay').classList.remove('show');
+  document.getElementById('searchOverlayInput').value = '';
+}
+
+function goBackFromSearch() {
+  if (viewHistory.length > 0) {
+    // Go back to the last viewed stage before search
+    const lastStage = viewHistory.pop();
+    document.getElementById('searchOverlay').classList.remove('show');
+    document.getElementById('searchOverlayInput').value = '';
+    navigateStage(lastStage);
+  } else {
+    closeSearch();
+  }
+}
+
+// ===== Breadcrumb =====
+function updateBreadcrumb() {
+  const bc = document.getElementById('breadcrumb');
+  const stage = stages.find(s => s.id === currentStage);
+  bc.innerHTML = `<span onclick="goStage(1)">🏠 首页</span><span class="sep">›</span><span style="color:var(--text);font-weight:600;">${stage.title}</span>`;
+}
+
+// ===== Progress =====
+function updateProgress() {
+  const pct = Math.round((visitedStages.size / 6) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressPct').textContent = `第 ${currentStage}/6 阶段`;
+}
+
+// ===== Reset =====
+function resetAll() {
+  visitedStages = new Set([1]);
+  viewHistory = [];
+  navigateStage(1);
+  document.querySelectorAll('.checklist li.checked').forEach(li => li.classList.remove('checked'));
+}
+
+// ===== Scroll to sub =====
+function scrollToSub(stageId, subIdx) {
+  if (currentStage !== stageId) navigateStage(stageId);
+  setTimeout(() => {
+    const stage = document.getElementById('stage-' + stageId);
+    if (!stage) return;
+    const cards = stage.querySelectorAll('.card');
+    if (cards[subIdx]) {
+      cards[subIdx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      cards[subIdx].style.boxShadow = '0 0 0 3px rgba(26,86,219,.25), 0 4px 16px rgba(0,0,0,.08)';
+      setTimeout(() => { cards[subIdx].style.boxShadow = ''; }, 2500);
+    }
+  }, 200);
+}
+
+// ===== Inner tabs =====
+function switchInnerTab(btn, tabId) {
+  const card = btn.closest('.card') || btn.closest('.stage-body');
+  card.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  card.querySelectorAll('.tab-content-area').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  const target = document.getElementById(tabId);
+  if (target) target.classList.add('active');
+}
+
+// ===== Init =====
+document.addEventListener('DOMContentLoaded', () => {
+  buildSidebar();
+  buildSearchIndex();
+  updateBreadcrumb();
+
+  // Search overlay input
+  const overlayInput = document.getElementById('searchOverlayInput');
+  overlayInput.addEventListener('input', () => {
+    const q = overlayInput.value;
+    const results = search(q);
+    showSearchResults(results, q);
+  });
+
+  // Search close button
+  document.getElementById('searchCloseBtn').addEventListener('click', closeSearch);
+
+  // Click outside closes
+  document.getElementById('searchOverlay').addEventListener('click', (e) => {
+    if (e.target === document.getElementById('searchOverlay')) closeSearch();
+  });
+
+  // Escape closes
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeSearch();
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+    if (e.key === '/' && document.activeElement === document.body) { e.preventDefault(); openSearch(); }
+  });
+
+  // Search result click
+  document.getElementById('searchPanelBody').addEventListener('click', (e) => {
+    const item = e.target.closest('.search-result-item');
+    if (!item) return;
+    const stage = item.dataset.stage;
+    const searchText = decodeURIComponent(item.dataset.text);
+    viewHistory.push(currentStage); // Save current stage before navigating
+    navigateStage(parseInt(stage));
+    closeSearch();
+
+    // Highlight matching card
+    setTimeout(() => {
+      const targetStage = document.getElementById('stage-' + stage);
+      if (!targetStage) return;
+      targetStage.querySelectorAll('.card,.alert').forEach(card => {
+        const ct = card.textContent.replace(/\s+/g, ' ').trim();
+        if (ct.includes(searchText.trim())) {
+          card.style.boxShadow = '0 0 0 3px rgba(26,86,219,.25), 0 4px 16px rgba(0,0,0,.08)';
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          setTimeout(() => { card.style.boxShadow = ''; }, 2500);
+        }
+      });
+    }, 300);
+  });
+
+  // Sidebar sub-item clicks
+  document.getElementById('sidebarNav').addEventListener('click', (e) => {
+    const sub = e.target.closest('.sub-item');
+    if (sub) {
+      const stageId = parseInt(sub.dataset.stage);
+      const subIdx = parseInt(sub.dataset.sub);
+      scrollToSub(stageId, subIdx);
+    }
+  });
+});
+</script>
+</body>
+</html>
