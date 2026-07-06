@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>毕业论文写作助手 — 浙江师范大学行知学院商学院</title>
+<title>毕业论文写作助手 — 浙江师范大学</title>
 <style>
 /* ===== Reset & Variables ===== */
 :root {
@@ -24,7 +24,8 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 /* ===== Sidebar (Progress Tracker) ===== */
 .sidebar{width:var(--sidebar-width);height:100vh;position:fixed;left:0;top:0;background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow:hidden}
 .sidebar-brand{padding:20px 24px;border-bottom:1px solid var(--border)}
-.sidebar-brand h1{font-size:16px;font-weight:700;color:var(--primary);line-height:1.4}
+.brand-logo{display:inline-block;font-size:22px;font-weight:900;letter-spacing:6px;color:var(--primary);margin-bottom:6px;font-style:italic}
+.sidebar-brand h1{font-size:16px;font-weight:700;color:var(--text);line-height:1.4}
 .sidebar-brand p{font-size:11px;color:var(--text-muted);margin-top:2px}
 .progress-bar-wrap{padding:16px 24px 0;border-bottom:1px solid var(--border-light)}
 .progress-info{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px;color:var(--text-muted)}
@@ -201,8 +202,9 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 <!-- ===== Sidebar ===== -->
 <aside class="sidebar" id="sidebar">
   <div class="sidebar-brand">
+    <div class="brand-logo">LEO</div>
     <h1>毕业论文写作助手</h1>
-    <p>浙江师范大学行知学院商学院 · 2027届</p>
+    <p>浙江师范大学 · 2027届</p>
   </div>
   <div class="progress-bar-wrap">
     <div class="progress-info"><span>论文进度</span><span id="progressPct">第 1/6 阶段</span></div>
@@ -901,7 +903,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
           <ul class="checklist" id="anonymCheck">
             <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学生姓名、学号</li>
             <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除指导教师姓名</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学校名称（含"浙江师范大学行知学院"）</li>
+            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学校名称（含"浙江师范大学"）</li>
             <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学院、专业信息</li>
             <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>页眉：去除可能含姓名/学校的页眉</li>
             <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>致谢：去除指导教师姓名、学校名称</li>
