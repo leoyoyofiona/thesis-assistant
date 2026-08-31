@@ -149,6 +149,57 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .tbl-demo .tbl-caption{text-align:center;font-size:12px;font-weight:600;padding:4px}
 .tbl-demo .tbl-src{text-align:left;font-size:11px;color:var(--text-muted);padding:4px 0;font-family:var(--font-sans)}
 
+/* ===== Sidebar reference label ===== */
+.sidebar-label{padding:14px 24px 6px;font-size:11px;color:var(--text-muted);letter-spacing:1px;font-weight:600}
+
+/* ===== Home ===== */
+.home-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0}
+.home-card{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;cursor:pointer;transition:all .15s;display:block}
+.home-card:hover{border-color:var(--primary);box-shadow:var(--shadow)}
+.home-card h4{font-size:13px;color:var(--text);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.home-card p{font-size:12px;color:var(--text-secondary);line-height:1.6}
+.home-card .hc-date{font-size:11px;color:var(--primary);margin-top:6px;display:inline-block;background:var(--primary-light);padding:2px 8px;border-radius:10px}
+
+/* ===== Today badge ===== */
+.today-badge{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;background:linear-gradient(135deg,#fff7ed,#fff1f2);border:1.5px solid #f59e0b;border-radius:20px;font-size:13px;font-weight:700;color:#92400e;max-width:100%}
+.today-badge .pulse-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b;animation:pulseDot 1.6s ease-in-out infinite;flex-shrink:0}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.5)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
+
+/* ===== Timeline ===== */
+.timeline{display:flex;gap:0;overflow-x:auto;padding:18px 8px 8px;position:relative}
+.timeline::before{content:'';position:absolute;left:24px;right:24px;top:45px;height:3px;background:var(--border);border-radius:2px}
+.tl-node{flex:1;min-width:118px;text-align:center;position:relative;z-index:1;cursor:pointer}
+.tl-node .tl-dot{width:22px;height:22px;border-radius:50%;margin:0 auto 8px;border:3px solid #fff;box-shadow:0 0 0 2px var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text-muted);transition:all .2s}
+.tl-node.done .tl-dot{background:var(--success);box-shadow:0 0 0 2px var(--success);color:#fff}
+.tl-node.current .tl-dot{background:var(--warning);box-shadow:0 0 0 2px var(--warning);color:#fff;animation:pulseDot 1.8s ease-in-out infinite}
+.tl-node.upcoming .tl-dot{background:#fff}
+.tl-node .tl-name{font-size:12px;font-weight:600;color:var(--text)}
+.tl-node .tl-date{font-size:10px;color:var(--text-muted);margin-top:2px}
+.tl-node.done .tl-name{color:var(--success)}
+.tl-node.current .tl-name{color:#92400e}
+table .row-current{background:#fff7ed}
+
+/* ===== VIP accordion ===== */
+.vip-item{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:10px;overflow:hidden}
+.vip-item summary{display:flex;align-items:center;gap:10px;padding:14px 18px;cursor:pointer;font-size:13.5px;font-weight:600;color:var(--text);list-style:none;user-select:none}
+.vip-item summary::-webkit-details-marker{display:none}
+.vip-item summary .vip-no{width:24px;height:24px;border-radius:50%;background:var(--primary);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0}
+.vip-item summary .vip-chevron{margin-left:auto;transition:transform .2s;color:var(--text-muted)}
+.vip-item[open] summary .vip-chevron{transform:rotate(90deg)}
+.vip-item .vip-body{padding:4px 18px 18px 52px}
+
+/* ===== Feedback item ===== */
+.fb-item{border:1px solid var(--border);border-left:3px solid var(--danger);border-radius:var(--radius);padding:14px 18px;margin-bottom:12px;background:#fff}
+.fb-item .fb-q{font-size:13px;font-weight:700;color:#991b1b;margin-bottom:8px}
+.fb-item .fb-a{font-size:13px;color:var(--text-secondary);line-height:1.8}
+.fb-item .fb-a strong{color:var(--text)}
+
+/* ===== Goto / download buttons ===== */
+.goto-btn{display:inline-block;margin-top:8px;padding:5px 14px;border:1px solid var(--primary);color:var(--primary);background:var(--primary-light);border-radius:14px;font-size:12px;cursor:pointer;transition:all .15s;font-family:var(--font-sans)}
+.goto-btn:hover{background:var(--primary);color:#fff}
+.btn-download{display:inline-flex;align-items:center;gap:6px;margin:6px 10px 0 0;padding:8px 18px;border:none;border-radius:var(--radius);background:var(--primary);color:#fff;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;font-family:var(--font-sans)}
+.btn-download:hover{background:var(--primary-dark)}
+
 /* Mobile toggle */
 .mobile-toggle{display:none;position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-size:20px;cursor:pointer;z-index:200;box-shadow:0 2px 12px rgba(26,86,219,.3)}
 
@@ -183,6 +234,12 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
   .stage-hero{padding:24px 20px}
   .stage-body{padding:20px}
   .stage-nav{padding:12px 20px 24px}
+  .home-grid{grid-template-columns:1fr}
+  .timeline{flex-direction:column;gap:0;overflow-x:visible}
+  .timeline::before{display:none}
+  .tl-node{display:flex;align-items:center;gap:14px;text-align:left;min-width:0;padding:8px 0 8px 14px;border-left:3px solid var(--border)}
+  .tl-node .tl-dot{margin:0;flex-shrink:0}
+  .search-hint{display:none}
 }
 </style>
 </head>
@@ -238,9 +295,74 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
   <div class="content-scroll" id="contentScroll">
 
     <!-- ================================================================ -->
+    <!-- HOME: 论文全程导航 -->
+    <!-- ================================================================ -->
+    <section class="stage active" id="stage-0">
+      <div class="stage-hero">
+        <h2>毕业论文全程导航</h2>
+        <p>从选题到最终提交，一站式掌握每个阶段的规范、操作与时间节点。</p>
+        <div class="stage-meta">
+          <span>📅 2026年7月6日 — 2027年4月10日</span>
+          <span>📋 6 大阶段 · 12 个关键节点</span>
+          <span>🔍 有问题？按 Ctrl+K 全局检索</span>
+        </div>
+        <div class="today-badge"><span class="pulse-dot"></span><span id="homeTodayText">正在计算当前进度…</span></div>
+      </div>
+      <div class="stage-body">
+
+        <div class="card">
+          <h3>今天该做什么</h3>
+          <div id="homeToday"></div>
+        </div>
+
+        <div class="card">
+          <h3>你的论文进度</h3>
+          <div id="homeProgress"></div>
+        </div>
+
+        <div class="card">
+          <h3>6 大阶段速览</h3>
+          <div class="home-grid" id="homeStages"></div>
+        </div>
+
+        <div class="card">
+          <h3>关键时间节点（12 个）</h3>
+          <div id="homeTimeline"></div>
+        </div>
+
+        <div class="card">
+          <h3>常用工具直达</h3>
+          <div class="home-grid">
+            <div class="home-card" onclick="navigateStage(7)" role="button" tabindex="0">
+              <h4>🗓 时间节点与进度</h4>
+              <p>12 个关键节点、可视化流程图、"目前应处于哪个进度"自查询。</p>
+            </div>
+            <div class="home-card" onclick="navigateStage(8)" role="button" tabindex="0">
+              <h4>🖥 维普系统操作指南</h4>
+              <p>申报课题 → 任务书 → 开题 → 中期 → 答辩 → 最终稿，15 个子流程逐步操作。</p>
+            </div>
+            <div class="home-card" onclick="navigateStage(9)" role="button" tabindex="0">
+              <h4>📋 送审意见应对</h4>
+              <p>4 大类专家常见意见、解决办法与送审前自查清单。</p>
+            </div>
+            <div class="home-card" onclick="openSearch()" role="button" tabindex="0">
+              <h4>🔍 全局检索</h4>
+              <p>任何疑问（三线表怎么做、参考文献格式…）一键检索定位。</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" disabled>← 上一阶段</button>
+        <button class="btn-next" onclick="goStage(1)">开始：阶段一 选题与任务书 →</button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
     <!-- STAGE 1: 选题与任务书 -->
     <!-- ================================================================ -->
-    <section class="stage active" id="stage-1">
+    <section class="stage" id="stage-1">
       <div class="stage-hero">
         <h2>阶段一：选题与任务书</h2>
         <p>确定研究方向，完成选题申报和任务书填写。这是论文的起点，选题质量直接决定论文成败。</p>
@@ -369,7 +491,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
         </div>
       </div>
       <div class="stage-nav">
-        <button class="btn-prev" disabled>← 上一阶段</button>
+        <button class="btn-prev" onclick="goStage(0)">← 返回首页</button>
         <button class="btn-next" onclick="goStage(2)">下一阶段：开题报告 →</button>
       </div>
     </section>
@@ -436,6 +558,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
           <div class="alert alert-info" style="margin-bottom:14px;">
             <strong>使用方法：</strong>下列模板为完整结构框架，学生按自己题目替换××即可。建议打印后在纸质版上勾画，再填入电子稿。
           </div>
+          <button class="btn-download" onclick="downloadWord('kt')">📥 下载开题报告 Word 模板</button>
           <div class="demo-box" style="line-height:2.2;">
             <div class="demo-label">📄 开题报告标准模板（按学校格式）</div>
             <p style="font-weight:700;text-align:center;font-size:15px;margin-bottom:10px;">浙江师范大学</p>
@@ -638,6 +761,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
           <div class="alert alert-info" style="margin-bottom:14px;">
             <strong>使用方法：</strong>下列模板为完整论文的排版格式示范。学生可新建Word文档，按此格式设置页面、字体、标题样式，再填入自己的内容。
           </div>
+          <button class="btn-download" onclick="downloadWord('main')">📥 下载论文正文 Word 模板</button>
           <div class="demo-box" style="line-height:2.2;font-size:13px;">
             <div class="demo-label">📄 论文正文排版模板（页面格式：A4，上3cm/下2.5cm/左3cm/右2.5cm）</div>
             <p style="text-align:center;font-size:16px;font-weight:700;">浙江师范大学</p>
@@ -1146,7 +1270,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
             <thead><tr><th>步骤</th><th>时间</th><th>操作</th></tr></thead>
             <tbody>
               <tr><td class="label">提交答辩稿</td><td>11月17日—12月5日</td><td>维普系统 → 过程管理 → 答辩稿</td></tr>
-              <tr><td class="label">查重检测</td><td>提交答辩稿后</td><td>复制比≤25%方可申请答辩（免费检测2次）</td></tr>
+              <tr><td class="label">查重检测</td><td>提交答辩稿后</td><td>复制比≤25%方可申请答辩（答辩稿免费检测2次）</td></tr>
               <tr><td class="label">答辩申请</td><td>12月7日—13日</td><td>维普系统 → 过程管理 → 答辩申请</td></tr>
               <tr><td class="label">正式答辩</td><td>12月14日—19日</td><td>PPT汇报 + 评委提问</td></tr>
               <tr><td class="label">答辩记录</td><td>答辩后</td><td>指导教师录入答辩记录和成绩</td></tr>
@@ -1194,15 +1318,15 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
           <div class="alert alert-info" style="margin-bottom:14px;">
             <strong>答辩前3天逐条核对：</strong>以下清单建议在答辩前一周开始准备，答辩前3天全部完成。
           </div>
-          <ul class="checklist">
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span><strong>PPT制作完成</strong>：8-12张，内容精炼，字号≥24pt</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span><strong>纸质论文打印</strong>：至少3份（评委各1份 + 自留1份）</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span><strong>答辩稿已上传维普系统</strong>：且复制比≤25%</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span><strong>预演PPT汇报</strong>：计时5-8分钟，确保不超时</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span><strong>预测评委问题</strong>：列出10个可能被问的问题，准备好回答要点</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span><strong>熟悉论文全文</strong>：特别是数据来源、分析方法、主要结论</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span><strong>提前踩点</strong>：到答辩教室测试电脑、投影、翻页笔</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span><strong>着装准备</strong>：整洁、正式（建议商务休闲或正装）</li>
+          <ul class="checklist" id="defenseCheck">
+            <li><span class="check">✓</span><strong>PPT制作完成</strong>：8-12张，内容精炼，字号≥24pt</li>
+            <li><span class="check">✓</span><strong>纸质论文打印</strong>：至少3份（评委各1份 + 自留1份）</li>
+            <li><span class="check">✓</span><strong>答辩稿已上传维普系统</strong>：且复制比≤25%</li>
+            <li><span class="check">✓</span><strong>预演PPT汇报</strong>：计时5-8分钟，确保不超时</li>
+            <li><span class="check">✓</span><strong>预测评委问题</strong>：列出10个可能被问的问题，准备好回答要点</li>
+            <li><span class="check">✓</span><strong>熟悉论文全文</strong>：特别是数据来源、分析方法、主要结论</li>
+            <li><span class="check">✓</span><strong>提前踩点</strong>：到答辩教室测试电脑、投影、翻页笔</li>
+            <li><span class="check">✓</span><strong>着装准备</strong>：整洁、正式（建议商务休闲或正装）</li>
           </ul>
         </div>
 
@@ -1321,20 +1445,27 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
             <strong>须去除的内容（10项核对清单）：</strong>
           </div>
           <ul class="checklist" id="anonymCheck">
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学生姓名、学号</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除指导教师姓名</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学校名称（含"浙江师范大学"）</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>封面：去除学院、专业信息</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>页眉：去除可能含姓名/学校的页眉</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>致谢：去除指导教师姓名、学校名称</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>正文中引用自己已发表的论文时，需匿名处理</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>用<strong>序号代替</strong>姓名：如"学生A""教师B"</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>文件属性：右键→属性→详细信息→删除作者信息</li>
-            <li onclick="this.classList.toggle('checked')"><span class="check">✓</span>上传路径：维普系统 → 过程管理 → 抽检稿</li>
+            <li><span class="check">✓</span>封面：去除学生姓名、学号</li>
+            <li><span class="check">✓</span>封面：去除指导教师姓名</li>
+            <li><span class="check">✓</span>封面：去除学校名称（含"浙江师范大学"）</li>
+            <li><span class="check">✓</span>封面：去除学院、专业信息</li>
+            <li><span class="check">✓</span>页眉：去除可能含姓名/学校的页眉</li>
+            <li><span class="check">✓</span>致谢：去除指导教师姓名、学校名称</li>
+            <li><span class="check">✓</span>正文中引用自己已发表的论文时，需匿名处理</li>
+            <li><span class="check">✓</span>用<strong>序号代替</strong>姓名：如"学生A""教师B"</li>
+            <li><span class="check">✓</span>文件属性：右键→属性→详细信息→删除作者信息</li>
+            <li><span class="check">✓</span>上传路径：维普系统 → 过程管理 → 抽检稿</li>
           </ul>
+          <h4 style="margin-top:16px;">5 步操作流程</h4>
+          <ol class="step-list">
+            <li>在最终稿上<strong>另存一份副本</strong>，改名"匿名抽检稿"</li>
+            <li>按上方 10 项清单<strong>逐项删除</strong>身份信息（姓名/学号/校名/导师名/学院专业）</li>
+            <li>全文<strong>搜索</strong>自己的姓名、学号、学校名、邮箱等关键词，确保无遗漏</li>
+            <li>右键文件 → 属性 → 详细信息 → <strong>删除作者信息</strong>；另存为新文件</li>
+            <li>上传：维普系统 → 过程管理 → <strong>抽检稿</strong></li>
+          </ol>
           <div class="alert alert-warning" style="margin-top:12px;">
-            <strong>操作建议：</strong>在最终稿上另存一份 → 逐项删除身份信息 → 全文搜索自己的姓名/学号/学校名确保无遗漏 → 保存为新文件 → 上传。
-          </div>
+            <strong>提醒：</strong>抽检稿送校外专家盲审，任何残留的个人信息都会导致匿名失败。请务必在日程里提前处理，不要拖到截止前。</div>
         </div>
 
         <div class="card">
@@ -1412,7 +1543,435 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
       </div>
       <div class="stage-nav">
         <button class="btn-prev" onclick="goStage(5)">← 上一阶段：答辩准备</button>
-        <button class="btn-prev" onclick="goStage(1)" style="background:var(--success);border-color:var(--success);color:#fff;margin-left:auto;">✅ 回到起点</button>
+        <button class="btn-next" onclick="goStage(0)">🏠 返回首页</button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TOOL 7: 时间节点与进度 -->
+    <!-- ================================================================ -->
+    <section class="stage" id="stage-7">
+      <div class="stage-hero">
+        <h2>时间节点与进度管理</h2>
+        <p>2027 届毕业论文工作进程的 12 个关键节点。系统按今天日期自动对照，提示你当前所处进度与待办。</p>
+        <div class="stage-meta">
+          <span>📅 2026年7月6日 — 2027年4月10日</span>
+          <span>⏱ 自动按今天日期计算</span>
+        </div>
+        <div class="today-badge"><span class="pulse-dot"></span><span id="tlBadge">正在计算…</span></div>
+      </div>
+      <div class="stage-body">
+
+        <div class="card">
+          <h3>可视化流程图</h3>
+          <div class="timeline" id="tlFlow"></div>
+          <div class="hl-box" style="margin-top:14px;"><strong>图例：</strong>绿色 = 已完成；琥珀色 = 当前节点（脉冲闪烁）；灰色 = 未开始。点击任意节点可跳转到下方对应明细行。</div>
+        </div>
+
+        <div class="card">
+          <h3>12 个关键节点明细</h3>
+          <table>
+            <thead><tr><th>节点</th><th>日期</th><th>阶段</th><th>任务与要求</th><th>上传位置</th><th>状态</th></tr></thead>
+            <tbody id="tlTable"></tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>进度自查询</h3>
+          <div id="tlSelfCheck"></div>
+          <table>
+            <thead><tr><th>问题</th><th>答案</th></tr></thead>
+            <tbody>
+              <tr><td class="label">目前应处于哪个进度？</td><td>看本页顶部琥珀色徽标与流程图中的琥珀色节点，即当前所处节点。</td></tr>
+              <tr><td class="label">需要填写哪些要求？</td><td>进入对应阶段页面（阶段一～六），按卡片内容逐项完成并打勾。</td></tr>
+              <tr><td class="label">如何确定日期？</td><td>以本页节点日期为准；系统时间超过节点截止日即视为逾期，须尽快补交。</td></tr>
+              <tr><td class="label">需要上传什么稿件？</td><td>看明细表"上传位置"列；全部上传入口均在维普系统「过程管理」菜单。</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <h3>逾期风险提示</h3>
+          <div class="alert alert-danger">
+            <strong>硬性截止：2027年4月10日。</strong>逾期未提交全部材料者，延迟领取毕业证和学位证。
+          </div>
+          <div class="alert alert-warning">
+            <strong>易被忽视：</strong>① 匿名抽检稿须在最终稿后提前处理（见阶段六）；② 指导日志全程记录，不要最后补；③ 答辩稿必须与检测版本完全一致。
+          </div>
+        </div>
+
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" onclick="goStage(0)">← 返回首页</button>
+        <button class="btn-next" onclick="goStage(8)">下一模块：维普操作指南 →</button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TOOL 8: 维普系统操作指南 -->
+    <!-- ================================================================ -->
+    <section class="stage" id="stage-8">
+      <div class="stage-hero">
+        <h2>维普系统操作指南</h2>
+        <p>从登录到成绩查询的 15 个子流程，逐步说明怎么上传、上传到哪、具体要求是什么。</p>
+        <div class="stage-meta">
+          <span>🌐 vpcs.cqvip.com/organ/lib/xzzjnu/</span>
+          <span>📋 学生端 · 15 个子流程</span>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <div class="card">
+          <h3>15 个子流程操作手册</h3>
+          <div class="alert alert-info">
+            <strong>通用规则：</strong>登录后所有操作都在左侧「过程管理」菜单下；每个环节提交后都要等指导教师审核，审核不通过须按意见修改后重新提交；系统到截止时间自动关闭，逾期无法补交。
+          </div>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">1</span>登录系统与角色确认<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>浏览器打开 <code>vpcs.cqvip.com/organ/lib/xzzjnu/</code>（校外先连学校 VPN）</li>
+                <li>账号为<strong>学号</strong>，初始密码见学院通知，首次登录须修改密码</li>
+                <li>确认页面右上角角色为<strong>学生</strong>；忘记密码请联系指导教师或学院教务办公室</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>全程使用校园网或 VPN；建议收藏登录页，不要使用 IE 老版本浏览器。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">2</span>申报课题<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>过程管理 → 「申报课题」→ 新建申报</li>
+                <li>填写课题名称（与最终论文题目一致）、课题类型、课题来源</li>
+                <li>上传相关附件（如有）→ 确认无误后提交</li>
+                <li>等待指导教师审核；不通过则按意见修改后重新提交</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>2026年9月8日前完成；一人一题，题目表述规范、一般不超过20字。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">3</span>任务书<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>过程管理 → 「任务书」→ 按页面要求在线填写或上传</li>
+                <li>内容须含：选题背景与意义、研究内容、基本要求、主要参考文献（8-10篇）、进度安排</li>
+                <li>提交 → 等待指导教师审核通过</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>2026年9月21日前提交并审核通过；具体写法见阶段一「任务书写作规范」。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">4</span>开题报告<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>过程管理 → 「开题报告」→ 上传开题报告文档（≥3000字）</li>
+                <li>提交 → 指导教师审核通过</li>
+                <li>审核通过后下载打印，用于开题答辩（10月14-18日）</li>
+                <li>毕业设计替代学生：在此环节提交「替代论文初稿」</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>七要素齐全；未参加开题答辩或答辩不通过者不得进入后续环节。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">5</span>指导日志（全程）<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>每次与指导教师沟通后，进入过程管理 → 「指导日志」</li>
+                <li>记录：指导时间、指导方式（面谈/线上）、主要内容、导师修改意见</li>
+                <li>提交后由指导教师确认</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>全程指导不少于5次（中期检查时至少3次）；及时填写，不要集中在最后补记。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">6</span>中期检查<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>过程管理 → 「中期检查」→ 在线填写中期检查表</li>
+                <li>填写内容：已完成工作、存在问题、后续计划</li>
+                <li>提交 → 等待指导教师审核；不通过需修改后重新提交</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>2026年11月3-7日；论文初稿已完成，指导记录≥3次。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">7</span>检测申请（免费查重）<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>过程管理 → 「检测申请/论文检测」→ 上传待检测论文</li>
+                <li>等待检测结果（一般数小时）→ 查看总复制比与 AIGC 检测值</li>
+                <li>不通过则修改后再次申请</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>免费共3次（答辩稿2次 + 终稿1次），超出自费；总复制比 ≤25%（硬性），AIGC ≤30%（参考）。勿重复提交浪费次数。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">8</span>答辩稿提交<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>过程管理 → 「答辩稿」→ 上传完整论文（封面、目录、中英文摘要、正文、参考文献、致谢齐全）</li>
+                <li>先完成查重检测，复制比≤25% 方可提交</li>
+                <li>提交 → 等待审核</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>2026年11月17日—12月5日；答辩稿必须与检测版本完全一致。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">9</span>答辩申请<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>前提：答辩稿已提交且检测通过</li>
+                <li>过程管理 → 「答辩申请」→ 填写申请信息 → 提交</li>
+                <li>关注学院通知，确认答辩时间与地点</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>2026年12月7-13日；逾期系统关闭。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">10</span>答辩记录与成绩查看<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>正式答辩（12月14-19日）：PPT汇报5-8分钟 + 评委提问</li>
+                <li>答辩记录与成绩由答辩组长/秘书录入系统</li>
+                <li>过程管理 → 「答辩记录」→ 查看答辩情况与成绩</li>
+              </ol>
+              <div class="hl-box"><strong>准备：</strong>纸质论文至少3份、提前踩点测试设备；回答三原则见阶段五。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">11</span>最终稿提交<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>根据答辩评委意见修改论文 → 指导教师确认</li>
+                <li>过程管理 → 「最终稿」→ 上传最终版论文</li>
+                <li>终稿查重（免费1次）→ 确认检测通过</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>2026年12月29日前；答辩意见须全部落实。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">12</span>抽检稿提交<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>在最终稿基础上另存副本，制作匿名版（去姓名/学号/校名/导师名，用序号代替）</li>
+                <li>全文搜索自己的姓名、学号、学校名，确保无遗漏</li>
+                <li>删除文档属性中的作者信息</li>
+                <li>过程管理 → 「抽检稿」→ 上传匿名版</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>10项匿名核对清单见阶段六；须提前处理，勿拖到截止前。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">13</span>成绩查询与材料核对<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <ol class="step-list">
+                <li>逐一核对各环节状态：申报课题/任务书/开题/中期/答辩稿/答辩申请/最终稿/抽检稿/指导日志是否全部「已审核」</li>
+                <li>成绩查询：按学院通知路径查看最终成绩与评分构成</li>
+              </ol>
+              <div class="hl-box"><strong>要求：</strong>全部材料在2027年4月10日前审核通过，否则延迟领取毕业证、学位证。</div>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">14</span>常见问题与报错处理<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <table>
+                <thead><tr><th>现象</th><th>解决办法</th></tr></thead>
+                <tbody>
+                  <tr><td class="label">登录不上/页面空白</td><td>清缓存、换 Chrome/Edge 浏览器、确认已连学校 VPN</td></tr>
+                  <tr><td class="label">文件上传失败</td><td>将文档转成 PDF 或压缩；文件名不含特殊符号；单文件大小控制在系统限制内</td></tr>
+                  <tr><td class="label">找不到某个菜单</td><td>确认角色为学生端；刷新页面；按学生端操作手册路径逐级查找</td></tr>
+                  <tr><td class="label">检测结果长时间未出</td><td>一般数小时内出结果；耐心等待，勿重复提交占用免费次数</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+
+          <details class="vip-item">
+            <summary><span class="vip-no">15</span>时间红线总览<span class="vip-chevron">›</span></summary>
+            <div class="vip-body">
+              <table>
+                <thead><tr><th>环节</th><th>截止/时段</th></tr></thead>
+                <tbody>
+                  <tr><td class="label">申报课题</td><td>2026-09-08 前</td></tr>
+                  <tr><td class="label">任务书</td><td>2026-09-21 前</td></tr>
+                  <tr><td class="label">开题报告 + 开题答辩</td><td>2026-09-22 ~ 10-18（答辩10-14~18）</td></tr>
+                  <tr><td class="label">中期检查</td><td>2026-11-03 ~ 11-07</td></tr>
+                  <tr><td class="label">答辩稿提交</td><td>2026-11-17 ~ 12-05</td></tr>
+                  <tr><td class="label">答辩申请</td><td>2026-12-07 ~ 12-13</td></tr>
+                  <tr><td class="label">正式答辩</td><td>2026-12-14 ~ 12-19</td></tr>
+                  <tr><td class="label">最终稿提交</td><td>2026-12-29 前</td></tr>
+                  <tr><td class="label">全部材料最终截止</td><td><strong>2027-04-10</strong>（逾期延迟领证）</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </details>
+
+        </div>
+
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" onclick="goStage(7)">← 上一模块：时间与进度</button>
+        <button class="btn-next" onclick="goStage(9)">下一模块：送审意见应对 →</button>
+      </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TOOL 9: 送审意见应对 -->
+    <!-- ================================================================ -->
+    <section class="stage" id="stage-9">
+      <div class="stage-hero">
+        <h2>送审意见应对</h2>
+        <p>历年论文送审专家意见归纳，按 4 大类组织。老师或专家提出修改意见时，来这里找对应的解决办法。</p>
+        <div class="stage-meta">
+          <span>📋 研究设计与论证 · 内容深度与创新 · 格式文字规范</span>
+          <span>✅ 附送审前自查清单</span>
+        </div>
+      </div>
+      <div class="stage-body">
+
+        <div class="card">
+          <h3>送审意见 4 大类应对</h3>
+          <div class="tabs-wrap">
+            <button class="tab-btn active" onclick="switchInnerTab(this,'fb-design')">研究设计与论证类</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'fb-depth')">内容深度与创新类</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'fb-format')">格式文字规范类</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'fb-selfcheck')">送审前自查清单</button>
+          </div>
+
+          <div class="tab-content-area active" id="fb-design">
+            <div class="fb-item">
+              <div class="fb-q">意见：选题过大、范围太宽，无法深入。</div>
+              <div class="fb-a"><strong>诊断：</strong>题目未聚焦到具体行业/平台/人群。<br><strong>对策：</strong>把研究范围收敛到具体对象（如"以××平台为例"），题目表述准确、一般不超过20字。</div>
+              <button class="goto-btn" onclick="gotoCard(1,'选题基本要求')">→ 查看：选题基本要求</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：提出的问题与对策不对应。</div>
+              <div class="fb-a"><strong>诊断：</strong>正文分析了A、B问题，对策却只讲C、D。<br><strong>对策：</strong>先列出问题清单并编号，对策逐条对应问题编号写作；写完对照检查。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'各章节写作指引')">→ 查看：正文写作要点</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：案例与研究对象脱节。</div>
+              <div class="fb-a"><strong>诊断：</strong>案例企业/平台与你的研究对象不同行业或不同场景。<br><strong>对策：</strong>案例选择须与研究对象同行业同场景，案例分析始终围绕研究问题展开。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'论文结构模板推荐')">→ 查看：案例型结构</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：样本量不足或代表性不足。</div>
+              <div class="fb-a"><strong>诊断：</strong>问卷份数未达到分析方法的最低要求。<br><strong>对策：</strong>相关性/回归分析≥100份，结构方程≥200份；说明样本来源与筛选标准。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'访谈与问卷设计指南')">→ 查看：问卷发放数量建议</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：把相关关系说成因果关系。</div>
+              <div class="fb-a"><strong>诊断：</strong>仅做了相关分析就直接断言"A导致B"。<br><strong>对策：</strong>相关≠因果；因果推断需回归分析/中介检验等更严格的方法支撑。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'SPSS数据分析步骤指南')">→ 查看：相关性 vs 回归</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：技术路线不清晰或与正文不符。</div>
+              <div class="fb-a"><strong>诊断：</strong>路线图与研究方法、章节安排对不上。<br><strong>对策：</strong>路线图按"选题→文献→模型→问卷→分析→结论"重绘，与正文章节一一对应。</div>
+              <button class="goto-btn" onclick="gotoCard(2,'技术路线图绘制指南')">→ 查看：技术路线图绘制</button>
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="fb-depth">
+            <div class="fb-item">
+              <div class="fb-q">意见：文献综述是"流水账"。</div>
+              <div class="fb-a"><strong>诊断：</strong>按作者逐条罗列（"×××（2020）认为…×××（2021）提出…"）。<br><strong>对策：</strong>按主题分类归纳，对不同研究做对比评述，明确指出现有研究空白。</div>
+              <button class="goto-btn" onclick="gotoCard(2,'文献综述写作指南')">→ 查看：文献综述写法</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：理论与分析"两张皮"。</div>
+              <div class="fb-a"><strong>诊断：</strong>综述里引用的理论，后文分析中完全没用。<br><strong>对策：</strong>综述中提到的每个理论都必须在分析部分真正用于解剖研究对象。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'各章节写作指引')">→ 查看：文献综述要点</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：数据堆砌、只有数字没有分析。</div>
+              <div class="fb-a"><strong>诊断：</strong>表格列了一堆数据，正文没有解读和讨论。<br><strong>对策：</strong>每个表格都有文字解读：结果是什么、为什么、与文献一致/不一致。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'SPSS数据分析步骤指南')">→ 查看：结果写作模板</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：缺少独立的"结论"章节。</div>
+              <div class="fb-a"><strong>诊断：</strong>最后一章只有对策建议，没有全文结论提炼。<br><strong>对策：</strong>结论须含四要素：主要发现、理论贡献、实践启示、研究局限与展望；回应引言提出的问题。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'各章节写作指引')">→ 查看：结论写作要点</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：创新点空泛、没有说服力。</div>
+              <div class="fb-a"><strong>诊断：</strong>只说"有创新"却说不清创新在哪里。<br><strong>对策：</strong>创新点要具体：如"首次将××理论应用于××场景""补充了××变量的作用机制"。</div>
+              <button class="goto-btn" onclick="gotoCard(2,'开题报告七要素')">→ 查看：创新点写法</button>
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="fb-format">
+            <div class="fb-item">
+              <div class="fb-q">意见：表格不是三线表（有竖线、线型粗细错误）。</div>
+              <div class="fb-a"><strong>诊断：</strong>直接用Word默认表格。<br><strong>对策：</strong>顶线1.5磅、栏目线0.75磅、底线1.5磅，取消竖线；续表标注"续表×-×"。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'图表与公式规范')">→ 查看：三线表规范</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：插图是截图，不是绘制图。</div>
+              <div class="fb-a"><strong>诊断：</strong>直接截取网页/软件画面。<br><strong>对策：</strong>所有插图必须重新绘制（Word图形/Excel/Visio/draw.io等），图序图名置于图下方居中。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'学术插图工具指南')">→ 查看：插图工具</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：数据来源标注不具体。</div>
+              <div class="fb-a"><strong>诊断：</strong>笼统写"数据来源：自行整理"。<br><strong>对策：</strong>注明具体来源与年份，如"数据来源：国家统计局网站（2020-2025年）"。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'图表与公式规范')">→ 查看：来源标注示例</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：参考文献格式错误（含DOI下划线、顺序乱）。</div>
+              <div class="fb-a"><strong>诊断：</strong>未按GB/T 7714-2015，DOI中的下划线导致格式错乱。<br><strong>对策：</strong>按GB/T 7714-2015著录；清除DOI下划线；正文引用上标[1]与文末一一对应。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'参考文献格式规范')">→ 查看：参考文献规范</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：引用的文献过老。</div>
+              <div class="fb-a"><strong>诊断：</strong>大量引用10年以上的文献。<br><strong>对策：</strong>优先引用近5年文献；经典奠基文献保留少量即可；外文文献不少于总数30%。</div>
+              <button class="goto-btn" onclick="gotoCard(2,'文献检索技巧全指南')">→ 查看：检索技巧</button>
+            </div>
+            <div class="fb-item">
+              <div class="fb-q">意见：标题层级混乱、编号不规范。</div>
+              <div class="fb-a"><strong>诊断：</strong>一、（一）1.（1）1）层级使用混乱。<br><strong>对策：</strong>标题编号最多5级：一、（一）1.（1）1）；同级标题格式统一。</div>
+              <button class="goto-btn" onclick="gotoCard(3,'格式规范速查表')">→ 查看：格式速查</button>
+            </div>
+          </div>
+
+          <div class="tab-content-area" id="fb-selfcheck">
+            <div class="alert alert-info" style="margin-bottom:14px;">
+              <strong>使用方法：</strong>提交送审前逐条核对，点击打勾（勾选状态会自动保存）。
+            </div>
+            <ul class="checklist" id="selfCheck">
+              <li><span class="check">✓</span>题目≤20字、与专业契合、无歧义</li>
+              <li><span class="check">✓</span>摘要四要素齐全（背景/目的/方法/结论）且有英文翻译</li>
+              <li><span class="check">✓</span>目录自动生成，页码正确（含图目录、表目录）</li>
+              <li><span class="check">✓</span>正文≥10,000字，章节逻辑递进</li>
+              <li><span class="check">✓</span>三线表规范（1.5/0.75/1.5磅），插图全部重绘并注明数据来源</li>
+              <li><span class="check">✓</span>参考文献≥10篇（含≥2篇外文），GB/T 7714-2015格式</li>
+              <li><span class="check">✓</span>正文引用上标[1][2]与文末文献一一对应</li>
+              <li><span class="check">✓</span>结论章节四要素齐全，回应引言问题</li>
+              <li><span class="check">✓</span>问题与对策一一对应，无内容交叉重复</li>
+              <li><span class="check">✓</span>全文通读无错别字，标点规范（正文全角、参考文献半角）</li>
+              <li><span class="check">✓</span>复制比≤25%、AIGC≤30%（如适用）</li>
+              <li><span class="check">✓</span>匿名抽检稿已按要求处理（如被抽中）</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+      <div class="stage-nav">
+        <button class="btn-prev" onclick="goStage(8)">← 上一模块：维普操作指南</button>
+        <button class="btn-next" onclick="goStage(0)">🏠 返回首页</button>
       </div>
     </section>
 
@@ -1424,13 +1983,39 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 
 <script>
 // ===== State =====
+const HOME_ID = 0;
+const STAGES = [1, 2, 3, 4, 5, 6];
+const TOOLS = [7, 8, 9];
+const STORE_KEY = 'thesis-assistant:v1';
+
 const stages = [
-  { id: 1, title: '选题与任务书', sub: ['选题要求','选题方向','任务书规范','任务书范文','申报课题操作','选题阶段避坑'] },
-  { id: 2, title: '开题报告', sub: ['开题要素','开题报告模板','开题范文','文献检索技巧','文献阅读方法','文献综述写作','技术路线图','答辩准备','维普提交'] },
-  { id: 3, title: '论文撰写', sub: ['格式速查','论文正文模板','学术插图工具','访谈与问卷设计','SPSS数据分析','摘要写作','引言写作','正文写作','结论写作','致谢写作','三线表','插图规范','公式规范','参考文献'] },
-  { id: 4, title: '中期检查', sub: ['检查内容','提交材料','常见问题','维普操作'] },
-  { id: 5, title: '答辩准备', sub: ['答辩流程','答辩稿要求','答辩准备清单','评委常见问题','PPT制作技巧','答辩表达技巧','维普操作'] },
-  { id: 6, title: '最终提交', sub: ['最终稿','匿名抽检稿','学术诚信','查重要求','降重策略','维普提交','评分标准','替代通道'] }
+  { id: 1, title: '选题与任务书', date: '2026年7月6日 — 9月21日', desc: '选题申报 + 任务书填写' },
+  { id: 2, title: '开题报告', date: '2026年9月22日 — 10月18日', desc: '开题报告 ≥3,000字 + 开题答辩' },
+  { id: 3, title: '论文撰写', date: '2026年9月 — 11月中旬', desc: '正文写作，≥10,000字' },
+  { id: 4, title: '中期检查', date: '2026年11月3日 — 7日', desc: '中期检查表提交' },
+  { id: 5, title: '答辩准备', date: '2026年11月17日 — 12月19日', desc: '答辩稿 → 答辩申请 → 正式答辩' },
+  { id: 6, title: '最终提交', date: '2026年12月22日 — 2027年4月10日', desc: '最终稿 + 匿名抽检稿 + 查重' }
+];
+
+const tools = [
+  { id: 7, title: '时间节点与进度' },
+  { id: 8, title: '维普操作指南' },
+  { id: 9, title: '送审意见应对' }
+];
+
+const TIMELINE = [
+  { n: 1,  name: '选题准备启动',     from: '2026-07-06', to: '2026-09-07', stage: 1, todo: '与指导教师商定选题方向，确定论文题目（≤20字，一人一题）。', upload: '—（前期准备）' },
+  { n: 2,  name: '替代通道申请截止', from: '2026-07-10', to: '2026-07-10', stage: 6, todo: '持学科竞赛获奖作品（核心成员）申请以作品替代论文正文。', upload: '纸质材料交综合办2-435' },
+  { n: 3,  name: '申报课题截止',     from: '2026-09-08', to: '2026-09-08', stage: 1, todo: '维普「过程管理→申报课题」填写并提交，等指导教师审核。', upload: '维普：申报课题' },
+  { n: 4,  name: '任务书提交截止',   from: '2026-09-21', to: '2026-09-21', stage: 1, todo: '按任务书规范填写并提交，审核通过。', upload: '维普：任务书' },
+  { n: 5,  name: '开题报告与开题答辩', from: '2026-09-22', to: '2026-10-18', stage: 2, todo: '撰写开题报告（≥3000字），10月14-18日参加开题答辩。', upload: '维普：开题报告' },
+  { n: 6,  name: '中期检查',         from: '2026-11-03', to: '2026-11-07', stage: 4, todo: '填写中期检查表（已完成工作/问题/后续计划），提交审核。', upload: '维普：中期检查' },
+  { n: 7,  name: '答辩稿提交',       from: '2026-11-17', to: '2026-12-05', stage: 5, todo: '上传完整答辩稿并查重，复制比≤25%。', upload: '维普：答辩稿' },
+  { n: 8,  name: '答辩申请',         from: '2026-12-07', to: '2026-12-13', stage: 5, todo: '填写答辩申请并提交（须先完成答辩稿与检测）。', upload: '维普：答辩申请' },
+  { n: 9,  name: '正式答辩',         from: '2026-12-14', to: '2026-12-19', stage: 5, todo: 'PPT汇报5-8分钟 + 评委提问；准备纸质论文至少3份。', upload: '—（现场）' },
+  { n: 10, name: '最终稿提交',       from: '2026-12-22', to: '2026-12-29', stage: 6, todo: '按答辩意见修改→导师确认→上传最终稿→终稿查重（免费1次）。', upload: '维普：最终稿' },
+  { n: 11, name: '匿名抽检稿窗口',   from: '2026-12-30', to: '2027-04-09', stage: 6, todo: '制作匿名抽检稿（去姓名/学号/校名，序号代替），全文搜索无遗漏后上传。', upload: '维普：抽检稿' },
+  { n: 12, name: '全部材料最终截止', from: '2027-04-10', to: '2027-04-10', stage: 6, todo: '核对全部材料已审核通过（含指导日志、成绩查询）。', upload: '—（核对）' }
 ];
 
 let currentStage = 1;
@@ -1438,26 +2023,78 @@ let visitedStages = new Set([1]);
 let searchHistory = [];
 let viewHistory = [];
 
+// ===== Persistence =====
+function loadStore() {
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; } catch (e) { return {}; }
+}
+let store = loadStore();
+function persist() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify(store)); } catch (e) {}
+}
+
+// ===== Card auto-numbering (fixes 序号错位) =====
+function stripNumPrefix(title) {
+  return title.replace(/^\s*\d+(\.\d+)?\.?\s*/, '').trim();
+}
+function numberCards() {
+  document.querySelectorAll('section.stage').forEach(stage => {
+    let i = 0;
+    stage.querySelectorAll(':scope > .stage-body > .card').forEach(card => {
+      const h3 = card.querySelector('h3');
+      if (!h3) return;
+      i++;
+      h3.textContent = i + '. ' + stripNumPrefix(h3.textContent);
+    });
+  });
+}
+
+// ===== Sidebar sub-items auto-generated from cards =====
+function getSubs(id) {
+  const stage = document.getElementById('stage-' + id);
+  if (!stage) return [];
+  return Array.from(stage.querySelectorAll(':scope > .stage-body > .card h3'))
+    .map(h3 => stripNumPrefix(h3.textContent));
+}
+
 // ===== Build Sidebar =====
-function buildSidebar() {
-  const nav = document.getElementById('sidebarNav');
-  nav.innerHTML = stages.map(s => `
+function stageGroupHTML(s, subs, isTool) {
+  const active = currentStage === s.id;
+  const completed = !isTool && visitedStages.has(s.id);
+  return `
     <div class="stage-group">
-      <div class="stage-header${currentStage === s.id ? ' active expanded' : ''}${visitedStages.has(s.id) ? ' completed' : ''}"
+      <div class="stage-header${active ? ' active expanded' : ''}${completed ? ' completed' : ''}"
            data-stage="${s.id}" onclick="toggleStage(${s.id})">
         <span class="stage-num">${s.id}</span>
         <span>${s.title}</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
-      <div class="stage-sub${currentStage === s.id ? ' show' : ''}" id="sub-${s.id}">
-        ${s.sub.map((sub, i) => `<div class="sub-item" data-stage="${s.id}" data-sub="${i}" onclick="scrollToSub(${s.id},${i})">${sub}</div>`).join('')}
+      <div class="stage-sub${active ? ' show' : ''}" id="sub-${s.id}">
+        ${subs.map((sub, i) => `<div class="sub-item" data-stage="${s.id}" data-sub="${i}" onclick="scrollToSub(${s.id},${i})">${sub}</div>`).join('')}
       </div>
     </div>
-  `).join('');
+  `;
+}
+
+function buildSidebar() {
+  const nav = document.getElementById('sidebarNav');
+  const stageGroups = stages.map(s => stageGroupHTML(s, getSubs(s.id), false)).join('');
+  const toolGroups = tools.map(t => stageGroupHTML(t, getSubs(t.id), true)).join('');
+  nav.innerHTML = `
+    <div class="stage-group">
+      <div class="stage-header${currentStage === HOME_ID ? ' active' : ''}" data-stage="0" onclick="toggleStage(0)">
+        <span class="stage-num">⌂</span>
+        <span>首页</span>
+      </div>
+    </div>
+    ${stageGroups}
+    <div class="sidebar-label">参考工具</div>
+    ${toolGroups}
+  `;
   updateProgress();
 }
 
 function toggleStage(id) {
+  if (id === HOME_ID) { navigateStage(0); return; }
   const sub = document.getElementById('sub-' + id);
   const header = document.querySelector(`.stage-header[data-stage="${id}"]`);
   sub.classList.toggle('show');
@@ -1467,7 +2104,12 @@ function toggleStage(id) {
 
 function navigateStage(id) {
   currentStage = id;
-  visitedStages.add(id);
+  if (STAGES.includes(id)) {
+    visitedStages.add(id);
+    store.visited = Array.from(visitedStages);
+  }
+  store.current = id;
+  persist();
   viewHistory.push(id);
   if (viewHistory.length > 50) viewHistory.shift();
 
@@ -1481,18 +2123,22 @@ function navigateStage(id) {
 
   // Update sidebar
   document.querySelectorAll('.stage-header').forEach(h => {
-    h.classList.toggle('active', parseInt(h.dataset.stage) === id);
-    if (parseInt(h.dataset.stage) === id) h.classList.add('expanded');
+    const sid = parseInt(h.dataset.stage);
+    h.classList.toggle('active', sid === id);
+    if (sid === id && sid !== HOME_ID) h.classList.add('expanded');
+    else if (sid !== id) h.classList.remove('expanded');
   });
   document.querySelectorAll('.stage-sub').forEach(s => {
     s.classList.toggle('show', s.id === 'sub-' + id);
   });
   updateProgress();
   updateBreadcrumb();
+  renderTimeline();
 }
 
 function goStage(id) {
   navigateStage(id);
+  if (id === HOME_ID) return;
   // Ensure sub is visible
   const sub = document.getElementById('sub-' + id);
   if (sub) sub.classList.add('show');
@@ -1558,8 +2204,10 @@ function showSearchResults(results, query) {
     body.innerHTML = '<div class="no-results" id="searchHint">输入关键词开始搜索…</div>';
     return;
   }
-
-  body.innerHTML = results.map(r => `
+  const backBtn = viewHistory.length > 0
+    ? '<div class="search-back-btn" onclick="goBackFromSearch()">← 返回上次浏览位置</div>'
+    : '';
+  body.innerHTML = backBtn + results.map(r => `
     <div class="search-result-item" data-stage="${r.stage}" data-text="${encodeURIComponent(r.text.substring(0, 200))}">
       <div class="rt">${highlightText(r.title || r.stageTitle, query)}</div>
       <div class="rc">${highlightText(r.text.substring(0, 150) + '…', query)}</div>
@@ -1596,23 +2244,32 @@ function goBackFromSearch() {
 // ===== Breadcrumb =====
 function updateBreadcrumb() {
   const bc = document.getElementById('breadcrumb');
-  const stage = stages.find(s => s.id === currentStage);
-  bc.innerHTML = `<span onclick="goStage(1)">🏠 首页</span><span class="sep">›</span><span style="color:var(--text);font-weight:600;">${stage.title}</span>`;
+  let name = '首页';
+  if (STAGES.includes(currentStage)) name = stages.find(s => s.id === currentStage).title;
+  else if (TOOLS.includes(currentStage)) name = tools.find(t => t.id === currentStage).title;
+  bc.innerHTML = `<span onclick="goStage(0)">🏠 首页</span><span class="sep">›</span><span style="color:var(--text);font-weight:600;">${name}</span>`;
 }
 
 // ===== Progress =====
 function updateProgress() {
-  const pct = Math.round((visitedStages.size / 6) * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  document.getElementById('progressPct').textContent = `第 ${currentStage}/6 阶段`;
+  const stagePct = Math.round((STAGES.filter(s => visitedStages.has(s)).length / STAGES.length) * 100);
+  document.getElementById('progressFill').style.width = stagePct + '%';
+  const total = document.querySelectorAll('.checklist li').length;
+  const done = document.querySelectorAll('.checklist li.checked').length;
+  let where = '首页';
+  if (STAGES.includes(currentStage)) where = `第 ${currentStage}/${STAGES.length} 阶段`;
+  else if (TOOLS.includes(currentStage)) where = '参考模块';
+  document.getElementById('progressPct').textContent = `${where} · 清单 ${done}/${total}`;
 }
 
 // ===== Reset =====
 function resetAll() {
   visitedStages = new Set([1]);
   viewHistory = [];
-  navigateStage(1);
+  store = { checks: {}, visited: [1], current: 1 };
+  persist();
   document.querySelectorAll('.checklist li.checked').forEach(li => li.classList.remove('checked'));
+  navigateStage(1);
 }
 
 // ===== Scroll to sub =====
@@ -1621,13 +2278,283 @@ function scrollToSub(stageId, subIdx) {
   setTimeout(() => {
     const stage = document.getElementById('stage-' + stageId);
     if (!stage) return;
-    const cards = stage.querySelectorAll('.card');
+    const cards = stage.querySelectorAll(':scope > .stage-body > .card');
     if (cards[subIdx]) {
       cards[subIdx].scrollIntoView({ behavior: 'smooth', block: 'start' });
-      cards[subIdx].style.boxShadow = '0 0 0 3px rgba(26,86,219,.25), 0 4px 16px rgba(0,0,0,.08)';
-      setTimeout(() => { cards[subIdx].style.boxShadow = ''; }, 2500);
+      flashCard(cards[subIdx]);
     }
   }, 200);
+}
+
+// ===== Goto card (for 送审意见应对 links) =====
+function gotoCard(stageId, titleKeyword) {
+  navigateStage(stageId);
+  setTimeout(() => {
+    const stage = document.getElementById('stage-' + stageId);
+    if (!stage) return;
+    const cards = stage.querySelectorAll(':scope > .stage-body > .card');
+    let found = null;
+    cards.forEach(c => {
+      const t = (c.querySelector('h3') || {}).textContent || '';
+      if (!found && t.includes(titleKeyword)) found = c;
+    });
+    if (!found) found = cards[0];
+    if (found) {
+      found.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      flashCard(found);
+    }
+  }, 200);
+}
+
+function flashCard(card) {
+  card.style.boxShadow = '0 0 0 3px rgba(26,86,219,.25), 0 4px 16px rgba(0,0,0,.08)';
+  setTimeout(() => { card.style.boxShadow = ''; }, 2500);
+}
+
+// ===== Timeline =====
+function parseDate(s) { const p = s.split('-').map(Number); return new Date(p[0], p[1] - 1, p[2]); }
+function fmtDateCN(s) { const p = s.split('-'); return p[0] + '年' + (+p[1]) + '月' + (+p[2]) + '日'; }
+function todayStart() { const t = new Date(); return new Date(t.getFullYear(), t.getMonth(), t.getDate()); }
+function nodeStatus(node, today) {
+  const f = parseDate(node.from), t2 = parseDate(node.to);
+  if (today < f) return 'upcoming';
+  if (today > t2) return 'done';
+  return 'current';
+}
+function currentNode(today) {
+  let cur = null, next = null;
+  TIMELINE.forEach(node => {
+    const st = nodeStatus(node, today);
+    if (st === 'current' && !cur) cur = node;
+    if (st === 'upcoming' && !next) next = node;
+  });
+  return { cur, next };
+}
+function daysUntil(dateStr, today) { return Math.round((parseDate(dateStr) - today) / 86400000); }
+
+function flashRow(n) {
+  const row = document.getElementById('tl-row-' + n);
+  if (!row) return;
+  row.style.transition = 'background .3s';
+  row.style.background = '#fef3c7';
+  setTimeout(() => { row.style.background = ''; }, 2000);
+}
+
+function renderTimeline() {
+  const today = todayStart();
+  const { cur, next } = currentNode(today);
+
+  const flow = document.getElementById('tlFlow');
+  if (flow) {
+    flow.innerHTML = TIMELINE.map(node => {
+      const st = nodeStatus(node, today);
+      const range = node.from === node.to ? node.from.slice(5) : node.from.slice(5) + '~' + node.to.slice(5);
+      return `<div class="tl-node ${st}" onclick="flashRow(${node.n})" title="${node.name}：${fmtDateCN(node.from)}${node.from !== node.to ? ' ~ ' + fmtDateCN(node.to) : ''}">
+        <div class="tl-dot">${node.n}</div>
+        <div class="tl-name">${node.name}</div>
+        <div class="tl-date">${range}</div>
+      </div>`;
+    }).join('');
+  }
+
+  const tbody = document.getElementById('tlTable');
+  if (tbody) {
+    tbody.innerHTML = TIMELINE.map(node => {
+      const st = nodeStatus(node, today);
+      const stTxt = st === 'current'
+        ? '<span style="color:#d97706;font-weight:700;">● 当前</span>'
+        : (st === 'done' ? '<span style="color:#059669;">✓ 已完成</span>' : '<span style="color:#94a3b8;">○ 未开始</span>');
+      const range = node.from === node.to ? fmtDateCN(node.from) : `${fmtDateCN(node.from)} — ${fmtDateCN(node.to)}`;
+      const stageInfo = stages.find(s => s.id === node.stage);
+      return `<tr id="tl-row-${node.n}" class="${st === 'current' ? 'row-current' : ''}">
+        <td class="label">${node.n}. ${node.name}</td>
+        <td>${range}</td>
+        <td>阶段${node.stage} ${stageInfo ? stageInfo.title : ''}</td>
+        <td>${node.todo}</td>
+        <td>${node.upload}</td>
+        <td>${stTxt}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  let badgeText;
+  if (cur) {
+    badgeText = `当前节点 ${cur.n}/${TIMELINE.length}：${cur.name}（${fmtDateCN(cur.from)}${cur.from !== cur.to ? ' ~ ' + fmtDateCN(cur.to) : ''}）`;
+  } else if (next) {
+    badgeText = `当前处于间歇期：下一节点「${next.name}」于 ${fmtDateCN(next.from)} 开始`;
+  } else {
+    badgeText = '全部节点已完成，请核对全部材料';
+  }
+  const tb = document.getElementById('tlBadge'); if (tb) tb.textContent = badgeText;
+  const htb = document.getElementById('homeTodayText'); if (htb) htb.textContent = badgeText;
+
+  const ht = document.getElementById('homeToday');
+  if (ht) {
+    if (cur) {
+      const remain = daysUntil(cur.to, today);
+      ht.innerHTML = `<div class="alert alert-warning"><strong>节点 ${cur.n}「${cur.name}」进行中</strong>${remain <= 0 ? '（今天截止！）' : `，距截止还有 <strong>${remain}</strong> 天`}<br>${cur.todo}<br>上传位置：${cur.upload}</div>` +
+        (next ? `<div class="hl-box"><strong>下一步：</strong>节点 ${next.n}「${next.name}」将于 ${fmtDateCN(next.from)} 开始 — ${next.todo}</div>` : '');
+    } else if (next) {
+      ht.innerHTML = `<div class="hl-box"><strong>下一节点：</strong>「${next.name}」将于 ${fmtDateCN(next.from)} 开始（还有 ${daysUntil(next.from, today)} 天）<br>${next.todo}</div>`;
+    } else {
+      ht.innerHTML = '<div class="alert alert-success"><strong>🎉 全部节点已完成！</strong>请核对全部材料均已审核通过。</div>';
+    }
+  }
+
+  const hp = document.getElementById('homeProgress');
+  if (hp) {
+    const stagePct = Math.round((STAGES.filter(s => visitedStages.has(s)).length / STAGES.length) * 100);
+    const total = document.querySelectorAll('.checklist li').length;
+    const done = document.querySelectorAll('.checklist li.checked').length;
+    hp.innerHTML = `<div class="progress-track" style="margin:8px 0 4px;"><div class="progress-fill" style="width:${stagePct}%"></div></div>
+      <p style="font-size:13px;color:var(--text-secondary);">已访问 ${visitedStages.size}/${STAGES.length} 个阶段 · 清单完成 ${done}/${total} 项 · 阶段进度 ${stagePct}%</p>
+      <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">阶段进度与清单勾选会自动保存在本浏览器中（刷新不丢失），可随时在侧边栏底部「↻ 重置」。</p>`;
+  }
+
+  const htl = document.getElementById('homeTimeline');
+  if (htl) {
+    htl.innerHTML = `<table><thead><tr><th>节点</th><th>日期</th><th>状态</th></tr></thead><tbody>` +
+      TIMELINE.map(node => {
+        const st = nodeStatus(node, today);
+        const stTxt = st === 'current' ? '<span style="color:#d97706;font-weight:700;">● 当前</span>' : (st === 'done' ? '<span style="color:#059669;">✓</span>' : '');
+        const range = node.from === node.to ? node.from.slice(0, 7) : node.from.slice(0, 7) + ' ~ ' + node.to.slice(0, 7);
+        return `<tr><td class="label">${node.n}. ${node.name}</td><td>${range}</td><td>${stTxt}</td></tr>`;
+      }).join('') + `</tbody></table>`;
+  }
+
+  const hs = document.getElementById('homeStages');
+  if (hs) {
+    hs.innerHTML = stages.map(s => `
+      <div class="home-card" onclick="goStage(${s.id})" role="button" tabindex="0">
+        <h4>阶段${s.id} · ${s.title}</h4>
+        <p>${s.desc}</p>
+        <span class="hc-date">${s.date}</span>
+      </div>`).join('');
+  }
+}
+
+// ===== Checklists (persistent) =====
+function initChecklists() {
+  document.querySelectorAll('.checklist').forEach((cl, ci) => {
+    const clId = cl.id || ('cl-' + ci);
+    cl.querySelectorAll('li').forEach((li, i) => {
+      const key = clId + '-' + i;
+      li.dataset.check = key;
+      if (store.checks && store.checks[key]) li.classList.add('checked');
+    });
+  });
+  document.addEventListener('click', (e) => {
+    const li = e.target.closest('.checklist li');
+    if (!li) return;
+    li.classList.toggle('checked');
+    const key = li.dataset.check;
+    if (key) {
+      store.checks = store.checks || {};
+      store.checks[key] = li.classList.contains('checked');
+      persist();
+      updateProgress();
+      renderTimeline();
+    }
+  });
+}
+
+// ===== Word template download =====
+function downloadWord(kind) {
+  let title, body;
+  if (kind === 'kt') { title = '开题报告模板-浙江师范大学'; body = ktDocHTML(); }
+  else { title = '论文正文模板-浙江师范大学'; body = mainDocHTML(); }
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${title}</title></head><body>${body}</body></html>`;
+  const blob = new Blob(['\ufeff' + html], { type: 'application/msword' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = title + '.doc';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+
+function ktDocHTML() {
+  return `
+  <style>
+    body{font-family:"宋体",SimSun,serif;font-size:12pt;line-height:1.8}
+    h2{text-align:center;font-size:16pt;margin:4px 0}
+    h3{font-size:14pt;margin:14px 0 6px}
+    table.info{width:100%;border-collapse:collapse}
+    table.info td{border:1px solid #000;padding:6px 10px}
+    .note{color:#888;font-size:10.5pt}
+  </style>
+  <h2>浙江师范大学</h2>
+  <h2>本科毕业设计（论文）开题报告</h2>
+  <table class="info">
+    <tr><td style="width:100px;">论文题目</td><td>（填写最终论文题目）</td></tr>
+    <tr><td>学生姓名</td><td></td></tr>
+    <tr><td>学号</td><td></td></tr>
+    <tr><td>专业</td><td>电子商务 / 国际经济与贸易</td></tr>
+    <tr><td>指导教师</td><td></td></tr>
+  </table>
+  <h3>一、选题背景与研究意义</h3>
+  <p><strong>（一）选题背景</strong></p>
+  <p class="note">（写：行业/政策背景，用数据说明问题重要性，2-3段，约400字）</p>
+  <p><strong>（二）研究意义</strong></p>
+  <p>1. 理论意义：（约200字）</p>
+  <p>2. 实践意义：（约200字）</p>
+  <h3>二、国内外研究现状</h3>
+  <p><strong>（一）国外研究现状</strong>（按主题分组，每组2-3篇文献，约600字）</p>
+  <p><strong>（二）国内研究现状</strong>（同上，约600字）</p>
+  <p><strong>（三）研究述评</strong>（总结现有研究不足，引出本研究切入点，约300字）</p>
+  <h3>三、研究内容与方法</h3>
+  <p><strong>（一）研究内容</strong>（3-5个具体问题）</p>
+  <p><strong>（二）研究方法</strong>（问卷法/案例法/实证分析法，说明数据来源）</p>
+  <p><strong>（三）技术路线图</strong>（插入自绘图，不可截图）</p>
+  <h3>四、创新点与难点</h3>
+  <p>（创新点1-2个；可能遇到的困难及解决办法）</p>
+  <h3>五、研究进度安排</h3>
+  <p class="note">（按学校进程表填写，格式：2026.XX—2026.XX：完成××）</p>
+  <h3>六、参考文献（≥10篇，含≥2篇外文，GB/T 7714-2015格式）</h3>`;
+}
+
+function mainDocHTML() {
+  return `
+  <style>
+    body{font-family:"宋体",SimSun,serif;font-size:12pt;line-height:1.8}
+    h2{text-align:center;font-size:16pt;margin:8px 0}
+    h3{font-size:14pt;margin:14px 0 6px}
+    .note{color:#888;font-size:10.5pt}
+    table.tbl{border-collapse:collapse;width:100%;border-top:1.5pt solid #000;border-bottom:1.5pt solid #000;font-size:10.5pt}
+    table.tbl th,table.tbl td{padding:4px 8px;text-align:center}
+    table.tbl thead{border-bottom:.75pt solid #000}
+  </style>
+  <h2>浙江师范大学本科毕业设计（论文）</h2>
+  <p style="text-align:center;font-size:14pt;"><strong>题目：××××××研究</strong></p>
+  <p style="text-align:center;">学生姓名：×××（学号：××××××）　指导教师：×××　专业：电子商务</p>
+  <p style="text-align:center;font-weight:700;">摘　要</p>
+  <p class="note">（中文摘要300字以内：研究背景、目的、方法、主要结论；小四号宋体，1.5倍行距，首行缩进2字符）</p>
+  <p><strong>关键词：</strong>×××；×××；×××</p>
+  <p style="text-align:center;font-weight:700;">Abstract</p>
+  <p class="note">(英文摘要：与中文摘要对应，Times New Roman 12pt)</p>
+  <p><strong>Keywords:</strong> ×××; ×××; ×××</p>
+  <p style="text-align:center;font-weight:700;">目　录</p>
+  <p class="note">（Word：引用→目录→自动生成；图目录、表目录同理；页码自动更新）</p>
+  <h2>一、引言</h2>
+  <h3>（一）研究背景与意义</h3>
+  <p class="note">（正文：小四号宋体，Times New Roman 12pt，1.5倍行距，首行缩进2字符，段前段后0行）</p>
+  <h3>（二）研究问题</h3>
+  <h2>二、文献综述与理论基础</h2>
+  <h2>三、研究设计</h2>
+  <h2>四、数据分析与假设检验</h2>
+  <p style="text-align:center;font-weight:700;">表4-1 样本人口学特征统计（N=××）</p>
+  <table class="tbl">
+    <thead><tr><th>变量</th><th>类别</th><th>频数</th><th>百分比（%）</th></tr></thead>
+    <tbody><tr><td>性别</td><td>男/女</td><td></td><td></td></tr></tbody>
+  </table>
+  <p style="font-size:10.5pt;">数据来源：根据问卷调研结果整理</p>
+  <h2>五、结论与建议</h2>
+  <p class="note">（结论四要素：主要发现、理论贡献、实践启示、研究局限与展望）</p>
+  <h2>参考文献</h2>
+  <p class="note">（GB/T 7714-2015，≥10篇，含≥2篇外文；正文上标[1]与文末一一对应）</p>
+  <h2>致谢</h2>
+  <p class="note">（200-400字，真诚得体）</p>`;
 }
 
 // ===== Inner tabs =====
@@ -1642,9 +2569,18 @@ function switchInnerTab(btn, tabId) {
 
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
+  // Restore persisted state
+  if (Array.isArray(store.visited)) visitedStages = new Set(store.visited.filter(v => STAGES.includes(v)));
+  if (typeof store.current === 'number') {
+    if (STAGES.includes(store.current) || TOOLS.includes(store.current) || store.current === HOME_ID) currentStage = store.current;
+  }
+
+  numberCards();
   buildSidebar();
   buildSearchIndex();
+  initChecklists();
   updateBreadcrumb();
+  navigateStage(currentStage);
 
   // Search overlay input
   const overlayInput = document.getElementById('searchOverlayInput');
