@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>毕业论文小助手 — 浙江师范大学行知学院商学院</title>
 <style>
 /* ===== Reset & Variables ===== */
@@ -692,6 +692,17 @@ body.sb-collapsed .browser-overlay{left:0}
   .browser-title{max-width:110px}
   .browser-url{display:none}
 }
+
+/* ===== 跨终端/浏览器兼容（手机 iOS/Android、iPad、Win/mac、各浏览器） ===== */
+@supports (height:100dvh){.sidebar,.main{height:100dvh}}
+.gate-input{font-size:16px}
+input,textarea,select{max-width:100%}
+button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.content-scroll,.sidebar-nav,.search-panel-body,.timeline,.tl-strip,.node-grid{-webkit-overflow-scrolling:touch}
+.header{-webkit-backdrop-filter:blur(10px)}
+.mobile-toggle{bottom:calc(20px + env(safe-area-inset-bottom));right:calc(20px + env(safe-area-inset-right))}
+.stage-hero{padding-bottom:calc(var(--hp, 32px) + env(safe-area-inset-bottom))}
+@media(max-width:768px){.stage-hero{padding-bottom:calc(24px + env(safe-area-inset-bottom))}}
 </style>
 </head>
 <body>
@@ -1123,7 +1134,7 @@ body.sb-collapsed .browser-overlay{left:0}
             </tbody>
           </table>
           <div class="alert alert-info" style="margin-top:12px;">
-            <strong>字数要求：</strong>开题报告正文<strong>不少于3,000字</strong>。文献综述是最重要、占比最大的部分，需充分展开。
+            <strong>字数要求：</strong>开题报告正文<strong>不少于3,000字</strong>，其中文献综述是最重要、占比最大的部分，须充分展开。
           </div>
         </div>
 
@@ -1585,7 +1596,7 @@ body.sb-collapsed .browser-overlay{left:0}
               <div class="tbl-src">数据来源：根据问卷调研结果整理</div>
             </div>
             <div class="alert alert-danger" style="margin-top:12px;">
-              <strong>送审高频问题：</strong>图表须注明<strong>具体数据来源</strong>，不能笼统写"数据来源：自行整理"。表格行间距须统一、美观。
+              <strong>送审高频问题：</strong>图表须注明<strong>具体数据来源</strong>（不能笼统写"数据来源：自行整理"）。表格行间距须统一、美观。
             </div>
           </div>
 
@@ -3120,7 +3131,27 @@ function downloadWord(kind) {
   let title, body;
   if (kind === 'kt') { title = '开题报告模板-浙江师范大学'; body = ktDocHTML(); }
   else { title = '论文正文模板-浙江师范大学'; body = mainDocHTML(); }
-  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>${title}</title></head><body>${body}</body></html>`;
+  const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head>
+<meta charset="UTF-8">
+<title>${title}</title>
+<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View><w:Zoom>100</w:Zoom><w:DoNotOptimizeForBrowser/></w:WordDocument></xml><![endif]-->
+<style>
+  body{font-family:"宋体",SimSun,serif;font-size:12pt;line-height:1.8}
+  h2{text-align:center;font-size:16pt;margin:4px 0}
+  h3{font-size:14pt;margin:14px 0 6px}
+  table{width:100%;border-collapse:collapse}
+  table.info td{border:1px solid #000;padding:6px 10px}
+  table.tbl{border-top:1.5pt solid #000;border-bottom:1.5pt solid #000;font-size:10.5pt}
+  table.tbl th,table.tbl td{padding:4px 8px;text-align:center}
+  table.tbl thead{border-bottom:.75pt solid #000}
+  .note{color:#888;font-size:10.5pt}
+</style>
+</head>
+<body>
+${body}
+</body>
+</html>`;
   const blob = new Blob(['\ufeff' + html], { type: 'application/msword' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
@@ -3133,14 +3164,6 @@ function downloadWord(kind) {
 
 function ktDocHTML() {
   return `
-  <style>
-    body{font-family:"宋体",SimSun,serif;font-size:12pt;line-height:1.8}
-    h2{text-align:center;font-size:16pt;margin:4px 0}
-    h3{font-size:14pt;margin:14px 0 6px}
-    table.info{width:100%;border-collapse:collapse}
-    table.info td{border:1px solid #000;padding:6px 10px}
-    .note{color:#888;font-size:10.5pt}
-  </style>
   <h2>浙江师范大学</h2>
   <h2>本科毕业设计（论文）开题报告</h2>
   <table class="info">
@@ -3173,15 +3196,6 @@ function ktDocHTML() {
 
 function mainDocHTML() {
   return `
-  <style>
-    body{font-family:"宋体",SimSun,serif;font-size:12pt;line-height:1.8}
-    h2{text-align:center;font-size:16pt;margin:8px 0}
-    h3{font-size:14pt;margin:14px 0 6px}
-    .note{color:#888;font-size:10.5pt}
-    table.tbl{border-collapse:collapse;width:100%;border-top:1.5pt solid #000;border-bottom:1.5pt solid #000;font-size:10.5pt}
-    table.tbl th,table.tbl td{padding:4px 8px;text-align:center}
-    table.tbl thead{border-bottom:.75pt solid #000}
-  </style>
   <h2>浙江师范大学本科毕业设计（论文）</h2>
   <p style="text-align:center;font-size:14pt;"><strong>题目：××××××研究</strong></p>
   <p style="text-align:center;">学生姓名：×××（学号：××××××）　指导教师：×××　专业：电子商务</p>
