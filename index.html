@@ -160,6 +160,23 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .home-card p{font-size:12px;color:var(--text-secondary);line-height:1.6}
 .home-card .hc-date{font-size:11px;color:var(--primary);margin-top:6px;display:inline-block;background:var(--primary-light);padding:2px 8px;border-radius:10px}
 
+/* ===== Home sliding timeline ===== */
+.tl-strip{display:flex;gap:12px;overflow-x:auto;padding:12px 4px 16px;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.tl-strip::-webkit-scrollbar{height:6px}
+.tl-card{min-width:176px;flex-shrink:0;background:#fff;border:1px solid var(--border);border-left:4px solid var(--border);border-radius:var(--radius);padding:14px 16px;scroll-snap-align:start;cursor:pointer;transition:all .15s;box-shadow:var(--shadow)}
+.tl-card:hover{border-color:var(--primary);transform:translateY(-2px)}
+.tl-card.done{border-left-color:var(--success)}
+.tl-card.current{border-left-color:var(--warning);background:#fff7ed}
+.tl-card.upcoming{border-left-color:var(--border)}
+.tl-card .tl-card-no{font-size:10px;color:var(--text-muted);margin-bottom:6px;letter-spacing:.5px}
+.tl-card .tl-card-name{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.4}
+.tl-card .tl-card-date{font-size:11px;color:var(--text-secondary);margin-bottom:6px}
+.tl-card .tl-card-status{font-size:11px;font-weight:600}
+.tl-card .tl-card-status.current{color:#d97706}
+.tl-card .tl-card-status.done{color:var(--success)}
+.tl-card .tl-card-status.upcoming{color:var(--text-muted)}
+.tl-hint{font-size:12px;color:var(--text-muted);margin-top:2px}
+
 /* ===== Today badge ===== */
 .today-badge{display:inline-flex;align-items:center;gap:6px;margin-top:12px;padding:8px 16px;background:linear-gradient(135deg,#fff7ed,#fff1f2);border:1.5px solid #f59e0b;border-radius:20px;font-size:13px;font-weight:700;color:#92400e;max-width:100%}
 .today-badge .pulse-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b;animation:pulseDot 1.6s ease-in-out infinite;flex-shrink:0}
@@ -316,6 +333,12 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
         </div>
 
         <div class="card">
+          <h3>时间节点可视化（左右滑动）</h3>
+          <div class="tl-strip" id="homeTimelineStrip"></div>
+          <div class="tl-hint">👆 左右滑动查看全部 12 个关键节点 · 绿=已完成 琥珀=当前 灰=未开始 · 点击节点查看该节点要求</div>
+        </div>
+
+        <div class="card">
           <h3>你的论文进度</h3>
           <div id="homeProgress"></div>
         </div>
@@ -323,11 +346,6 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
         <div class="card">
           <h3>6 大阶段速览</h3>
           <div class="home-grid" id="homeStages"></div>
-        </div>
-
-        <div class="card">
-          <h3>关键时间节点（12 个）</h3>
-          <div id="homeTimeline"></div>
         </div>
 
         <div class="card">
@@ -2411,15 +2429,24 @@ function renderTimeline() {
       <p style="font-size:12px;color:var(--text-muted);margin-top:6px;">阶段进度与清单勾选会自动保存在本浏览器中（刷新不丢失），可随时在侧边栏底部「↻ 重置」。</p>`;
   }
 
-  const htl = document.getElementById('homeTimeline');
-  if (htl) {
-    htl.innerHTML = `<table><thead><tr><th>节点</th><th>日期</th><th>状态</th></tr></thead><tbody>` +
-      TIMELINE.map(node => {
-        const st = nodeStatus(node, today);
-        const stTxt = st === 'current' ? '<span style="color:#d97706;font-weight:700;">● 当前</span>' : (st === 'done' ? '<span style="color:#059669;">✓</span>' : '');
-        const range = node.from === node.to ? node.from.slice(0, 7) : node.from.slice(0, 7) + ' ~ ' + node.to.slice(0, 7);
-        return `<tr><td class="label">${node.n}. ${node.name}</td><td>${range}</td><td>${stTxt}</td></tr>`;
-      }).join('') + `</tbody></table>`;
+  const strip = document.getElementById('homeTimelineStrip');
+  if (strip) {
+    strip.innerHTML = TIMELINE.map(node => {
+      const st = nodeStatus(node, today);
+      const stLabel = st === 'current' ? '● 当前' : (st === 'done' ? '✓ 已完成' : '○ 未开始');
+      const range = node.from === node.to ? fmtDateCN(node.from) : `${node.from} ~ ${node.to}`;
+      return `<div class="tl-card ${st}" onclick="navigateStage(7)" title="节点${node.n} ${node.name}（${range}）：${node.todo}">
+        <div class="tl-card-no">节点 ${node.n}/12</div>
+        <div class="tl-card-name">${node.name}</div>
+        <div class="tl-card-date">${range}</div>
+        <div class="tl-card-status ${st}">${stLabel}</div>
+      </div>`;
+    }).join('');
+    // Auto-scroll so the current node is centered in the strip
+    const curCard = strip.querySelector('.tl-card.current');
+    if (curCard) {
+      strip.scrollLeft = Math.max(0, curCard.offsetLeft - strip.clientWidth / 2 + curCard.clientWidth / 2);
+    }
   }
 
   const hs = document.getElementById('homeStages');
