@@ -540,6 +540,63 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
 .sidebar-footer .site-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#1a56db,#7c3aed);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;font-family:var(--font-sans);box-shadow:0 0 0 0 rgba(124,58,237,.5);animation:sitePulse 2s ease-in-out infinite;transition:transform .15s}
 .sidebar-footer .site-btn:hover{transform:translateY(-1px);filter:brightness(1.1)}
 @keyframes sitePulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.45)}50%{box-shadow:0 0 0 10px rgba(124,58,237,0)}}
+
+/* ===== v8: 全局阅读体验升级（字号加大·排版对齐·防孤字） ===== */
+section.stage .stage-body{font-size:15px}
+.stage-body p,.stage-body li,.stage-body td,.stage-body .alert,.stage-body .hl-box,.stage-body .fb-a,.stage-body .demo-box p,.stage-body .struct-card p{text-wrap:pretty}
+.stage-body ul,.stage-body ol{font-size:15px;color:var(--text);line-height:1.9;padding-left:22px}
+.stage-body table{font-size:14px}
+.stage-body table th{font-size:13.5px;padding:11px 14px}
+.stage-body table td{padding:11px 14px}
+.stage-body .alert{font-size:14px;line-height:1.8}
+.stage-body .card h3{font-size:17px}
+.stage-body .card h4{font-size:15px;margin:14px 0 8px}
+.stage-body .step-list li,.stage-body .checklist li{font-size:15px}
+.stage-body .hl-box{font-size:14px;line-height:1.85}
+.stage-body .demo-box{font-size:13.5px}
+.stage-body .struct-card{font-size:14px}
+.stage-hero h2{font-size:28px}
+.stage-hero p{font-size:15px;line-height:1.7;color:var(--text-secondary)}
+.stage-hero .stage-meta{font-size:13px}
+.tab-btn{font-size:14px}
+.stage-nav button{font-size:15px}
+.search-btn{font-size:14px}
+.search-hint{font-size:13px}
+.breadcrumb{font-size:13px}
+.goto-btn{font-size:13px}
+.btn-download{font-size:14px}
+#stage-0 .stage-body .card h3{font-size:17px}
+#stage-0 .stage-hero h2{font-size:24px}
+#stage-0 .today-badge{font-size:13px}
+.tl-mini-dot{width:22px;height:22px;font-size:11px}
+.tl-mini-name{font-size:10px}
+.tl-mini-legend{font-size:12px}
+.tl-mini-hint{font-size:12px}
+.dash-today-main{font-size:16px}
+.dash-today-label{font-size:12px}
+.dash-today-sub,.dash-today-todo,.dash-next{font-size:13px}
+.dash-prog-line{font-size:13px}
+.dash-stage-name{font-size:13px}
+.dash-item{font-size:14px}
+.dash-search-btn{font-size:16px}
+.dash-search-tip{font-size:13px}
+[id^="topic-"] .t-title{font-size:15px}
+[id^="topic-"] .tb{font-size:11.5px;line-height:1.7}
+[id^="topic-"] .tb::before{font-size:10.5px}
+@media(min-width:901px){
+  [id^="topic-"] li{grid-template-columns:minmax(0,1fr) 104px 150px 180px}
+}
+.sub-item{font-size:13px}
+.link-item{font-size:12.5px}
+.sidebar-label{font-size:11.5px}
+.sidebar-label.cat{font-size:11.5px}
+.sidebar-brand h1{font-size:17px}
+.fb-item .fb-q{font-size:14.5px}
+.fb-item .fb-a{font-size:14px;line-height:1.85}
+.vip-item summary{font-size:14.5px}
+.gate-text{font-size:15px;line-height:2}
+.gate-quote{font-size:16px}
+.gate-card h2{font-size:20px}
 </style>
 </head>
 <body>
