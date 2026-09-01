@@ -447,7 +447,11 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
   50%{box-shadow:0 0 0 10px rgba(245,158,11,0);background:var(--pulse-bg,linear-gradient(135deg,#fef3c7,#ffedd5))}
 }
 [data-theme="dark"] .header-contact{--pulse-bg:linear-gradient(135deg,#3a2a10,#3a1d24);background:linear-gradient(135deg,#3a2a10,#3a1d24);color:#fbbf24;border-color:#a16207}
-@media(max-width:1300px){.search-hint{display:none}}
+@media(max-width:1400px){.search-hint{display:none}}
+@media(max-width:1250px){.header-contact{display:none}}
+.search-btn{flex-shrink:0;white-space:nowrap}
+.search-btn svg,.search-btn kbd{flex-shrink:0}
+.breadcrumb{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tab-btn{white-space:nowrap;font-size:12.5px}
 .tb{display:inline-block;white-space:nowrap;margin-left:5px;font-size:10.5px;line-height:1.6;vertical-align:middle}
 .tb-w{color:#d97706;background:#fffbeb;border:1px solid #fde68a;border-radius:4px;padding:0 4px}
