@@ -379,6 +379,65 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
   .tl-node .tl-dot{margin:0;flex-shrink:0}
   .search-hint{display:none}
 }
+
+/* ===== Sidebar resize / collapse ===== */
+.sidebar-resizer{position:absolute;top:0;right:-4px;width:8px;height:100%;cursor:col-resize;z-index:120;background:transparent;transition:background .2s}
+.sidebar-resizer:hover,.sidebar-resizer:active{background:rgba(26,86,219,.28)}
+.sidebar-resizer::after{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:2px;height:36px;border-radius:2px;background:var(--border)}
+.sidebar-resizer:hover::after{background:var(--primary)}
+body.sb-collapsed .sidebar{transform:translateX(-100%)}
+body.sb-collapsed .main{margin-left:0}
+body.sb-collapsed .sidebar-resizer{display:none}
+.sb-toggle{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
+.sb-toggle:hover{border-color:var(--primary);background:var(--primary-light)}
+.sb-expand{position:fixed;left:0;top:50%;transform:translateY(-50%);width:26px;height:58px;border-radius:0 10px 10px 0;border:1px solid var(--border);border-left:none;background:var(--card-bg);color:var(--primary);cursor:pointer;font-size:14px;z-index:150;display:none;box-shadow:var(--shadow)}
+body.sb-collapsed .sb-expand{display:flex;align-items:center;justify-content:center}
+.sb-expand:hover{background:var(--primary-light)}
+
+/* ===== Stage content tiled kanban (sections 1-9) ===== */
+@media(min-width:901px){
+  section.stage:not(#stage-0) > .stage-body{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:1440px}
+  section.stage:not(#stage-0) > .stage-body > .card{margin-bottom:0;padding:20px 24px}
+  section.stage:not(#stage-0) .stage-hero{padding:22px 32px}
+  .stage-nav{max-width:1440px}
+}
+
+/* ===== Lively: accents & colors ===== */
+body{background:linear-gradient(180deg,var(--bg) 0%,#eaf1ff 100%)}
+section.stage .card{border-top:3px solid transparent}
+section.stage .card:nth-child(6n+1){border-top-color:#3b82f6}
+section.stage .card:nth-child(6n+2){border-top-color:#14b8a6}
+section.stage .card:nth-child(6n+3){border-top-color:#8b5cf6}
+section.stage .card:nth-child(6n+4){border-top-color:#f59e0b}
+section.stage .card:nth-child(6n+5){border-top-color:#f43f5e}
+section.stage .card:nth-child(6n+6){border-top-color:#10b981}
+.brand-logo{background:linear-gradient(90deg,#1a56db,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+.btn-next{background:linear-gradient(135deg,#1a56db,#0e3fa9)}
+#stage-0 .stage-hero{background:linear-gradient(120deg,#eef2ff,#e0e7ff,#fdf4ff);background-size:200% 200%;animation:heroShift 9s ease infinite}
+@keyframes heroShift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.stage-header[data-stage="1"] .stage-num{background:#dbeafe;color:#1d4ed8}
+.stage-header[data-stage="2"] .stage-num{background:#ccfbf1;color:#0f766e}
+.stage-header[data-stage="3"] .stage-num{background:#ede9fe;color:#6d28d9}
+.stage-header[data-stage="4"] .stage-num{background:#fef3c7;color:#b45309}
+.stage-header[data-stage="5"] .stage-num{background:#ffe4e6;color:#be123c}
+.stage-header[data-stage="6"] .stage-num{background:#d1fae5;color:#047857}
+.stage-header[data-stage="7"] .stage-num,.stage-header[data-stage="8"] .stage-num,.stage-header[data-stage="9"] .stage-num{background:#e0f2fe;color:#0369a1}
+.stage-header.active .stage-num{background:var(--primary);color:#fff}
+.stage-header.completed .stage-num{background:var(--success);color:#fff}
+[data-theme="dark"] body{background:linear-gradient(180deg,#0f172a 0%,#0d1626 100%)}
+[data-theme="dark"] .stage-header[data-stage="1"] .stage-num{background:#1e3a8a;color:#bfdbfe}
+[data-theme="dark"] .stage-header[data-stage="2"] .stage-num{background:#134e4a;color:#99f6e4}
+[data-theme="dark"] .stage-header[data-stage="3"] .stage-num{background:#4c1d95;color:#ddd6fe}
+[data-theme="dark"] .stage-header[data-stage="4"] .stage-num{background:#78350f;color:#fde68a}
+[data-theme="dark"] .stage-header[data-stage="5"] .stage-num{background:#881337;color:#fecdd3}
+[data-theme="dark"] .stage-header[data-stage="6"] .stage-num{background:#064e3b;color:#a7f3d0}
+[data-theme="dark"] .stage-header[data-stage="7"] .stage-num,[data-theme="dark"] .stage-header[data-stage="8"] .stage-num,[data-theme="dark"] .stage-header[data-stage="9"] .stage-num{background:#0c4a6e;color:#bae6fd}
+[data-theme="dark"] #stage-0 .stage-hero{background:linear-gradient(120deg,#14213d,#101b33,#1a1330);animation:none}
+[data-theme="dark"] .sb-expand{background:var(--card-bg)}
+@media(max-width:768px){
+  .sidebar-resizer{display:none}
+  .sb-expand{display:none!important}
+}
 </style>
 </head>
 <body>
@@ -455,11 +514,13 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
     <button onclick="openSearch()" title="搜索 Ctrl+K">🔍 搜索</button>
     <button onclick="resetAll()" title="重置进度">↻ 重置</button>
   </div>
+  <div class="sidebar-resizer" id="sidebarResizer" title="← 拖动可调整宽度 →"></div>
 </aside>
 
 <!-- ===== Main Content ===== -->
 <main class="main">
   <header class="header">
+    <button class="sb-toggle" id="sbToggle" onclick="toggleSidebar()" title="隐藏/展开侧边栏">☰</button>
     <div class="breadcrumb" id="breadcrumb"></div>
     <div class="header-contact" title="欢迎找我交流">
       💬 欢迎找我交流：E-mail:23774201@qq.com · VX:leoyoyofiona（暗号：我喜欢的运动是什么？）
@@ -493,28 +554,28 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
       <div class="stage-body">
 
         <div class="card">
-          <h3>今天该做什么</h3>
+          <h3>🎯 今天该做什么</h3>
           <div id="homeToday"></div>
         </div>
 
         <div class="card">
-          <h3>你的论文进度</h3>
+          <h3>📊 你的论文进度</h3>
           <div id="homeProgress"></div>
         </div>
 
         <div class="card">
-          <h3>时间节点可视化</h3>
+          <h3>🗓 时间节点可视化</h3>
           <div id="homeMiniTimeline"></div>
           <div class="tl-mini-hint">点击节点可查看该节点详情（12 个关键节点）</div>
         </div>
 
         <div class="card">
-          <h3>6 大阶段速览</h3>
+          <h3>🧭 6 大阶段速览</h3>
           <div class="dash-stage-grid" id="homeStages"></div>
         </div>
 
         <div class="card">
-          <h3>常用工具直达</h3>
+          <h3>🧰 常用工具直达</h3>
           <div class="dash-tool-grid">
             <div class="dash-item" onclick="navigateStage(7)" role="button" tabindex="0">🗓 时间与进度</div>
             <div class="dash-item" onclick="navigateStage(8)" role="button" tabindex="0">🖥 维普操作</div>
@@ -524,7 +585,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
         </div>
 
         <div class="card">
-          <h3>有困难，请检索</h3>
+          <h3>🔍 有困难，请检索</h3>
           <button class="dash-search-btn" onclick="openSearch()">🔍 搜索全部内容 <kbd>Ctrl+K</kbd></button>
           <p class="dash-search-tip">任何疑问（三线表怎么做、参考文献格式、匿名抽检稿…）都能搜到答案，并直接定位到对应内容卡片。</p>
         </div>
@@ -565,38 +626,135 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 
         <!-- 选题类型推荐 -->
         <div class="card">
-          <h3>2. 电商/国贸专业选题方向推荐</h3>
+          <h3>2. 电商/国贸专业选题方向推荐（2026 热门扩充版）</h3>
+          <div class="alert alert-info" style="margin-bottom:14px;">
+            <strong>选题原则：</strong>优先选<strong>当下最流行、最前沿、最急需、最有研究价值、也最适合本科生</strong>完成的方向——数据好获取（问卷/公开数据）、方法可落地（SPSS/案例）、文献充足。下列为参考题目，可组合、可细化（如"以××平台/××企业为例"）。
+          </div>
           <div class="tabs-wrap">
             <button class="tab-btn active" onclick="switchInnerTab(this,'topic-ecommerce')">电子商务方向</button>
             <button class="tab-btn" onclick="switchInnerTab(this,'topic-trade')">国际贸易方向</button>
             <button class="tab-btn" onclick="switchInnerTab(this,'topic-cross')">交叉方向</button>
+            <button class="tab-btn" onclick="switchInnerTab(this,'topic-ai')">AI 与商业前沿</button>
           </div>
           <div class="tab-content-area active" id="topic-ecommerce">
+            <h4>🔥 热门赛道（直播/兴趣电商）</h4>
             <ul>
               <li>直播电商对消费者购买意愿的影响研究——以××平台为例</li>
+              <li>直播电商中KOL特征对消费者信任与购买行为的影响研究</li>
+              <li>兴趣电商（抖音/快手）内容推荐机制对消费决策的影响研究</li>
+              <li>直播电商消费者冲动购买行为及其影响因素研究</li>
+              <li>虚拟数字人直播对消费者态度与购买意愿的影响研究</li>
+              <li>短视频营销对Z世代消费行为的影响研究</li>
               <li>社交电商用户粘性影响因素实证分析</li>
-              <li>跨境电商平台服务质量与顾客满意度关系研究</li>
-              <li>短视频营销对Z世代消费行为的影响</li>
+            </ul>
+            <h4>🚚 新业态（即时零售/社区电商/下沉市场）</h4>
+            <ul>
+              <li>即时零售（30分钟达）消费者使用意愿研究——以××平台为例</li>
+              <li>社区团购履约效率与用户留存关系研究</li>
+              <li>农村电商物流"最后一公里"问题与对策研究</li>
+              <li>农村电商直播助农模式的成效与优化研究</li>
+              <li>下沉市场（县域）电商消费特征与营销策略研究</li>
+              <li>银发经济背景下老年群体电商消费行为研究</li>
+            </ul>
+            <h4>⚖️ 平台与信任（合规/治理）</h4>
+            <ul>
+              <li>电商平台"仅退款"政策对商家经营绩效的影响研究</li>
+              <li>"大数据杀熟"与个性化定价对消费者信任的影响研究</li>
+              <li>消费者数据隐私保护与个性化推荐的平衡研究</li>
+              <li>电商平台服务质量与顾客忠诚度关系研究</li>
+              <li>电商价格战、补贴大战对消费者与商家的影响研究</li>
+              <li>电商退货率影响因素与逆向物流优化研究</li>
+            </ul>
+            <h4>🌱 品牌与绿色（可持续消费）</h4>
+            <ul>
               <li>私域流量运营策略研究——以××品牌为例</li>
-              <li>农村电商物流最后一公里问题与对策</li>
-              <li>AIGC在电商内容营销中的应用与挑战</li>
+              <li>跨境电商独立站（DTC品牌）出海策略研究</li>
+              <li>全渠道零售（线上+线下融合）消费体验研究</li>
+              <li>绿色消费：电商平台碳足迹/绿色标签对购买意愿的影响研究</li>
+              <li>电商平台绿色包装对消费者态度的影响研究</li>
+              <li>大学生可持续消费行为及其影响因素研究</li>
             </ul>
           </div>
           <div class="tab-content-area" id="topic-trade">
+            <h4>🌏 区域与规则（RCEP/自贸区）</h4>
             <ul>
               <li>RCEP框架下中国对东盟农产品出口贸易效应分析</li>
-              <li>数字贸易规则对中国服务贸易竞争力的影响</li>
-              <li>一带一路背景下中国制造业出口技术复杂度研究</li>
-              <li>碳关税对中国出口贸易的影响及应对策略</li>
+              <li>RCEP原产地规则利用率对企业出口的影响研究</li>
+              <li>自贸试验区制度创新与贸易便利化效应评估</li>
+              <li>海南自贸港政策对跨境贸易与投资的带动效应研究</li>
+              <li>CPTPP规则对中国对外贸易的潜在影响研究</li>
+            </ul>
+            <h4>📈 新业态与新动能（跨境电商出海）</h4>
+            <ul>
               <li>跨境电商综试区政策效应评估</li>
+              <li>TikTok Shop/SHEIN/Temu 跨境电商平台出海模式比较研究</li>
+              <li>外贸新业态（市场采购/海外仓/保税维修）发展研究</li>
+              <li>海外仓模式对中国跨境电商出口效率的影响研究</li>
+              <li>中国新能源汽车出口竞争力与海外市场进入策略研究</li>
+              <li>中欧班列开行对中国对欧出口贸易的影响研究</li>
+            </ul>
+            <h4>🛡️ 风险与韧性（壁垒/汇率/合规）</h4>
+            <ul>
+              <li>碳关税（CBAM）对中国出口贸易的影响及应对策略</li>
+              <li>绿色贸易壁垒（ESG/碳足迹）对中国出口企业的影响研究</li>
+              <li>汇率波动与中小外贸企业汇率风险管理研究</li>
+              <li>出口信用保险对中小外贸企业融资与出口的作用研究</li>
+              <li>供应链韧性与中国制造业全球价值链地位研究</li>
+              <li>地缘政治风险对中国外贸的影响及应对研究</li>
+              <li>跨境电商知识产权侵权风险与合规管理研究</li>
+            </ul>
+            <h4>🤝 服务与数字贸易</h4>
+            <ul>
+              <li>数字贸易规则对中国服务贸易竞争力的影响研究</li>
+              <li>服务贸易数字化（数字服务出口）发展研究</li>
+              <li>一带一路背景下中国制造业出口技术复杂度研究</li>
+              <li>外贸企业数字化转型路径与经营绩效研究</li>
+              <li>数字人民币跨境支付试点进展与应用前景研究</li>
             </ul>
           </div>
           <div class="tab-content-area" id="topic-cross">
+            <h4>🔗 跨境电商 + 数字技术</h4>
             <ul>
               <li>数字贸易壁垒对跨境电商发展的影响研究</li>
               <li>跨境直播电商的供应链协同机制研究</li>
-              <li>海外仓模式对中国跨境电商出口效率的影响</li>
-              <li>数字人民币在跨境支付中的应用前景与挑战</li>
+              <li>海外仓模式下跨境电商物流成本与时效优化研究</li>
+              <li>跨境电商物流时效与消费者满意度的关系研究</li>
+              <li>数据跨境流动规则对中国数字贸易的影响研究</li>
+              <li>跨境电商平台数据合规（个人信息保护法）研究</li>
+            </ul>
+            <h4>🌐 出海与本土化</h4>
+            <ul>
+              <li>直播电商出海（跨境直播）的文化适配研究</li>
+              <li>AIGC内容出海与跨境电商本土化营销研究</li>
+              <li>跨境电商平台与海外社交媒体协同营销研究</li>
+              <li>独立站+海外仓模式下品牌出海路径研究</li>
+            </ul>
+            <h4>💡 平台生态与新模式</h4>
+            <ul>
+              <li>数字人民币在跨境支付中的应用前景与挑战研究</li>
+              <li>平台经济反垄断与中小商家生存生态研究</li>
+              <li>数字服务税对跨国数字平台的影响研究</li>
+              <li>二手电商/循环经济跨境流通模式研究</li>
+              <li>跨境电商与ESG/绿色供应链协同研究</li>
+            </ul>
+          </div>
+          <div class="tab-content-area" id="topic-ai">
+            <div class="alert alert-warning" style="margin-bottom:12px;">
+              <strong>2026 最热门方向：</strong>AI 与商业的结合正成为电商/国贸领域最具研究价值的新选题，文献更新快、学生兴趣高、问卷和案例都好落地。
+            </div>
+            <ul>
+              <li>AIGC工具（DeepSeek/ChatGPT等）辅助电商运营的效率与效果研究</li>
+              <li>大模型智能客服机器人对消费者服务体验的影响研究</li>
+              <li>AI个性化推荐与消费者"信息茧房"效应研究</li>
+              <li>AI智能选品/定价对跨境电商经营绩效的影响研究</li>
+              <li>数字员工（RPA/AI代理）在电商企业中的应用与效果研究</li>
+              <li>AI生成内容广告的合规风险与消费者信任研究</li>
+              <li>消费者对AI客服与人工客服的态度差异研究</li>
+              <li>生成式AI对中小外贸企业数字化转型的赋能研究</li>
+              <li>智能仓储与无人配送在即时零售中的应用研究</li>
+              <li>元宇宙/虚拟店铺购物体验与消费者行为研究</li>
+              <li>AI辅助决策对大学生网购理性程度的影响研究</li>
+              <li>数字人直播与真人直播的带货效果对比研究</li>
             </ul>
           </div>
         </div>
@@ -2156,6 +2314,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 </main>
 
 <!-- Mobile toggle -->
+<button class="sb-expand" id="sbExpand" onclick="toggleSidebar()" title="展开侧边栏">»</button>
 <button class="mobile-toggle" id="mobileToggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
 
 <script>
@@ -2813,10 +2972,63 @@ function initTheme() {
   } catch (e) {}
 }
 
+// ===== Sidebar resize & collapse =====
+const SB_STORE = 'thesis-sidebar';
+function sbLoad() { try { return JSON.parse(localStorage.getItem(SB_STORE)) || {}; } catch (e) { return {}; } }
+let sbState = sbLoad();
+function sbPersist() { try { localStorage.setItem(SB_STORE, JSON.stringify(sbState)); } catch (e) {} }
+
+function initSidebarUI() {
+  const root = document.documentElement;
+  if (sbState.width) root.style.setProperty('--sidebar-width', sbState.width + 'px');
+  if (sbState.collapsed) document.body.classList.add('sb-collapsed');
+
+  const rz = document.getElementById('sidebarResizer');
+  if (rz) {
+    let dragging = false, startX = 0, startW = 280;
+    const onMove = (e) => {
+      if (!dragging) return;
+      const w = Math.min(560, Math.max(200, startW + (e.clientX - startX)));
+      root.style.setProperty('--sidebar-width', w + 'px');
+      sbState.width = Math.round(w);
+    };
+    const end = () => {
+      if (!dragging) return;
+      dragging = false;
+      sbPersist();
+      document.body.style.userSelect = '';
+      document.body.style.cursor = '';
+    };
+    rz.addEventListener('pointerdown', (e) => {
+      dragging = true;
+      startX = e.clientX;
+      startW = parseFloat(getComputedStyle(root).getPropertyValue('--sidebar-width')) || 280;
+      document.body.style.userSelect = 'none';
+      document.body.style.cursor = 'col-resize';
+      try { rz.setPointerCapture(e.pointerId); } catch (err) {}
+      e.preventDefault();
+    });
+    window.addEventListener('pointermove', onMove);
+    window.addEventListener('pointerup', end);
+    window.addEventListener('pointercancel', end);
+  }
+}
+
+function toggleSidebar() {
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.toggle('open');
+    return;
+  }
+  const collapsed = document.body.classList.toggle('sb-collapsed');
+  sbState.collapsed = collapsed;
+  sbPersist();
+}
+
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initGate();
+  initSidebarUI();
 
   // Restore persisted state
   if (Array.isArray(store.visited)) visitedStages = new Set(store.visited.filter(v => STAGES.includes(v)));
