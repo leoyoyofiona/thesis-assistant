@@ -36,6 +36,31 @@ export default {
       }
     }
 
+    // ===== 天气（按访问者 IP 定位，Open-Meteo 免费天气） =====
+    if (url.pathname === '/weather') {
+      try {
+        const cf = request.cf || {};
+        const lat = cf.latitude, lon = cf.longitude;
+        let temp = null, code = null, wind = null;
+        if (lat && lon) {
+          const wr = await fetch(
+            `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`,
+            { headers: { 'User-Agent': 'thesis-assistant/1.0' } }
+          );
+          if (wr.ok) {
+            const wd = await wr.json();
+            const cw = wd.current_weather || {};
+            if (typeof cw.temperature === 'number') temp = Math.round(cw.temperature);
+            if (typeof cw.weathercode === 'number') code = cw.weathercode;
+            if (typeof cw.windspeed === 'number') wind = Math.round(cw.windspeed);
+          }
+        }
+        return json({ city: cf.city || '未知城市', temp, code, wind });
+      } catch (e) {
+        return json({ city: '未知城市', temp: null, code: null, wind: null });
+      }
+    }
+
     // ===== 访问计数 =====
     const pv = parseInt((await env.KV.get('pv')) || '0', 10) + 1;
     await env.KV.put('pv', String(pv));

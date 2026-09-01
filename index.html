@@ -731,6 +731,35 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .suggest-submit:disabled{opacity:.6;cursor:not-allowed}
 .suggest-msg{font-size:13px;font-weight:600}
 @media(max-width:1100px){.suggest-btn{top:102px;right:12px;padding:5px 12px;font-size:12px}}
+
+/* ===== 状态栏（时间/天气/倒计时） ===== */
+.status-bar{position:fixed;left:var(--sidebar-width);right:0;bottom:0;height:34px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);font-size:12px;color:var(--text-secondary);z-index:400;white-space:nowrap;overflow:hidden}
+body.sb-collapsed .status-bar{left:0}
+.status-bar .sb-sep{color:var(--border);flex-shrink:0}
+#sbClock{flex-shrink:0;font-weight:600;color:var(--text)}
+#sbWeather{flex-shrink:0}
+#sbCountdown{margin-left:auto;color:var(--primary);font-weight:600;overflow:hidden;text-overflow:ellipsis;flex-shrink:1}
+[data-theme="dark"] .status-bar{background:rgba(15,23,42,.88);color:#a9b8cf}
+
+/* ===== 天气背景动效 ===== */
+.weather-canvas{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.45}
+.lightning-flash{position:fixed;inset:0;pointer-events:none;background:#fff;opacity:0;z-index:1;display:none}
+.fog-layer{position:fixed;inset:0;pointer-events:none;z-index:1;display:none;background:linear-gradient(180deg,rgba(190,205,220,.16),rgba(215,226,238,.26))}
+
+/* ===== 健康提醒 ===== */
+.toast{position:fixed;left:50%;bottom:60px;transform:translateX(-50%) translateY(20px);background:var(--card-bg);color:var(--text);border:1px solid var(--primary);border-left:4px solid var(--primary);border-radius:10px;padding:12px 20px;font-size:14px;box-shadow:var(--shadow-lg);opacity:0;transition:all .4s;z-index:900;max-width:88vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.rest-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:1060;display:none;align-items:center;justify-content:center;padding:20px}
+.rest-overlay.show{display:flex}
+.rest-card{background:var(--card-bg);border-radius:16px;box-shadow:var(--shadow-lg);max-width:420px;width:100%;padding:26px;text-align:center}
+.rest-card h3{font-size:18px;color:var(--text);margin-bottom:10px}
+.rest-card p{font-size:14px;color:var(--text-secondary);line-height:1.9;margin-bottom:18px}
+.rest-card button{padding:10px 30px;border:none;border-radius:22px;background:linear-gradient(135deg,#1a56db,#0e3fa9);color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:var(--font-sans)}
+@media(max-width:768px){
+  .status-bar{left:0;height:40px;padding:0 8px;gap:6px;font-size:11px}
+  .status-bar .sb-sep{display:none}
+  .toast{bottom:56px}
+}
 </style>
 </head>
 <body>
@@ -2607,6 +2636,30 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
   </div>
 </div>
 
+<!-- ===== 天气背景动效 ===== -->
+<canvas id="weatherCanvas" class="weather-canvas"></canvas>
+<div id="lightningFlash" class="lightning-flash"></div>
+<div id="fogLayer" class="fog-layer"></div>
+
+<!-- ===== 状态栏（时间/天气/倒计时） ===== -->
+<div class="status-bar" id="statusBar">
+  <span id="sbClock">📅 --</span>
+  <span class="sb-sep">|</span>
+  <span id="sbWeather">🌤 加载天气…</span>
+  <span class="sb-sep">|</span>
+  <span id="sbCountdown">⏳ 计算倒计时…</span>
+</div>
+
+<!-- ===== 健康提醒 ===== -->
+<div class="toast" id="toast"></div>
+<div class="rest-overlay" id="restOverlay">
+  <div class="rest-card">
+    <h3>⏰ 该休息啦</h3>
+    <p>你已经连续使用超过 1 小时了，注意保护眼睛和颈椎，起来走动一下、看看远处、喝口水，再继续吧！</p>
+    <button onclick="closeRest()">好的，我休息一下</button>
+  </div>
+</div>
+
 <!-- Mobile toggle -->
 <button class="sb-expand" id="sbExpand" onclick="toggleSidebar()" title="展开侧边栏">»</button>
 <button class="mobile-toggle" id="mobileToggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
@@ -3457,12 +3510,163 @@ async function submitSuggest() {
   btn.disabled = false; btn.textContent = '提交建议';
 }
 
+// ===== 时间 / 倒计时 / 天气 / 健康提醒 =====
+const DEADLINES = [
+  { name: '开题答辩', date: '2026-10-14' },
+  { name: '正式答辩', date: '2026-12-14' },
+  { name: '最终稿', date: '2026-12-29' }
+];
+const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+const pad2 = (n) => (n < 10 ? '0' + n : '' + n);
+
+function initClock() {
+  const el = document.getElementById('sbClock');
+  if (!el) return;
+  const tick = () => {
+    const d = new Date();
+    el.textContent = `📅 ${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 星期${WEEK[d.getDay()]} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
+  };
+  tick();
+  setInterval(tick, 30000);
+}
+
+function initCountdown() {
+  const el = document.getElementById('sbCountdown');
+  if (!el) return;
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const parts = DEADLINES.map((dl) => {
+    const t = new Date(dl.date + 'T00:00:00');
+    const days = Math.round((t - today) / 86400000);
+    return days > 0 ? `${dl.name}还有${days}天` : (days === 0 ? `${dl.name}就是今天` : `${dl.name}已过${-days}天`);
+  });
+  el.textContent = '⏳ ' + parts.join(' · ');
+}
+
+function weatherType(code) {
+  if (code == null) return { t: 'none', label: '天气未知' };
+  if (code === 0) return { t: 'none', label: '晴' };
+  if (code === 1) return { t: 'none', label: '多云' };
+  if (code <= 3) return { t: 'none', label: '阴' };
+  if (code <= 48) return { t: 'fog', label: '雾' };
+  if (code <= 55) return { t: 'rain', label: '小雨' };
+  if (code <= 57) return { t: 'rain', label: '毛毛雨' };
+  if (code === 61) return { t: 'rain', label: '小雨' };
+  if (code === 63) return { t: 'rain', label: '中雨' };
+  if (code === 65) return { t: 'rain', label: '大雨' };
+  if (code <= 67) return { t: 'rain', label: '雨' };
+  if (code <= 77) return { t: 'snow', label: '雪' };
+  if (code <= 82) return { t: 'rain', label: '阵雨' };
+  if (code <= 86) return { t: 'snow', label: '阵雪' };
+  if (code <= 99) return { t: 'thunder', label: '雷雨' };
+  return { t: 'none', label: '未知' };
+}
+const WE_EMOJI = { none: '🌤', fog: '🌫', rain: '🌧', snow: '❄️', thunder: '⛈', wind: '🌬' };
+
+let weatherRAF = null;
+function startWeatherEffect(type, code) {
+  if (weatherRAF) { cancelAnimationFrame(weatherRAF); weatherRAF = null; }
+  const canvas = document.getElementById('weatherCanvas');
+  const fog = document.getElementById('fogLayer');
+  const flash = document.getElementById('lightningFlash');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  fog.style.display = 'none';
+  flash.style.display = 'none';
+  if (type === 'none') return;
+  if (type === 'fog') { fog.style.display = 'block'; return; }
+
+  const heavy = (code === 65 || code === 63 || code >= 95);
+  const density = type === 'snow' ? 90 : (type === 'thunder' ? 170 : (heavy ? 160 : 105));
+  const P = [];
+  for (let i = 0; i < density; i++) {
+    P.push({
+      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+      sp: (type === 'snow' ? 0.7 + Math.random() * 1.6 : 4 + Math.random() * 7) * (heavy ? 1.6 : 1),
+      len: (type === 'rain' || type === 'thunder') ? 9 + Math.random() * 10 : 5 + Math.random() * 5,
+      r: type === 'snow' ? 1.5 + Math.random() * 2.5 : 1,
+      sw: Math.random() * Math.PI * 2
+    });
+  }
+  let lastFlash = 0;
+  const frame = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const p of P) {
+      if (type === 'snow') { p.y += p.sp; p.x += Math.sin(p.sw) * 0.6; }
+      else if (type === 'rain' || type === 'thunder') { p.y += p.sp; p.x += (heavy ? 1.5 : 0.5); }
+      if (p.y > canvas.height) { p.y = -20; p.x = Math.random() * canvas.width; }
+      ctx.beginPath();
+      if (type === 'snow') { ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.fill(); }
+      else { ctx.strokeStyle = 'rgba(120,165,220,.4)'; ctx.lineWidth = p.r; ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.sp * 0.5, p.y - p.len); ctx.stroke(); }
+    }
+    if (type === 'thunder') {
+      const now = Date.now();
+      if (now - lastFlash > 3200 + Math.random() * 4200) {
+        lastFlash = now;
+        flash.style.display = 'block';
+        const seq = [0.55, 0.1, 0.5, 0.1];
+        let i = 0;
+        const step = () => { flash.style.opacity = seq[i++] || '0'; if (i < seq.length) setTimeout(step, 90); else { flash.style.opacity = '0'; flash.style.display = 'none'; } };
+        step();
+      }
+    }
+    weatherRAF = requestAnimationFrame(frame);
+  };
+  frame();
+}
+
+async function loadWeather() {
+  const el = document.getElementById('sbWeather');
+  try {
+    const r = await fetch(WORKER_URL + '/weather', { cache: 'no-store' });
+    const d = await r.json();
+    const wt = weatherType(d.code);
+    if (d.wind >= 25 && (wt.t === 'none')) wt.t = 'wind';
+    let label = `${WE_EMOJI[wt.t] || '🌤'} ${d.city || ''}`;
+    if (typeof d.temp === 'number') label += ` ${d.temp}℃`;
+    label += ` ${wt.label}`;
+    if (el) el.textContent = label;
+    startWeatherEffect(wt.t, d.code);
+  } catch (e) { if (el) el.textContent = '🌤 天气加载失败'; }
+}
+
+let activeMs = 0, lastTick = Date.now(), w30 = false, w60 = false, nightWarned = false;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove('show'), 9000);
+}
+function closeRest() {
+  document.getElementById('restOverlay').classList.remove('show');
+  activeMs = 0; w30 = false; w60 = false;
+}
+function startHealthTimer() {
+  setInterval(() => {
+    const now = Date.now();
+    if (!document.hidden) {
+      activeMs += now - lastTick;
+      if (!w30 && activeMs >= 30 * 60 * 1000) { w30 = true; showToast('💪 已连续使用 30 分钟，起来活动一下、喝口水再继续吧！'); }
+      if (!w60 && activeMs >= 60 * 60 * 1000) { w60 = true; document.getElementById('restOverlay').classList.add('show'); }
+      const h = new Date().getHours();
+      if (!nightWarned && (h >= 22 || h < 6) && activeMs >= 5 * 60 * 1000) { nightWarned = true; showToast('🌙 夜深了，身体是革命的本钱，好好睡觉，明天再奋斗！'); }
+    }
+    lastTick = now;
+  }, 30000);
+}
+
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initGate();
   initSidebarUI();
   loadCounter();
+  initClock();
+  initCountdown();
+  loadWeather();
+  startHealthTimer();
 
   // Restore persisted state
   if (Array.isArray(store.visited)) visitedStages = new Set(store.visited.filter(v => STAGES.includes(v)));
