@@ -430,7 +430,7 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
 .stage-header[data-stage="9"] .stage-num{background:#d946ef}
 .stage-header .stage-num{color:#fff}
 .stage-header.active .stage-num{color:#fff;transform:scale(1.15);box-shadow:0 0 0 3px rgba(255,255,255,.4)}
-.stage-header.completed .stage-num{background:var(--success);color:#fff;transform:none;box-shadow:none}
+.stage-header.completed .st-title::after{content:' ✓';color:var(--success);font-weight:700}
 [data-theme="dark"] body{background:linear-gradient(180deg,#0f172a 0%,#0d1626 100%)}
 [data-theme="dark"] #stage-0 .stage-hero{background:linear-gradient(120deg,#14213d,#101b33,#1a1330);animation:none}
 [data-theme="dark"] .sb-expand{background:var(--card-bg)}
@@ -2592,7 +2592,7 @@ function stageGroupHTML(s, subs, isTool) {
       <div class="stage-header${active ? ' active expanded' : ''}${completed ? ' completed' : ''}"
            data-stage="${s.id}" onclick="toggleStage(${s.id})">
         <span class="stage-num">${s.id}</span>
-        <span>${s.title}</span>
+        <span class="st-title">${s.title}</span>
         <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
       </div>
       <div class="stage-sub${active ? ' show' : ''}" id="sub-${s.id}">
@@ -2659,6 +2659,7 @@ function navigateStage(id) {
   document.querySelectorAll('.stage-header').forEach(h => {
     const sid = parseInt(h.dataset.stage);
     h.classList.toggle('active', sid === id);
+    if (sid !== HOME_ID) h.classList.toggle('completed', STAGES.includes(sid) && visitedStages.has(sid));
     if (sid === id && sid !== HOME_ID) h.classList.add('expanded');
     else if (sid !== id) h.classList.remove('expanded');
   });
