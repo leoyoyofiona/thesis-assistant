@@ -714,8 +714,8 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .stage-body .demo-box p{text-wrap:pretty;word-break:break-word}
 
 /* ===== 建议栏 ===== */
-.suggest-btn{position:absolute;top:14px;right:24px;z-index:3;padding:6px 16px;border:none;border-radius:18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 10px rgba(139,92,246,.35);transition:all .2s}
-.suggest-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(139,92,246,.45)}
+.suggest-btn{position:fixed;top:76px;right:16px;z-index:500;padding:7px 16px;border:none;border-radius:18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(139,92,246,.4);transition:all .2s}
+.suggest-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(139,92,246,.5)}
 .suggest-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1050;display:none;align-items:center;justify-content:center;padding:20px}
 .suggest-overlay.show{display:flex}
 .suggest-card{background:var(--card-bg);border-radius:16px;box-shadow:var(--shadow-lg);max-width:520px;width:100%;padding:24px 24px 20px}
@@ -730,7 +730,7 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .suggest-submit:hover{filter:brightness(1.1)}
 .suggest-submit:disabled{opacity:.6;cursor:not-allowed}
 .suggest-msg{font-size:13px;font-weight:600}
-@media(max-width:768px){.suggest-btn{position:static;display:inline-block;margin-bottom:8px}}
+@media(max-width:1100px){.suggest-btn{top:102px;right:12px;padding:5px 12px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -837,7 +837,6 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
     <!-- ================================================================ -->
     <section class="stage active" id="stage-0">
       <div class="stage-hero">
-        <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
         <div class="home-float" style="top:28px;right:70px;font-size:34px">📚</div>
         <div class="home-float" style="top:74px;right:190px;font-size:26px;animation-delay:1.2s">🎓</div>
         <div class="home-float" style="bottom:22px;left:90px;font-size:30px;animation-delay:.6s">💪</div>
@@ -2591,6 +2590,9 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
   <div class="browser-tip">💡 部分网站禁止内嵌显示（页面可能为空白），如遇空白请点击右上角「🔗 在新窗口打开」。</div>
   <iframe class="browser-frame" id="browserFrame" src="about:blank" title="站内浏览"></iframe>
 </div>
+
+<!-- ===== 建议栏按钮（全局固定右上角） ===== -->
+<button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
 
 <!-- ===== 建议栏弹窗 ===== -->
 <div class="suggest-overlay" id="suggestOverlay">
