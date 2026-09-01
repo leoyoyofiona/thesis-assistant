@@ -36,13 +36,13 @@ export default {
       }
     }
 
-    // ===== 随机歌曲（公有领域曲库，KV 存 1799 首） =====
+    // ===== 随机歌曲（CC 授权曲库，KV 存中英文现代歌曲） =====
     if (url.pathname === '/song') {
       try {
         const list = JSON.parse((await env.KV.get('songlist')) || '[]');
         if (list.length) {
           const s = list[Math.floor(Math.random() * list.length)];
-          return json({ ok: true, url: s.url, title: s.title });
+          return json({ ok: true, url: s.url, title: s.title, artist: s.artist || '' });
         }
         return json({ ok: false });
       } catch (e) {

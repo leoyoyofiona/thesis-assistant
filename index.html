@@ -3712,8 +3712,8 @@ async function playRandomMusic() {
     showToast('音乐播放失败（网络原因，请再点一次）');
   });
   const btn = document.getElementById('musicBtn');
-  if (btn) { btn.classList.add('playing'); btn.title = '停止音乐（当前：' + (s.title || '随机歌曲') + '）'; }
-  showToast('🎵 ' + (s.title || '随机歌曲'));
+  if (btn) { btn.classList.add('playing'); btn.title = '停止音乐（当前：' + (s.title || '随机歌曲') + (s.artist ? ' - ' + s.artist : '') + '）'; }
+  showToast('🎵 ' + (s.title || '随机歌曲') + (s.artist ? ' - ' + s.artist : ''));
   clearTimeout(musicTimer);
   musicTimer = setTimeout(stopMusic, 30 * 60 * 1000);
 }
