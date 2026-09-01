@@ -360,11 +360,13 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 [data-theme="dark"] .checklist li:hover{background:#0f1b33}
 [data-theme="dark"] .sub-item:hover,[data-theme="dark"] .stage-header:hover{background:#0f1b33}
 
-@media(max-width:768px){
+@media(max-width:900px){
   .header{flex-wrap:wrap;height:auto;padding:8px 12px}
-  .breadcrumb{display:none}
+  .ct-hint{display:inline}
   .header-contact{font-size:11px;padding:5px 10px;width:100%;order:10;margin-left:0;white-space:normal;line-height:1.6;border-radius:10px;box-sizing:border-box}
   .theme-btn{width:30px;height:30px}
+}
+@media(max-width:768px){
   .sidebar{transform:translateX(-100%);transition:transform .3s}
   .sidebar.open{transform:translateX(0)}
   .main{margin-left:0}
@@ -449,9 +451,11 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
   50%{box-shadow:0 0 0 10px rgba(245,158,11,0);background:var(--pulse-bg,linear-gradient(135deg,#fef3c7,#ffedd5))}
 }
 [data-theme="dark"] .header-contact{--pulse-bg:linear-gradient(135deg,#3a2a10,#3a1d24);background:linear-gradient(135deg,#3a2a10,#3a1d24);color:#fbbf24;border-color:#a16207}
-@media(max-width:1400px){.search-hint{display:none}}
-@media(max-width:1250px){.header-contact{font-size:11.5px;padding:4px 10px;letter-spacing:0}}
-@media(max-width:1000px){.header-contact{font-size:10.5px;padding:3px 8px}}
+@media(max-width:1600px){.search-hint{display:none}}
+@media(max-width:1600px){.header-contact{font-size:12.5px;padding:5px 12px;letter-spacing:0}}
+@media(max-width:1350px){.header-contact{font-size:11px;padding:4px 10px}}
+@media(max-width:1300px){.breadcrumb{display:none}}
+@media(max-width:1100px){.header-contact{font-size:10.5px;padding:3px 8px}.ct-hint{display:none}}
 .search-btn{flex-shrink:0;white-space:nowrap}
 .search-btn svg,.search-btn kbd{flex-shrink:0}
 .breadcrumb{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -772,7 +776,7 @@ body.sb-collapsed .browser-overlay{left:0}
   <header class="header">
     <div class="breadcrumb" id="breadcrumb"></div>
     <div class="header-contact" title="欢迎找我交流">
-      💬 欢迎找我交流：E-mail:23774201@qq.com · VX:leoyoyofiona（暗号：我喜欢的运动是什么？）
+      💬 欢迎找我交流：E-mail:23774201@qq.com · VX:leoyoyofiona<span class="ct-hint">（暗号：我喜欢的运动是什么？）</span>
     </div>
     <div class="search-hint">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
