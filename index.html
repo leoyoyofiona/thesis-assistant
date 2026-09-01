@@ -618,7 +618,7 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
     <!-- Built dynamically -->
   </nav>
   <div class="sidebar-footer">
-    <a class="site-btn" href="https://dengzhimin-site.onrender.com" target="_blank" rel="noopener" title="LEODENG 个人网站">🌐 我的个人网站</a>
+    <a class="site-btn" href="https://dengzhimin-site.onrender.com" target="_blank" rel="noopener" title="LEODENG 个人小站">🌟 强烈推荐我的个人小站</a>
   </div>
   <div class="sidebar-resizer" id="sidebarResizer" title="← 拖动可调整宽度 →"></div>
 </aside>
@@ -2501,13 +2501,14 @@ function getSubs(id) {
     .map(h3 => stripNumPrefix(h3.textContent));
 }
 
-// ===== 侧边栏常用工具与网站（按类别） =====
+// ===== 侧边栏常用工具与网站（按类别，全部大陆可访问，每类偶数项对齐） =====
 const SITE_CATS = [
   { title: '🔍 查文献方面', items: [
     { icon: '📚', name: '知网 CNKI',     url: 'https://www.cnki.net',              desc: '中文学术文献检索下载' },
-    { icon: '🔎', name: 'Google 学术',   url: 'https://scholar.google.com',       desc: '英文文献检索' },
+    { icon: '🔎', name: '必应学术',      url: 'https://cn.bing.com/academic',     desc: '国际学术文献(大陆可访问)' },
     { icon: '🎓', name: '百度学术',      url: 'https://xueshu.baidu.com',         desc: '中英文文献聚合+引用格式' },
     { icon: '🗂', name: '万方数据',      url: 'https://www.wanfangdata.com.cn',   desc: '期刊/学位论文检索' },
+    { icon: '🖥', name: '维普期刊',      url: 'https://qikan.cqvip.com',          desc: '中文期刊检索(查重同家)' },
     { icon: '🏫', name: '浙师大图书馆',  url: 'https://lib.zjnu.edu.cn',          desc: '数据库入口/VPN' }
   ]},
   { title: '📊 数据分析方面', items: [
@@ -2521,17 +2522,20 @@ const SITE_CATS = [
   { title: '🧠 专业理论或模型方面', items: [
     { icon: '📖', name: 'MBA智库百科',  url: 'https://wiki.mbalib.com',          desc: '经管理论与模型速查' },
     { icon: '💬', name: '经管之家',      url: 'https://bbs.pinggu.org',           desc: '商科论坛/资料/讨论' },
-    { icon: '🌏', name: '维基百科',      url: 'https://zh.wikipedia.org',         desc: '理论背景与研究脉络' }
+    { icon: '📘', name: '百度百科',      url: 'https://baike.baidu.com',          desc: '概念与背景速查' },
+    { icon: '🧑‍🎓', name: '知乎',       url: 'https://www.zhihu.com',             desc: '经管话题讨论/经验' }
   ]},
   { title: '✍️ 写作方面', items: [
     { icon: '🗂', name: '知网研学',      url: 'https://x.cnki.net',               desc: '边读文献边写作' },
     { icon: '📑', name: '幕布',          url: 'https://mubu.com',                 desc: '论文大纲/思维导图' },
+    { icon: '📚', name: '语雀',          url: 'https://www.yuque.com',            desc: '知识库/写作笔记' },
     { icon: '💻', name: 'WPS Office',   url: 'https://www.wps.cn',                desc: '文档排版/三线表' }
   ]},
   { title: '🎨 润色方面', items: [
     { icon: '🌐', name: 'DeepL 翻译',   url: 'https://www.deepl.com',             desc: '中英互译(文献/摘要)' },
+    { icon: '📖', name: '有道翻译',      url: 'https://fanyi.youdao.com',         desc: '中英互译/词典' },
     { icon: '🪄', name: '秘塔写作猫',   url: 'https://xiezuocat.com',             desc: '中文校对润色' },
-    { icon: '✏️', name: 'Grammarly',   url: 'https://www.grammarly.com',         desc: '英文语法润色' }
+    { icon: '✏️', name: '1Checker',    url: 'https://www.1checker.com',          desc: '英文语法校对' }
   ]},
   { title: '📐 制作方面', items: [
     { icon: '🔄', name: 'ProcessOn',   url: 'https://www.processon.com',         desc: '流程图/技术路线图' },
@@ -2542,6 +2546,7 @@ const SITE_CATS = [
   { title: '🌐 学科专业方面（商科）', items: [
     { icon: '🛒', name: '网经社',        url: 'https://www.100ec.cn',              desc: '电商行业报告/数据' },
     { icon: '📡', name: '艾瑞咨询',      url: 'https://www.iresearch.cn',          desc: '消费/电商研究报告' },
+    { icon: '🧪', name: '阿里研究院',    url: 'https://www.aliresearch.com',       desc: '电商/数字经济研究' },
     { icon: '🏛', name: '商务部',        url: 'https://www.mofcom.gov.cn',         desc: '外贸政策/数据' },
     { icon: '⚖️', name: '贸易救济信息网', url: 'https://www.cacs.mofcom.gov.cn',   desc: '双反/贸易摩擦案例' },
     { icon: '📰', name: '亿邦动力',      url: 'https://www.ebrun.com',             desc: '跨境电商行业资讯' }
