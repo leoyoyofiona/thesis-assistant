@@ -483,11 +483,27 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
 
 /* ===== v7: 选题排版整齐 + 动感交互 ===== */
 [id^="topic-"] ul{list-style:none;padding:0}
-[id^="topic-"] li{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px dashed var(--border-light);line-height:1.5}
+[id^="topic-"] li{display:grid;grid-template-columns:minmax(0,1fr) 88px 124px 138px;gap:8px;align-items:center;padding:7px 4px;border-bottom:1px dashed var(--border-light);line-height:1.4}
 [id^="topic-"] li:last-child{border-bottom:none}
-[id^="topic-"] .tb-w{margin-left:auto}
+[id^="topic-"] .t-title{font-size:13.5px;color:var(--text);overflow-wrap:anywhere}
+[id^="topic-"] .tb{display:flex;flex-direction:column;align-items:center;gap:2px;justify-content:center;padding:4px 4px;border-radius:6px;white-space:nowrap;margin-left:0;text-align:center}
+[id^="topic-"] .tb::before{font-size:9.5px;font-weight:700;color:var(--text-muted);letter-spacing:.3px;line-height:1.2}
+[id^="topic-"] .tb-w::before{content:'写作难度'}
+[id^="topic-"] .tb-d::before{content:'数据收集分析难度'}
+[id^="topic-"] .tb-s::before{content:'数据收集来源'}
+[id^="topic-"] .tb-w{color:#d97706;background:#fffbeb;border:1px solid #fde68a}
+[id^="topic-"] .tb-d{color:#0369a1;background:#f0f9ff;border:1px solid #bae6fd}
+[id^="topic-"] .tb-s{color:#475569;background:#f1f5f9;border:1px solid var(--border)}
 [id^="topic-"] h4{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--text);border-left:3px solid #3b82f6;padding-left:8px;margin:14px 0 4px}
 [id^="topic-"] h4:nth-of-type(even){border-left-color:#8b5cf6}
+[data-theme="dark"] [id^="topic-"] .tb-w{background:#3a2a10;border-color:#a16207;color:#fbbf24}
+[data-theme="dark"] [id^="topic-"] .tb-d{background:#0c3a5a;border-color:#0e7490;color:#7dd3fc}
+[data-theme="dark"] [id^="topic-"] .tb-s{background:#1e293b;border-color:var(--border);color:#cbd5e1}
+[data-theme="dark"] [id^="topic-"] .tb::before{color:#8ba0bd}
+@media(max-width:900px){
+  [id^="topic-"] li{grid-template-columns:repeat(3,1fr);gap:6px;padding:8px 4px}
+  [id^="topic-"] .t-title{grid-column:1/4;margin-bottom:2px}
+}
 .tabs-wrap{overflow-x:auto}
 .top-glow{position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b,#10b981,#3b82f6);background-size:300% 100%;animation:glowMove 7s linear infinite;z-index:999;pointer-events:none}
 @keyframes glowMove{0%{background-position:0% 0}100%{background-position:300% 0}}
@@ -729,103 +745,103 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
           <div class="tab-content-area active" id="topic-ecommerce">
             <h4>🔥 热门赛道（直播/兴趣电商）</h4>
             <ul>
-              <li>直播电商对消费者购买意愿的影响研究——以××平台为例<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>直播电商中KOL特征对消费者信任与购买行为的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+成熟量表</span></li>
-              <li>兴趣电商（抖音/快手）内容推荐机制对消费决策的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>直播电商消费者冲动购买行为及其影响因素研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>虚拟数字人直播对消费者态度与购买意愿的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+公开案例</span></li>
-              <li>短视频营销对Z世代消费行为的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>社交电商用户粘性影响因素实证分析<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">直播电商对消费者购买意愿的影响研究——以××平台为例</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">直播电商中KOL特征对消费者信任与购买行为的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+成熟量表</span></li>
+              <li><span class="t-title">兴趣电商（抖音/快手）内容推荐机制对消费决策的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">直播电商消费者冲动购买行为及其影响因素研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">虚拟数字人直播对消费者态度与购买意愿的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+公开案例</span></li>
+              <li><span class="t-title">短视频营销对Z世代消费行为的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">社交电商用户粘性影响因素实证分析</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
             </ul>
             <h4>🚚 新业态（即时零售/社区电商/下沉市场）</h4>
             <ul>
-              <li>即时零售（30分钟达）消费者使用意愿研究——以××平台为例<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>社区团购履约效率与用户留存关系研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+平台资料</span></li>
-              <li>农村电商物流"最后一公里"问题与对策研究<span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+访谈</span></li>
-              <li>农村电商直播助农模式的成效与优化研究<span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">公开报道+问卷</span></li>
-              <li>下沉市场（县域）电商消费特征与营销策略研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(县域)</span></li>
-              <li>银发经济背景下老年群体电商消费行为研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(线下)</span></li>
+              <li><span class="t-title">即时零售（30分钟达）消费者使用意愿研究——以××平台为例</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">社区团购履约效率与用户留存关系研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+平台资料</span></li>
+              <li><span class="t-title">农村电商物流"最后一公里"问题与对策研究</span><span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+访谈</span></li>
+              <li><span class="t-title">农村电商直播助农模式的成效与优化研究</span><span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">公开报道+问卷</span></li>
+              <li><span class="t-title">下沉市场（县域）电商消费特征与营销策略研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(县域)</span></li>
+              <li><span class="t-title">银发经济背景下老年群体电商消费行为研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(线下)</span></li>
             </ul>
             <h4>⚖️ 平台与信任（合规/治理）</h4>
             <ul>
-              <li>电商平台"仅退款"政策对商家经营绩效的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">商家访谈+平台规则</span></li>
-              <li>"大数据杀熟"与个性化定价对消费者信任的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(感知)</span></li>
-              <li>消费者数据隐私保护与个性化推荐的平衡研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>电商平台服务质量与顾客忠诚度关系研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>电商价格战、补贴大战对消费者与商家的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开报道+问卷</span></li>
-              <li>电商退货率影响因素与逆向物流优化研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+企业访谈</span></li>
+              <li><span class="t-title">电商平台"仅退款"政策对商家经营绩效的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">商家访谈+平台规则</span></li>
+              <li><span class="t-title">"大数据杀熟"与个性化定价对消费者信任的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(感知)</span></li>
+              <li><span class="t-title">消费者数据隐私保护与个性化推荐的平衡研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">电商平台服务质量与顾客忠诚度关系研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">电商价格战、补贴大战对消费者与商家的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开报道+问卷</span></li>
+              <li><span class="t-title">电商退货率影响因素与逆向物流优化研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+企业访谈</span></li>
             </ul>
             <h4>🌱 品牌与绿色（可持续消费）</h4>
             <ul>
-              <li>私域流量运营策略研究——以××品牌为例<span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">案例+企业资料</span></li>
-              <li>跨境电商独立站（DTC品牌）出海策略研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">Similarweb+官网</span></li>
-              <li>全渠道零售（线上+线下融合）消费体验研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>绿色消费：电商平台碳足迹/绿色标签对购买意愿的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>电商平台绿色包装对消费者态度的影响研究<span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>大学生可持续消费行为及其影响因素研究<span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（1/5）">📊 ★☆☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(校园)</span></li>
+              <li><span class="t-title">私域流量运营策略研究——以××品牌为例</span><span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">案例+企业资料</span></li>
+              <li><span class="t-title">跨境电商独立站（DTC品牌）出海策略研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">Similarweb+官网</span></li>
+              <li><span class="t-title">全渠道零售（线上+线下融合）消费体验研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">绿色消费：电商平台碳足迹/绿色标签对购买意愿的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">电商平台绿色包装对消费者态度的影响研究</span><span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">大学生可持续消费行为及其影响因素研究</span><span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（1/5）">📊 ★☆☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(校园)</span></li>
             </ul>
           </div>
           <div class="tab-content-area" id="topic-trade">
             <h4>🌏 区域与规则（RCEP/自贸区）</h4>
             <ul>
-              <li>RCEP框架下中国对东盟农产品出口贸易效应分析<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">UN Comtrade+海关</span></li>
-              <li>RCEP原产地规则利用率对企业出口的影响研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">海关数据+资料</span></li>
-              <li>自贸试验区制度创新与贸易便利化效应评估<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">商务部+自贸区官网</span></li>
-              <li>海南自贸港政策对跨境贸易与投资的带动效应研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开统计+报道</span></li>
-              <li>CPTPP规则对中国对外贸易的潜在影响研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">文献+WTO文本</span></li>
+              <li><span class="t-title">RCEP框架下中国对东盟农产品出口贸易效应分析</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">UN Comtrade+海关</span></li>
+              <li><span class="t-title">RCEP原产地规则利用率对企业出口的影响研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">海关数据+资料</span></li>
+              <li><span class="t-title">自贸试验区制度创新与贸易便利化效应评估</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">商务部+自贸区官网</span></li>
+              <li><span class="t-title">海南自贸港政策对跨境贸易与投资的带动效应研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开统计+报道</span></li>
+              <li><span class="t-title">CPTPP规则对中国对外贸易的潜在影响研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">文献+WTO文本</span></li>
             </ul>
             <h4>📈 新业态与新动能（跨境电商出海）</h4>
             <ul>
-              <li>跨境电商综试区政策效应评估<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">商务部/海关数据</span></li>
-              <li>TikTok Shop/SHEIN/Temu 跨境电商平台出海模式比较研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开报道+SensorTower</span></li>
-              <li>外贸新业态（市场采购/海外仓/保税维修）发展研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">海关数据+资料</span></li>
-              <li>海外仓模式对中国跨境电商出口效率的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+案例</span></li>
-              <li>中国新能源汽车出口竞争力与海外市场进入策略研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">中汽协+海关数据</span></li>
-              <li>中欧班列开行对中国对欧出口贸易的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">国铁集团数据</span></li>
+              <li><span class="t-title">跨境电商综试区政策效应评估</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">商务部/海关数据</span></li>
+              <li><span class="t-title">TikTok Shop/SHEIN/Temu 跨境电商平台出海模式比较研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开报道+SensorTower</span></li>
+              <li><span class="t-title">外贸新业态（市场采购/海外仓/保税维修）发展研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">海关数据+资料</span></li>
+              <li><span class="t-title">海外仓模式对中国跨境电商出口效率的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+案例</span></li>
+              <li><span class="t-title">中国新能源汽车出口竞争力与海外市场进入策略研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">中汽协+海关数据</span></li>
+              <li><span class="t-title">中欧班列开行对中国对欧出口贸易的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">国铁集团数据</span></li>
             </ul>
             <h4>🛡️ 风险与韧性（壁垒/汇率/合规）</h4>
             <ul>
-              <li>碳关税（CBAM）对中国出口贸易的影响及应对策略<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">欧盟官方+海关</span></li>
-              <li>绿色贸易壁垒（ESG/碳足迹）对中国出口企业的影响研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">文献+公开数据</span></li>
-              <li>汇率波动与中小外贸企业汇率风险管理研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">央行/统计局+问卷</span></li>
-              <li>出口信用保险对中小外贸企业融资与出口的作用研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+访谈</span></li>
-              <li>供应链韧性与中国制造业全球价值链地位研究<span class="tb tb-w" title="研究写作难度（5/5）">✍ ★★★★★</span><span class="tb tb-d" title="数据收集难度（5/5）">📊 ★★★★★</span><span class="tb tb-s" title="数据收集来源">WITS/WIOD+文献</span></li>
-              <li>地缘政治风险对中国外贸的影响及应对研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">文献+公开数据</span></li>
-              <li>跨境电商知识产权侵权风险与合规管理研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+法规</span></li>
+              <li><span class="t-title">碳关税（CBAM）对中国出口贸易的影响及应对策略</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">欧盟官方+海关</span></li>
+              <li><span class="t-title">绿色贸易壁垒（ESG/碳足迹）对中国出口企业的影响研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">文献+公开数据</span></li>
+              <li><span class="t-title">汇率波动与中小外贸企业汇率风险管理研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">央行/统计局+问卷</span></li>
+              <li><span class="t-title">出口信用保险对中小外贸企业融资与出口的作用研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+访谈</span></li>
+              <li><span class="t-title">供应链韧性与中国制造业全球价值链地位研究</span><span class="tb tb-w" title="研究写作难度（5/5）">✍ ★★★★★</span><span class="tb tb-d" title="数据收集难度（5/5）">📊 ★★★★★</span><span class="tb tb-s" title="数据收集来源">WITS/WIOD+文献</span></li>
+              <li><span class="t-title">地缘政治风险对中国外贸的影响及应对研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">文献+公开数据</span></li>
+              <li><span class="t-title">跨境电商知识产权侵权风险与合规管理研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+法规</span></li>
             </ul>
             <h4>🤝 服务与数字贸易</h4>
             <ul>
-              <li>数字贸易规则对中国服务贸易竞争力的影响研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">UNCTAD/WTO</span></li>
-              <li>服务贸易数字化（数字服务出口）发展研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">商务部+UNCTAD</span></li>
-              <li>一带一路背景下中国制造业出口技术复杂度研究<span class="tb tb-w" title="研究写作难度（5/5）">✍ ★★★★★</span><span class="tb tb-d" title="数据收集难度（5/5）">📊 ★★★★★</span><span class="tb tb-s" title="数据收集来源">海关+UN Comtrade</span></li>
-              <li>外贸企业数字化转型路径与经营绩效研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(企业)</span></li>
-              <li>数字人民币跨境支付试点进展与应用前景研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+案例</span></li>
+              <li><span class="t-title">数字贸易规则对中国服务贸易竞争力的影响研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">UNCTAD/WTO</span></li>
+              <li><span class="t-title">服务贸易数字化（数字服务出口）发展研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">商务部+UNCTAD</span></li>
+              <li><span class="t-title">一带一路背景下中国制造业出口技术复杂度研究</span><span class="tb tb-w" title="研究写作难度（5/5）">✍ ★★★★★</span><span class="tb tb-d" title="数据收集难度（5/5）">📊 ★★★★★</span><span class="tb tb-s" title="数据收集来源">海关+UN Comtrade</span></li>
+              <li><span class="t-title">外贸企业数字化转型路径与经营绩效研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(企业)</span></li>
+              <li><span class="t-title">数字人民币跨境支付试点进展与应用前景研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+案例</span></li>
             </ul>
           </div>
           <div class="tab-content-area" id="topic-cross">
             <h4>🔗 跨境电商 + 数字技术</h4>
             <ul>
-              <li>数字贸易壁垒对跨境电商发展的影响研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">文献+公开数据</span></li>
-              <li>跨境直播电商的供应链协同机制研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">案例+访谈</span></li>
-              <li>海外仓模式下跨境电商物流成本与时效优化研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+案例</span></li>
-              <li>跨境电商物流时效与消费者满意度的关系研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>数据跨境流动规则对中国数字贸易的影响研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">法规文本+文献</span></li>
-              <li>跨境电商平台数据合规（个人信息保护法）研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+法规</span></li>
+              <li><span class="t-title">数字贸易壁垒对跨境电商发展的影响研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">文献+公开数据</span></li>
+              <li><span class="t-title">跨境直播电商的供应链协同机制研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">案例+访谈</span></li>
+              <li><span class="t-title">海外仓模式下跨境电商物流成本与时效优化研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+案例</span></li>
+              <li><span class="t-title">跨境电商物流时效与消费者满意度的关系研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">数据跨境流动规则对中国数字贸易的影响研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">法规文本+文献</span></li>
+              <li><span class="t-title">跨境电商平台数据合规（个人信息保护法）研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+法规</span></li>
             </ul>
             <h4>🌐 出海与本土化</h4>
             <ul>
-              <li>直播电商出海（跨境直播）的文化适配研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+公开资料</span></li>
-              <li>AIGC内容出海与跨境电商本土化营销研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+问卷</span></li>
-              <li>跨境电商平台与海外社交媒体协同营销研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例</span></li>
-              <li>独立站+海外仓模式下品牌出海路径研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料</span></li>
+              <li><span class="t-title">直播电商出海（跨境直播）的文化适配研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+公开资料</span></li>
+              <li><span class="t-title">AIGC内容出海与跨境电商本土化营销研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+问卷</span></li>
+              <li><span class="t-title">跨境电商平台与海外社交媒体协同营销研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例</span></li>
+              <li><span class="t-title">独立站+海外仓模式下品牌出海路径研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料</span></li>
             </ul>
             <h4>💡 平台生态与新模式</h4>
             <ul>
-              <li>数字人民币在跨境支付中的应用前景与挑战研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料</span></li>
-              <li>平台经济反垄断与中小商家生存生态研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">法规+公开资料</span></li>
-              <li>数字服务税对跨国数字平台的影响研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">OECD+文献</span></li>
-              <li>二手电商/循环经济跨境流通模式研究<span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+平台资料</span></li>
-              <li>跨境电商与ESG/绿色供应链协同研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">报告+公开数据</span></li>
+              <li><span class="t-title">数字人民币在跨境支付中的应用前景与挑战研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料</span></li>
+              <li><span class="t-title">平台经济反垄断与中小商家生存生态研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">法规+公开资料</span></li>
+              <li><span class="t-title">数字服务税对跨国数字平台的影响研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">OECD+文献</span></li>
+              <li><span class="t-title">二手电商/循环经济跨境流通模式研究</span><span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+平台资料</span></li>
+              <li><span class="t-title">跨境电商与ESG/绿色供应链协同研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（4/5）">📊 ★★★★☆</span><span class="tb tb-s" title="数据收集来源">报告+公开数据</span></li>
             </ul>
           </div>
           <div class="tab-content-area" id="topic-ai">
@@ -833,18 +849,18 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
               <strong>2026 最热门方向：</strong>AI 与商业的结合正成为电商/国贸领域最具研究价值的新选题，文献更新快、学生兴趣高、问卷和案例都好落地。
             </div>
             <ul>
-              <li>AIGC工具（DeepSeek/ChatGPT等）辅助电商运营的效率与效果研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(企业/学生)</span></li>
-              <li>大模型智能客服机器人对消费者服务体验的影响研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>AI个性化推荐与消费者"信息茧房"效应研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>AI智能选品/定价对跨境电商经营绩效的影响研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷+案例</span></li>
-              <li>数字员工（RPA/AI代理）在电商企业中的应用与效果研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+访谈</span></li>
-              <li>AI生成内容广告的合规风险与消费者信任研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">法规+案例</span></li>
-              <li>消费者对AI客服与人工客服的态度差异研究<span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（1/5）">📊 ★☆☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>生成式AI对中小外贸企业数字化转型的赋能研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(企业)</span></li>
-              <li>智能仓储与无人配送在即时零售中的应用研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+公开资料</span></li>
-              <li>元宇宙/虚拟店铺购物体验与消费者行为研究<span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li>AI辅助决策对大学生网购理性程度的影响研究<span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（1/5）">📊 ★☆☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(校园)</span></li>
-              <li>数字人直播与真人直播的带货效果对比研究<span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+对比数据</span></li>
+              <li><span class="t-title">AIGC工具（DeepSeek/ChatGPT等）辅助电商运营的效率与效果研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(企业/学生)</span></li>
+              <li><span class="t-title">大模型智能客服机器人对消费者服务体验的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">AI个性化推荐与消费者"信息茧房"效应研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">AI智能选品/定价对跨境电商经营绩效的影响研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷+案例</span></li>
+              <li><span class="t-title">数字员工（RPA/AI代理）在电商企业中的应用与效果研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+访谈</span></li>
+              <li><span class="t-title">AI生成内容广告的合规风险与消费者信任研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">法规+案例</span></li>
+              <li><span class="t-title">消费者对AI客服与人工客服的态度差异研究</span><span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（1/5）">📊 ★☆☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">生成式AI对中小外贸企业数字化转型的赋能研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(企业)</span></li>
+              <li><span class="t-title">智能仓储与无人配送在即时零售中的应用研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+公开资料</span></li>
+              <li><span class="t-title">元宇宙/虚拟店铺购物体验与消费者行为研究</span><span class="tb tb-w" title="研究写作难度（4/5）">✍ ★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">📊 ★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">AI辅助决策对大学生网购理性程度的影响研究</span><span class="tb tb-w" title="研究写作难度（2/5）">✍ ★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（1/5）">📊 ★☆☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(校园)</span></li>
+              <li><span class="t-title">数字人直播与真人直播的带货效果对比研究</span><span class="tb tb-w" title="研究写作难度（3/5）">✍ ★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">📊 ★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+对比数据</span></li>
             </ul>
           </div>
         </div>
