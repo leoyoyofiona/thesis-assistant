@@ -405,6 +405,7 @@ body.sb-collapsed .sb-expand{display:flex;align-items:center;justify-content:cen
   #stage-3 .card:nth-child(2){grid-column:1/3}
   #stage-7 .card:nth-child(1){grid-column:1/3}
   #stage-7 .card:nth-child(2){grid-column:1/3}
+  #stage-8 .card:nth-child(1){grid-column:1/3}
 }
 
 /* ===== Lively: accents & colors ===== */
@@ -608,6 +609,22 @@ section.stage .stage-body{font-size:15px}
 .version-log ul{padding-left:18px}
 .version-log li{font-size:12.5px;color:var(--text-secondary);line-height:1.9;margin-bottom:4px}
 .version-log li b{color:var(--primary)}
+
+/* ===== 维普操作指南：15 子流程横向卡片网格 ===== */
+.vip-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:8px}
+.vip-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;transition:all .15s}
+.vip-card:hover{border-color:var(--primary);box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.vip-card .vc-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;border-bottom:1px dashed var(--border-light);padding-bottom:8px}
+.vip-card .vc-no{width:24px;height:24px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.vip-card .vc-title{font-size:14px;font-weight:700;color:var(--text)}
+.vip-card .step-list{margin:0;padding:0}
+.vip-card .step-list li{font-size:12.5px;padding:5px 0;line-height:1.6;gap:8px}
+.vip-card .step-list li::before{width:20px;height:20px;font-size:11px}
+.vip-card .hl-box{margin:8px 0 0;font-size:12.5px;padding:8px 12px;line-height:1.7}
+.vip-card table{font-size:12px;margin:6px 0 0}
+[data-theme="dark"] .vip-card{background:#0f1b33}
+@media(max-width:1200px){.vip-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:768px){.vip-grid{grid-template-columns:1fr}}
 
 /* ===== 时间节点：12 节点横向卡片网格 ===== */
 .node-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:6px}
@@ -2181,9 +2198,8 @@ section.stage .stage-body{font-size:15px}
             <strong>通用规则：</strong>登录后所有操作都在左侧「过程管理」菜单下；每个环节提交后都要等指导教师审核，审核不通过须按意见修改后重新提交；系统到截止时间自动关闭，逾期无法补交。
           </div>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">1</span>登录系统与角色确认<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-grid">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">1</span><span class="vc-title">登录系统与角色确认</span></div>
               <ol class="step-list">
                 <li>浏览器打开 <code>vpcs.cqvip.com/organ/lib/xzzjnu/</code>（校外先连学校 VPN）</li>
                 <li>账号为<strong>学号</strong>，初始密码见学院通知，首次登录须修改密码</li>
@@ -2191,11 +2207,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>全程使用校园网或 VPN；建议收藏登录页，不要使用 IE 老版本浏览器。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">2</span>申报课题<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">2</span><span class="vc-title">申报课题</span></div>
               <ol class="step-list">
                 <li>过程管理 → 「申报课题」→ 新建申报</li>
                 <li>填写课题名称（与最终论文题目一致）、课题类型、课题来源</li>
@@ -2204,11 +2217,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>2026年9月8日前完成；一人一题，题目表述规范、一般不超过20字。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">3</span>任务书<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">3</span><span class="vc-title">任务书</span></div>
               <ol class="step-list">
                 <li>过程管理 → 「任务书」→ 按页面要求在线填写或上传</li>
                 <li>内容须含：选题背景与意义、研究内容、基本要求、主要参考文献（8-10篇）、进度安排</li>
@@ -2216,11 +2226,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>2026年9月21日前提交并审核通过；具体写法见阶段一「任务书写作规范」。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">4</span>开题报告<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">4</span><span class="vc-title">开题报告</span></div>
               <ol class="step-list">
                 <li>过程管理 → 「开题报告」→ 上传开题报告文档（≥3000字）</li>
                 <li>提交 → 指导教师审核通过</li>
@@ -2229,11 +2236,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>七要素齐全；未参加开题答辩或答辩不通过者不得进入后续环节。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">5</span>指导日志（全程）<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">5</span><span class="vc-title">指导日志（全程）</span></div>
               <ol class="step-list">
                 <li>每次与指导教师沟通后，进入过程管理 → 「指导日志」</li>
                 <li>记录：指导时间、指导方式（面谈/线上）、主要内容、导师修改意见</li>
@@ -2241,11 +2245,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>全程指导不少于5次（中期检查时至少3次）；及时填写，不要集中在最后补记。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">6</span>中期检查<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">6</span><span class="vc-title">中期检查</span></div>
               <ol class="step-list">
                 <li>过程管理 → 「中期检查」→ 在线填写中期检查表</li>
                 <li>填写内容：已完成工作、存在问题、后续计划</li>
@@ -2253,11 +2254,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>2026年11月3-7日；论文初稿已完成，指导记录≥3次。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">7</span>检测申请（免费查重）<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">7</span><span class="vc-title">检测申请（免费查重）</span></div>
               <ol class="step-list">
                 <li>过程管理 → 「检测申请/论文检测」→ 上传待检测论文</li>
                 <li>等待检测结果（一般数小时）→ 查看总复制比与 AIGC 检测值</li>
@@ -2265,11 +2263,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>免费共3次（答辩稿2次 + 终稿1次），超出自费；总复制比 ≤25%（硬性），AIGC ≤30%（参考）。勿重复提交浪费次数。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">8</span>答辩稿提交<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">8</span><span class="vc-title">答辩稿提交</span></div>
               <ol class="step-list">
                 <li>过程管理 → 「答辩稿」→ 上传完整论文（封面、目录、中英文摘要、正文、参考文献、致谢齐全）</li>
                 <li>先完成查重检测，复制比≤25% 方可提交</li>
@@ -2277,11 +2272,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>2026年11月17日—12月5日；答辩稿必须与检测版本完全一致。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">9</span>答辩申请<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">9</span><span class="vc-title">答辩申请</span></div>
               <ol class="step-list">
                 <li>前提：答辩稿已提交且检测通过</li>
                 <li>过程管理 → 「答辩申请」→ 填写申请信息 → 提交</li>
@@ -2289,11 +2281,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>2026年12月7-13日；逾期系统关闭。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">10</span>答辩记录与成绩查看<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">10</span><span class="vc-title">答辩记录与成绩查看</span></div>
               <ol class="step-list">
                 <li>正式答辩（12月14-19日）：PPT汇报5-8分钟 + 评委提问</li>
                 <li>答辩记录与成绩由答辩组长/秘书录入系统</li>
@@ -2301,11 +2290,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>准备：</strong>纸质论文至少3份、提前踩点测试设备；回答三原则见阶段五。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">11</span>最终稿提交<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">11</span><span class="vc-title">最终稿提交</span></div>
               <ol class="step-list">
                 <li>根据答辩评委意见修改论文 → 指导教师确认</li>
                 <li>过程管理 → 「最终稿」→ 上传最终版论文</li>
@@ -2313,11 +2299,8 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>2026年12月29日前；答辩意见须全部落实。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">12</span>抽检稿提交<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">12</span><span class="vc-title">抽检稿提交</span></div>
               <ol class="step-list">
                 <li>在最终稿基础上另存副本，制作匿名版（去姓名/学号/校名/导师名，用序号代替）</li>
                 <li>全文搜索自己的姓名、学号、学校名，确保无遗漏</li>
@@ -2326,22 +2309,16 @@ section.stage .stage-body{font-size:15px}
               </ol>
               <div class="hl-box"><strong>要求：</strong>10项匿名核对清单见阶段六；须提前处理，勿拖到截止前。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">13</span>成绩查询与材料核对<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">13</span><span class="vc-title">成绩查询与材料核对</span></div>
               <ol class="step-list">
                 <li>逐一核对各环节状态：申报课题/任务书/开题/中期/答辩稿/答辩申请/最终稿/抽检稿/指导日志是否全部「已审核」</li>
                 <li>成绩查询：按学院通知路径查看最终成绩与评分构成</li>
               </ol>
               <div class="hl-box"><strong>要求：</strong>全部材料在2027年4月10日前审核通过，否则延迟领取毕业证、学位证。</div>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">14</span>常见问题与报错处理<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">14</span><span class="vc-title">常见问题与报错处理</span></div>
               <table>
                 <thead><tr><th>现象</th><th>解决办法</th></tr></thead>
                 <tbody>
@@ -2352,11 +2329,8 @@ section.stage .stage-body{font-size:15px}
                 </tbody>
               </table>
             </div>
-          </details>
 
-          <details class="vip-item">
-            <summary><span class="vip-no">15</span>时间红线总览<span class="vip-chevron">›</span></summary>
-            <div class="vip-body">
+          <div class="vip-card"><div class="vc-head"><span class="vc-no">15</span><span class="vc-title">时间红线总览</span></div>
               <table>
                 <thead><tr><th>环节</th><th>截止/时段</th></tr></thead>
                 <tbody>
@@ -2372,7 +2346,7 @@ section.stage .stage-body{font-size:15px}
                 </tbody>
               </table>
             </div>
-          </details>
+        </div>
 
         </div>
 
