@@ -743,6 +743,9 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .music-btn:hover{transform:translateY(-1px) scale(1.05)}
 .music-btn.playing{animation:musicPulse 1.6s ease-in-out infinite}
 @keyframes musicPulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}50%{box-shadow:0 0 0 12px rgba(16,185,129,0)}}
+.music-icon{display:inline-block;line-height:1}
+.music-btn.playing .music-icon{animation:musicSpin 2.4s linear infinite}
+@keyframes musicSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 .music-popup{display:none;flex-direction:row;gap:6px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:8px;box-shadow:var(--shadow-lg)}
 .music-wrap:hover .music-popup{display:flex}
 .mp-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;font-size:14px;font-family:var(--font-sans);transition:all .15s;display:flex;align-items:center;justify-content:center}
@@ -877,7 +880,7 @@ body.sb-collapsed .status-bar{left:0}
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="切换深色/浅色模式">🌙</button>
     <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
     <div class="music-wrap">
-      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放中英文经典老歌（30分钟）">🎵</button>
+      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放中英文经典老歌（30分钟）"><span class="music-icon">🎵</span></button>
       <div class="music-below" id="musicBelow">
         <span class="music-title" id="musicTitle"></span>
         <div class="music-popup">
