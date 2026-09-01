@@ -180,9 +180,10 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 /* ===== Home dashboard (kanban 等大网格，一屏可见) ===== */
 #stage-0 .stage-hero{padding:18px 32px 14px}
 #stage-0 .stage-hero h2{font-size:22px;margin-bottom:0}
-#stage-0 .hero-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding-right:170px}
-#stage-0 .hero-head .today-badge{margin-top:0;padding:6px 14px;font-size:12.5px}
 #stage-0 .hero-sub{margin-top:10px;margin-bottom:0}
+#stage-0 .hero-declare-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:12px}
+#stage-0 .hero-declare-row .version-declare{margin-top:0}
+#stage-0 .hero-declare-row .today-badge{margin-top:0;padding:8px 16px;font-size:13px}
 #stage-0 .stage-hero .stage-meta{margin-top:8px;font-size:11px}
 #stage-0 .stage-body{max-width:1200px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));grid-auto-rows:minmax(215px,1fr);gap:16px;align-items:stretch}
 #stage-0 .stage-body .card{margin-bottom:0;padding:18px 20px;display:flex;flex-direction:column;min-width:0}
@@ -232,7 +233,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 @media(max-width:900px){
   #stage-0 .stage-body{display:block}
   #stage-0 .stage-body .card{grid-column:auto;grid-row:auto;margin-bottom:16px}
-  #stage-0 .hero-head{padding-right:0;flex-direction:column;align-items:flex-start}
+  #stage-0 .hero-declare-row{flex-direction:column;align-items:flex-start}
 }
 
 /* ===== Today badge ===== */
@@ -363,12 +364,6 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 [data-theme="dark"] .checklist li:hover{background:#0f1b33}
 [data-theme="dark"] .sub-item:hover,[data-theme="dark"] .stage-header:hover{background:#0f1b33}
 
-@media(max-width:900px){
-  .header{flex-wrap:wrap;height:auto;padding:8px 12px}
-  .ct-hint{display:inline}
-  .header-contact{font-size:11px;padding:5px 10px;width:100%;order:10;margin-left:0;white-space:normal;line-height:1.6;border-radius:10px;box-sizing:border-box}
-  .theme-btn{width:30px;height:30px}
-}
 @media(max-width:768px){
   .sidebar{transform:translateX(-100%);transition:transform .3s}
   .sidebar.open{transform:translateX(0)}
@@ -454,11 +449,20 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
   50%{box-shadow:0 0 0 10px rgba(245,158,11,0);background:var(--pulse-bg,linear-gradient(135deg,#fef3c7,#ffedd5))}
 }
 [data-theme="dark"] .header-contact{--pulse-bg:linear-gradient(135deg,#3a2a10,#3a1d24);background:linear-gradient(135deg,#3a2a10,#3a1d24);color:#fbbf24;border-color:#a16207}
-@media(max-width:1600px){.search-hint{display:none}}
+@media(max-width:1820px){.search-hint{display:none}}
+@media(max-width:1650px){.breadcrumb{display:none}}
 @media(max-width:1600px){.header-contact{font-size:12.5px;padding:5px 12px;letter-spacing:0}}
-@media(max-width:1350px){.header-contact{font-size:11px;padding:4px 10px}}
-@media(max-width:1300px){.breadcrumb{display:none}}
-@media(max-width:1100px){.header-contact{font-size:10.5px;padding:3px 8px}.ct-hint{display:none}}
+@media(max-width:1400px){.header-contact{font-size:11px;padding:4px 10px}}
+@media(max-width:1350px){.ct-hint{display:none}.visit-count{font-size:10px;padding:3px 8px}.vc-uv{display:none}}
+@media(max-width:1200px){.header-contact{font-size:10.5px;padding:3px 8px}}
+@media(max-width:1100px){
+  .header{flex-wrap:wrap;height:auto;padding:8px 12px}
+  .ct-hint{display:inline}
+  .visit-count{font-size:11px;padding:4px 10px;flex-shrink:1;min-width:0}
+  .vc-uv{display:inline}
+  .header-contact{font-size:11px;padding:5px 10px;order:10;margin-left:0;white-space:normal;line-height:1.6;border-radius:10px;flex-shrink:1;min-width:0;max-width:100%}
+  .theme-btn{width:30px;height:30px}
+}
 .search-btn{flex-shrink:0;white-space:nowrap}
 .search-btn svg,.search-btn kbd{flex-shrink:0}
 .breadcrumb{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -613,13 +617,10 @@ section.stage .stage-body{font-size:15px}
 .gate-quote{font-size:16px}
 .gate-card h2{font-size:20px}
 
-/* ===== 首页访问统计（不蒜子） ===== */
-.visit-count{position:absolute;top:12px;right:24px;z-index:2;font-size:11.5px;font-weight:600;color:var(--text-secondary);background:rgba(255,255,255,.75);border:1px solid var(--border);border-radius:14px;padding:4px 12px;backdrop-filter:blur(4px)}
+/* ===== 页头访问统计（不蒜子） ===== */
+.visit-count{display:inline-flex;align-items:center;gap:4px;margin-left:12px;flex-shrink:0;font-size:11.5px;font-weight:600;color:var(--text-secondary);background:rgba(255,255,255,.75);border:1px solid var(--border);border-radius:14px;padding:4px 12px;white-space:nowrap}
 .visit-count span{color:var(--primary);font-weight:700}
 [data-theme="dark"] .visit-count{background:rgba(15,23,42,.75);color:#a9b8cf}
-@media(max-width:768px){
-  .visit-count{position:static;display:inline-block;margin-bottom:6px}
-}
 
 /* ===== 首页声明框 ===== */
 .version-declare{border:1px solid var(--border);border-left:4px solid var(--emph);border-radius:10px;background:var(--bg);padding:12px 16px;margin:10px 0 0;max-width:720px;box-shadow:var(--shadow)}
@@ -774,6 +775,7 @@ body.sb-collapsed .browser-overlay{left:0}
 <main class="main">
   <header class="header">
     <div class="breadcrumb" id="breadcrumb"></div>
+    <div class="visit-count">👥 本站访问 <span id="busuanzi_value_site_pv">…</span> 次<span class="vc-uv"> · 访客 <span id="busuanzi_value_site_uv">…</span> 人</span></div>
     <div class="header-contact" title="欢迎找我交流">
       💬 欢迎找我交流：E-mail:23774201@qq.com · VX:leoyoyofiona<span class="ct-hint">（暗号：我喜欢的运动是什么？）</span>
     </div>
@@ -794,19 +796,18 @@ body.sb-collapsed .browser-overlay{left:0}
     <!-- ================================================================ -->
     <section class="stage active" id="stage-0">
       <div class="stage-hero">
-        <div class="visit-count">👥 本站访问 <span id="busuanzi_value_site_pv">…</span> 次 · 访客 <span id="busuanzi_value_site_uv">…</span> 人</div>
         <div class="home-float" style="top:28px;right:70px;font-size:34px">📚</div>
         <div class="home-float" style="top:74px;right:190px;font-size:26px;animation-delay:1.2s">🎓</div>
         <div class="home-float" style="bottom:22px;left:90px;font-size:30px;animation-delay:.6s">💪</div>
         <div class="home-float" style="bottom:44px;right:130px;font-size:22px;animation-delay:1.8s">⭐</div>
-        <div class="hero-head">
-          <h2>毕业论文全程导航</h2>
-          <div class="today-badge"><span class="pulse-dot"></span><span id="homeTodayText">正在计算当前进度…</span></div>
-        </div>
+        <h2>毕业论文全程导航</h2>
         <p class="hero-sub">从选题到最终提交，一站式掌握每个阶段的规范、操作与时间节点。</p>
-        <div class="version-declare">
+        <div class="hero-declare-row">
+          <div class="version-declare">
           <div class="vd-item"><span class="vd-tag">📌 免责声明</span><span class="vd-body">本助手为学院毕业论文工作相关要求的<b>整理与参考</b>（当前版本 V2.1，持续更新维护）；一切毕业论文的标准与要求，<b>以学院教务部门、商学院教务及专业官方毕业要求文件为准</b>。</span></div>
           <div class="vd-item"><span class="vd-tag">© 版权与追责声明</span><span class="vd-body">本工具由 <b>LEODENG</b> 整理制作，仅供浙江师范大学行知学院商学院师生学习参考使用，未经允许请勿商用转载；内容如有错漏，欢迎联系指正（E-mail:23774201@qq.com · VX:leoyoyofiona）。</span></div>
+          </div>
+          <div class="today-badge"><span class="pulse-dot"></span><span id="homeTodayText">正在计算当前进度…</span></div>
         </div>
       </div>
       <div class="stage-body">
@@ -3023,9 +3024,9 @@ function renderTimeline() {
 
   let badgeText;
   if (cur) {
-    badgeText = `当前节点 ${cur.n}/${TIMELINE.length}：${cur.name}（${fmtDateCN(cur.from)}${cur.from !== cur.to ? ' ~ ' + fmtDateCN(cur.to) : ''}）`;
+    badgeText = `当前节点 ${cur.n}/${TIMELINE.length}：${cur.name}`;
   } else if (next) {
-    badgeText = `当前处于间歇期：下一节点「${next.name}」于 ${fmtDateCN(next.from)} 开始`;
+    badgeText = `间歇期：下一节点「${next.name}」`;
   } else {
     badgeText = '全部节点已完成，请核对全部材料';
   }
