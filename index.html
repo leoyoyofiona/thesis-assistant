@@ -2635,7 +2635,7 @@ body.sb-collapsed .status-bar{left:0}
 <!-- ===== 建议栏按钮（全局固定右上角） ===== -->
 <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
 <div class="music-wrap">
-  <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放无版权人声歌曲（30分钟）">🎵</button>
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放中英文经典老歌（30分钟）">🎵</button>
   <div class="music-popup">
     <button class="mp-btn" onclick="musicPlay()" title="播放">▶</button>
     <button class="mp-btn" onclick="musicPause()" title="暂停">⏸</button>
@@ -3693,7 +3693,7 @@ function stopMusic() {
   clearTimeout(musicTimer); musicTimer = null;
   musicPlaying = false;
   const btn = document.getElementById('musicBtn');
-  if (btn) { btn.classList.remove('playing'); btn.title = '随机播放无版权音乐（30分钟）'; }
+  if (btn) { btn.classList.remove('playing'); btn.title = '随机播放中英文经典老歌（30分钟）'; }
 }
 async function playRandomMusic() {
   const s = await fetchRandomSong();
@@ -3713,7 +3713,7 @@ async function playRandomMusic() {
   });
   const btn = document.getElementById('musicBtn');
   if (btn) { btn.classList.add('playing'); btn.title = '停止音乐（当前：' + (s.title || '随机歌曲') + '）'; }
-  showToast('🎵 正在播放：' + (s.title || '随机歌曲') + '（无版权曲库，30分钟后自动停止）');
+  showToast('🎵 ' + (s.title || '随机歌曲'));
   clearTimeout(musicTimer);
   musicTimer = setTimeout(stopMusic, 30 * 60 * 1000);
 }
