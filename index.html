@@ -305,7 +305,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 ::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
 
 /* ===== Header contact & theme toggle ===== */
-.header-contact{font-size:13px;font-weight:700;color:#92400e;background:linear-gradient(135deg,#fff7ed,#ffe8cc);border:2px solid #f59e0b;border-radius:22px;padding:6px 16px;white-space:nowrap;flex-shrink:0;letter-spacing:.3px;box-shadow:0 0 0 0 rgba(245,158,11,.55);animation:contactPulse 1.4s ease-in-out infinite}
+.header-contact{font-size:13px;font-weight:700;color:#92400e;background:linear-gradient(135deg,#fff7ed,#ffe8cc);border:2px solid #f59e0b;border-radius:22px;padding:6px 16px;white-space:nowrap;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis;letter-spacing:.3px;box-shadow:0 0 0 0 rgba(245,158,11,.55);animation:contactPulse 1.4s ease-in-out infinite}
 .theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .theme-btn:hover{border-color:var(--primary);background:var(--primary-light)}
 
@@ -375,7 +375,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
   .header{padding:0 16px}
   .stage-hero{padding:24px 20px}
   .stage-body{padding:20px}
-  .stage-nav{padding:12px 20px 24px}
+  .stage-nav{padding:12px 20px 48px}
   .home-grid{grid-template-columns:1fr}
   .timeline{flex-direction:column;gap:0;overflow-x:visible}
   .timeline::before{display:none}
