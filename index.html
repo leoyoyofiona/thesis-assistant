@@ -599,6 +599,14 @@ section.stage .stage-body{font-size:15px}
 .gate-quote{font-size:16px}
 .gate-card h2{font-size:20px}
 
+/* ===== 首页访问统计（不蒜子） ===== */
+.visit-count{position:absolute;top:12px;right:24px;z-index:2;font-size:11.5px;font-weight:600;color:var(--text-secondary);background:rgba(255,255,255,.75);border:1px solid var(--border);border-radius:14px;padding:4px 12px;backdrop-filter:blur(4px)}
+.visit-count span{color:var(--primary);font-weight:700}
+[data-theme="dark"] .visit-count{background:rgba(15,23,42,.75);color:#a9b8cf}
+@media(max-width:768px){
+  .visit-count{position:static;display:inline-block;margin-bottom:6px}
+}
+
 /* ===== 首页版本徽标与更新记录 ===== */
 .version-chip{display:inline-flex;align-items:center;gap:5px;margin:10px 10px 0 0;padding:5px 14px;border:1.5px solid var(--primary);color:var(--primary);background:var(--primary-light);border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
 .version-chip:hover{background:var(--primary);color:#fff}
@@ -776,6 +784,7 @@ body.sb-collapsed .browser-overlay{left:0}
     <!-- ================================================================ -->
     <section class="stage active" id="stage-0">
       <div class="stage-hero">
+        <div class="visit-count">👥 本站访问 <span id="busuanzi_value_site_pv">…</span> 次 · 访客 <span id="busuanzi_value_site_uv">…</span> 人</div>
         <div class="home-float" style="top:28px;right:70px;font-size:34px">📚</div>
         <div class="home-float" style="top:74px;right:190px;font-size:26px;animation-delay:1.2s">🎓</div>
         <div class="home-float" style="bottom:22px;left:90px;font-size:30px;animation-delay:.6s">💪</div>
@@ -3439,5 +3448,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
+<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>
