@@ -452,7 +452,7 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
   50%{box-shadow:0 0 0 10px rgba(245,158,11,0);background:var(--pulse-bg,linear-gradient(135deg,#fef3c7,#ffedd5))}
 }
 [data-theme="dark"] .header-contact{--pulse-bg:linear-gradient(135deg,#3a2a10,#3a1d24);background:linear-gradient(135deg,#3a2a10,#3a1d24);color:#fbbf24;border-color:#a16207}
-@media(max-width:1820px){.search-hint{display:none}}
+@media(max-width:1820px){.search-hint{display:none}.suggest-btn{margin-left:auto}}
 @media(max-width:1650px){.breadcrumb{display:none}}
 @media(max-width:1600px){.header-contact{font-size:12.5px;padding:5px 12px;letter-spacing:0}}
 @media(max-width:1400px){.header-contact{font-size:11px;padding:4px 10px}}
@@ -714,7 +714,7 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .stage-body .demo-box p{text-wrap:pretty;word-break:break-word}
 
 /* ===== 建议栏 ===== */
-.suggest-btn{position:fixed;top:76px;right:16px;z-index:500;padding:7px 16px;border:none;border-radius:18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(139,92,246,.4);transition:all .2s}
+.suggest-btn{flex-shrink:0;white-space:nowrap;padding:7px 16px;border:none;border-radius:18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(139,92,246,.4);transition:all .2s}
 .suggest-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(139,92,246,.5)}
 .suggest-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1050;display:none;align-items:center;justify-content:center;padding:20px}
 .suggest-overlay.show{display:flex}
@@ -730,10 +730,10 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .suggest-submit:hover{filter:brightness(1.1)}
 .suggest-submit:disabled{opacity:.6;cursor:not-allowed}
 .suggest-msg{font-size:13px;font-weight:600}
-@media(max-width:1100px){.suggest-btn{top:102px;right:12px;padding:5px 12px;font-size:12px}}
+@media(max-width:1100px){.suggest-btn{padding:5px 12px;font-size:12px}}
 
 /* ===== 随机音乐按钮 + 悬停控制面板 ===== */
-.music-wrap{position:fixed;top:124px;right:16px;z-index:500;display:flex;flex-direction:row;align-items:center;gap:8px}
+.music-wrap{position:relative;flex-shrink:0;display:flex;flex-direction:row;align-items:center;gap:8px}
 .music-title{display:none;max-width:240px;padding:6px 12px;border-radius:999px;background:var(--card-bg);border:1px solid var(--border);box-shadow:var(--shadow-lg);font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .music-title.show{display:inline-block}
 .music-btn{width:42px;height:42px;border-radius:50%;border:none;background:linear-gradient(135deg,#10b981,#0ea5e9);color:#fff;font-size:19px;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(16,185,129,.4);transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
@@ -744,7 +744,7 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .music-wrap:hover .music-popup{display:flex}
 .mp-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;font-size:14px;font-family:var(--font-sans);transition:all .15s;display:flex;align-items:center;justify-content:center}
 .mp-btn:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
-@media(max-width:1100px){.music-wrap{top:150px;right:12px}.music-btn{width:36px;height:36px;font-size:16px}.music-title{max-width:150px;font-size:12px;padding:5px 10px}}
+@media(max-width:1100px){.music-btn{width:36px;height:36px;font-size:16px}.music-title{max-width:140px;font-size:12px;padding:5px 10px}}
 
 /* ===== 状态栏（时间/天气/倒计时） ===== */
 .status-bar{position:fixed;left:var(--sidebar-width);right:0;bottom:0;height:34px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);font-size:12px;color:var(--text-secondary);z-index:400;white-space:nowrap;overflow:hidden}
@@ -872,6 +872,16 @@ body.sb-collapsed .status-bar{left:0}
       搜索全部内容<kbd>Ctrl+K</kbd>
     </button>
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="切换深色/浅色模式">🌙</button>
+    <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
+    <div class="music-wrap">
+      <span class="music-title" id="musicTitle"></span>
+      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放中英文经典老歌（30分钟）">🎵</button>
+      <div class="music-popup">
+        <button class="mp-btn" onclick="musicPlay()" title="播放">▶</button>
+        <button class="mp-btn" onclick="musicPause()" title="暂停">⏸</button>
+        <button class="mp-btn" onclick="musicNext()" title="下一曲">⏭</button>
+      </div>
+    </div>
   </header>
   <div class="content-scroll" id="contentScroll">
 
@@ -2632,18 +2642,6 @@ body.sb-collapsed .status-bar{left:0}
   </div>
   <div class="browser-tip">💡 部分网站禁止内嵌显示（页面可能为空白），如遇空白请点击右上角「🔗 在新窗口打开」。</div>
   <iframe class="browser-frame" id="browserFrame" src="about:blank" title="站内浏览"></iframe>
-</div>
-
-<!-- ===== 建议栏按钮（全局固定右上角） ===== -->
-<button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
-<div class="music-wrap">
-  <span class="music-title" id="musicTitle"></span>
-  <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放中英文经典老歌（30分钟）">🎵</button>
-  <div class="music-popup">
-    <button class="mp-btn" onclick="musicPlay()" title="播放">▶</button>
-    <button class="mp-btn" onclick="musicPause()" title="暂停">⏸</button>
-    <button class="mp-btn" onclick="musicNext()" title="下一曲">⏭</button>
-  </div>
 </div>
 
 <!-- ===== 建议栏弹窗 ===== -->
