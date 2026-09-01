@@ -598,6 +598,17 @@ section.stage .stage-body{font-size:15px}
 .gate-quote{font-size:16px}
 .gate-card h2{font-size:20px}
 
+/* ===== 首页版本徽标与更新记录 ===== */
+.version-chip{display:inline-flex;align-items:center;gap:5px;margin:10px 10px 0 0;padding:5px 14px;border:1.5px solid var(--primary);color:var(--primary);background:var(--primary-light);border-radius:16px;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s}
+.version-chip:hover{background:var(--primary);color:#fff}
+.version-chip .vc-arrow{font-size:10px;transition:transform .2s}
+.version-chip.open .vc-arrow{transform:rotate(180deg)}
+.version-log{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-lg);padding:14px 18px;margin-top:10px;max-width:640px}
+.version-log .vl-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
+.version-log ul{padding-left:18px}
+.version-log li{font-size:12.5px;color:var(--text-secondary);line-height:1.9;margin-bottom:4px}
+.version-log li b{color:var(--primary)}
+
 /* ===== 时间节点：12 节点横向卡片网格 ===== */
 .node-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:6px}
 .node-card{background:var(--bg);border:1px solid var(--border);border-top:4px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:5px}
@@ -738,6 +749,15 @@ section.stage .stage-body{font-size:15px}
           <span>🔍 有问题？按 Ctrl+K 全局检索</span>
         </div>
         <div class="today-badge"><span class="pulse-dot"></span><span id="homeTodayText">正在计算当前进度…</span></div>
+        <div class="version-chip" onclick="toggleVersionLog()">📦 当前版本 V2.1 <span class="vc-arrow">▾</span></div>
+        <div class="version-log" id="versionLog" style="display:none">
+          <div class="vl-title">📜 版本更新记录</div>
+          <ul>
+            <li><b>V2.1</b>（2026-09 最新）· 看板式等大首页 · 访问密码与引导流程 · 白天/夜晚模式 · 侧边栏可调宽可折叠 · 选题 75 条星级与数据来源标注 · 9 类 48 个工具网站 · 送审/时间节点横向看板 · 全局字号与动效升级</li>
+            <li><b>V2.0</b>（2026-08）· 新增时间节点与进度管理 · 维普系统 15 子流程指南 · 送审意见 4 大类应对 · 匿名抽检稿处理 · 毕业设计替代通道</li>
+            <li><b>V1.0</b>（2026-07）· 初版发布：6 大阶段交互式流程向导 · 全局检索（Ctrl+K）· 学术格式规范速查</li>
+          </ul>
+        </div>
       </div>
       <div class="stage-body">
 
@@ -3177,6 +3197,16 @@ function switchInnerTab(btn, tabId) {
   btn.classList.add('active');
   const target = document.getElementById(tabId);
   if (target) target.classList.add('active');
+}
+
+// ===== 首页版本更新记录 =====
+function toggleVersionLog() {
+  const log = document.getElementById('versionLog');
+  const chip = document.querySelector('.version-chip');
+  if (!log) return;
+  const show = log.style.display === 'none';
+  log.style.display = show ? 'block' : 'none';
+  if (chip) chip.classList.toggle('open', show);
 }
 
 // ===== Gate (密码 → 免责声明 → 引导) =====
