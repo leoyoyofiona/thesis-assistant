@@ -623,9 +623,14 @@ section.stage .stage-body{font-size:15px}
 .version-chip:hover{background:var(--primary);color:#fff}
 .version-chip .vc-arrow{font-size:10px;transition:transform .2s}
 .version-chip.open .vc-arrow{transform:rotate(180deg)}
-.version-declare{font-size:12px;color:var(--text-muted);margin:9px 0 0;line-height:1.8;max-width:700px}
-.version-declare div{margin-top:2px}
+.version-declare{border:1px solid var(--border);border-left:4px solid var(--emph);border-radius:10px;background:var(--bg);padding:12px 16px;margin:10px 0 0;max-width:720px;box-shadow:var(--shadow)}
+.version-declare .vd-item{display:flex;gap:8px;font-size:12px;color:var(--text-secondary);line-height:1.8;padding:4px 0}
+.version-declare .vd-item + .vd-item{border-top:1px dashed var(--border-light);margin-top:4px;padding-top:9px}
+.version-declare .vd-tag{flex-shrink:0;font-weight:700;color:var(--emph);white-space:nowrap}
+.version-declare .vd-body{flex:1}
 .version-declare b{color:var(--emph);font-weight:700}
+[data-theme="dark"] .version-declare{background:#0f1b33}
+@media(max-width:600px){.version-declare .vd-item{flex-direction:column;gap:2px}}
 .version-log{background:var(--card-bg);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow-lg);padding:14px 18px;margin-top:10px;max-width:640px}
 .version-log .vl-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:8px}
 .version-log ul{padding-left:18px}
@@ -805,8 +810,8 @@ body.sb-collapsed .browser-overlay{left:0}
         <div class="today-badge"><span class="pulse-dot"></span><span id="homeTodayText">正在计算当前进度…</span></div>
         <div class="version-chip" onclick="toggleVersionLog()">📦 当前版本 V2.1 <span class="vc-arrow">▾</span></div>
         <div class="version-declare">
-          <div>📌 <b>免责声明：</b>本助手为学院毕业论文工作相关要求的<b>整理与参考</b>（当前版本 V2.1，持续更新维护）；一切毕业论文的标准与要求，<b>以学院教务部门、商学院教务及专业官方毕业要求文件为准</b>。</div>
-          <div>© <b>版权与追责声明：</b>本工具由 <b>LEODENG</b> 整理制作，仅供浙江师范大学行知学院商学院师生学习参考使用，未经允许请勿商用转载；内容如有错漏，欢迎联系指正（E-mail:23774201@qq.com · VX:leoyoyofiona）。</div>
+          <div class="vd-item"><span class="vd-tag">📌 免责声明</span><span class="vd-body">本助手为学院毕业论文工作相关要求的<b>整理与参考</b>（当前版本 V2.1，持续更新维护）；一切毕业论文的标准与要求，<b>以学院教务部门、商学院教务及专业官方毕业要求文件为准</b>。</span></div>
+          <div class="vd-item"><span class="vd-tag">© 版权与追责声明</span><span class="vd-body">本工具由 <b>LEODENG</b> 整理制作，仅供浙江师范大学行知学院商学院师生学习参考使用，未经允许请勿商用转载；内容如有错漏，欢迎联系指正（E-mail:23774201@qq.com · VX:leoyoyofiona）。</span></div>
         </div>
         <div class="version-log" id="versionLog" style="display:none">
           <div class="vl-title">📜 版本更新记录</div>
