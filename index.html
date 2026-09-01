@@ -732,12 +732,17 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .suggest-msg{font-size:13px;font-weight:600}
 @media(max-width:1100px){.suggest-btn{top:102px;right:12px;padding:5px 12px;font-size:12px}}
 
-/* ===== 随机音乐按钮 ===== */
-.music-btn{position:fixed;top:124px;right:16px;z-index:500;width:42px;height:42px;border-radius:50%;border:none;background:linear-gradient(135deg,#10b981,#0ea5e9);color:#fff;font-size:19px;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(16,185,129,.4);transition:all .2s;display:flex;align-items:center;justify-content:center}
+/* ===== 随机音乐按钮 + 悬停控制面板 ===== */
+.music-wrap{position:fixed;top:124px;right:16px;z-index:500;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.music-btn{width:42px;height:42px;border-radius:50%;border:none;background:linear-gradient(135deg,#10b981,#0ea5e9);color:#fff;font-size:19px;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(16,185,129,.4);transition:all .2s;display:flex;align-items:center;justify-content:center}
 .music-btn:hover{transform:translateY(-1px) scale(1.05)}
 .music-btn.playing{animation:musicPulse 1.6s ease-in-out infinite}
 @keyframes musicPulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}50%{box-shadow:0 0 0 12px rgba(16,185,129,0)}}
-@media(max-width:1100px){.music-btn{top:150px;right:12px;width:36px;height:36px;font-size:16px}}
+.music-popup{display:none;flex-direction:row;gap:6px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:8px;box-shadow:var(--shadow-lg)}
+.music-wrap:hover .music-popup{display:flex}
+.mp-btn{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);cursor:pointer;font-size:14px;font-family:var(--font-sans);transition:all .15s;display:flex;align-items:center;justify-content:center}
+.mp-btn:hover{border-color:var(--primary);background:var(--primary-light);color:var(--primary)}
+@media(max-width:1100px){.music-wrap{top:150px;right:12px}.music-btn{width:36px;height:36px;font-size:16px}}
 
 /* ===== 状态栏（时间/天气/倒计时） ===== */
 .status-bar{position:fixed;left:var(--sidebar-width);right:0;bottom:0;height:34px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);font-size:12px;color:var(--text-secondary);z-index:400;white-space:nowrap;overflow:hidden}
@@ -749,7 +754,7 @@ body.sb-collapsed .status-bar{left:0}
 [data-theme="dark"] .status-bar{background:rgba(15,23,42,.88);color:#a9b8cf}
 
 /* ===== 天气背景动效 ===== */
-.weather-canvas{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.45}
+.weather-canvas{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.65}
 .lightning-flash{position:fixed;inset:0;pointer-events:none;background:#fff;opacity:0;z-index:1;display:none}
 .fog-layer{position:fixed;inset:0;pointer-events:none;z-index:1;display:none;background:linear-gradient(180deg,rgba(190,205,220,.16),rgba(215,226,238,.26))}
 
@@ -2629,7 +2634,14 @@ body.sb-collapsed .status-bar{left:0}
 
 <!-- ===== 建议栏按钮（全局固定右上角） ===== -->
 <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
-<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放无版权音乐（30分钟）">🎵</button>
+<div class="music-wrap">
+  <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放无版权人声歌曲（30分钟）">🎵</button>
+  <div class="music-popup">
+    <button class="mp-btn" onclick="musicPlay()" title="播放">▶</button>
+    <button class="mp-btn" onclick="musicPause()" title="暂停">⏸</button>
+    <button class="mp-btn" onclick="musicNext()" title="下一曲">⏭</button>
+  </div>
+</div>
 
 <!-- ===== 建议栏弹窗 ===== -->
 <div class="suggest-overlay" id="suggestOverlay">
@@ -3586,14 +3598,14 @@ function startWeatherEffect(type, code) {
   if (type === 'fog') { fog.style.display = 'block'; return; }
 
   const heavy = (code === 65 || code === 63 || code >= 95);
-  const density = type === 'snow' ? 90 : (type === 'thunder' ? 170 : (heavy ? 160 : 105));
+  const density = type === 'snow' ? 140 : (type === 'thunder' ? 240 : (heavy ? 220 : 150));
   const P = [];
   for (let i = 0; i < density; i++) {
     P.push({
       x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-      sp: (type === 'snow' ? 0.7 + Math.random() * 1.6 : 4 + Math.random() * 7) * (heavy ? 1.6 : 1),
-      len: (type === 'rain' || type === 'thunder') ? 9 + Math.random() * 10 : 5 + Math.random() * 5,
-      r: type === 'snow' ? 1.5 + Math.random() * 2.5 : 1,
+      sp: (type === 'snow' ? 1 + Math.random() * 2 : 5 + Math.random() * 8) * (heavy ? 1.7 : 1),
+      len: (type === 'rain' || type === 'thunder') ? 14 + Math.random() * 14 : 6 + Math.random() * 6,
+      r: type === 'snow' ? 2.5 + Math.random() * 3.5 : 1.4 + Math.random() * 0.8,
       sw: Math.random() * Math.PI * 2
     });
   }
@@ -3601,12 +3613,12 @@ function startWeatherEffect(type, code) {
   const frame = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (const p of P) {
-      if (type === 'snow') { p.y += p.sp; p.x += Math.sin(p.sw) * 0.6; }
-      else if (type === 'rain' || type === 'thunder') { p.y += p.sp; p.x += (heavy ? 1.5 : 0.5); }
+      if (type === 'snow') { p.y += p.sp; p.x += Math.sin(p.sw) * 0.7; }
+      else if (type === 'rain' || type === 'thunder') { p.y += p.sp; p.x += (heavy ? 2 : 0.8); }
       if (p.y > canvas.height) { p.y = -20; p.x = Math.random() * canvas.width; }
       ctx.beginPath();
-      if (type === 'snow') { ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,.75)'; ctx.fill(); }
-      else { ctx.strokeStyle = 'rgba(120,165,220,.4)'; ctx.lineWidth = p.r; ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.sp * 0.5, p.y - p.len); ctx.stroke(); }
+      if (type === 'snow') { ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fill(); }
+      else { ctx.strokeStyle = 'rgba(120,165,220,.6)'; ctx.lineWidth = p.r; ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.sp * 0.55, p.y - p.len); ctx.stroke(); }
     }
     if (type === 'thunder') {
       const now = Date.now();
@@ -3665,11 +3677,16 @@ function startHealthTimer() {
   }, 30000);
 }
 
-// ===== 随机音乐（无版权 SoundHelix） =====
-const MUSIC_LIST = Array.from({ length: 16 }, (_, i) => ({
-  url: `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${i + 1}.mp3`,
-  title: `随机曲目 ${i + 1}`
-}));
+// ===== 随机音乐（公有领域人声歌曲，无版权） =====
+const MUSIC_LIST = [
+  { url: 'https://archive.org/download/www.VintageSense.com-Vintage-Indian-Music-32/09301_indian_music_VintageSense.com_1959_Naya_Sansar_1959_Kanaihya_re_kanaihya_Lata_Usha_Mageshkar_VintageSense.com_song_id_09301.mp3', title: '印度老歌 · Kanaihya' },
+  { url: 'https://archive.org/download/www.VintageSense.com-Vintage-Indian-Music-32/09303_indian_music_VintageSense.com_1959_O_Tera_Kya_Kehna_1959_Aa_Jaa_Aa_Jaa_Ke_Dil_Ko_Lata_VintageSense.com_song_id_09303.mp3', title: '印度老歌 · Aa Jaa' },
+  { url: 'https://archive.org/download/www.VintageSense.com-Vintage-Indian-Music-32/09305_indian_music_VintageSense.com_1959_O_Tera_Kya_Kehna_1959_Dil_Maange_Dil_De_Doon_I_Suman_Kalyanpur_Manna_Dey_Mahendar_Kapoor_VintageSense.com_song_id_09305.mp3', title: '印度老歌 · Dil Maange' },
+  { url: 'https://archive.org/download/LebaneseOldSong3/Aataba.mp3', title: '黎巴嫩老歌 · Aataba' },
+  { url: 'https://archive.org/download/LebaneseOldSong3/Ah%20Ya%20Zain.mp3', title: '黎巴嫩老歌 · Ah Ya Zain' },
+  { url: 'https://archive.org/download/BizetCarmenCluytens/01CarmenOpera_Ouverture.mp3', title: '卡门 · 序曲' },
+  { url: 'https://archive.org/download/BizetCarmenCluytens/02CarmenOpera_Act1.mp3', title: '卡门 · 第一幕' }
+];
 let audio = null, musicTimer = null, musicPlaying = false;
 
 function stopMusic() {
@@ -3702,6 +3719,16 @@ function playRandomMusic() {
 }
 function toggleMusic() {
   if (musicPlaying) { stopMusic(); return; }
+  playRandomMusic();
+}
+function musicPlay() {
+  if (musicPlaying) { if (audio && audio.paused) audio.play().catch(() => {}); return; }
+  playRandomMusic();
+}
+function musicPause() {
+  if (audio && !audio.paused) audio.pause();
+}
+function musicNext() {
   playRandomMusic();
 }
 
