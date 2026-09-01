@@ -712,6 +712,25 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .tb{line-height:1.25}
 .vip-card table th:first-child,.vip-card table td:first-child{width:44%;white-space:nowrap}
 .stage-body .demo-box p{text-wrap:pretty;word-break:break-word}
+
+/* ===== 建议栏 ===== */
+.suggest-btn{position:absolute;top:14px;right:24px;z-index:3;padding:6px 16px;border:none;border-radius:18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 10px rgba(139,92,246,.35);transition:all .2s}
+.suggest-btn:hover{transform:translateY(-1px);box-shadow:0 6px 16px rgba(139,92,246,.45)}
+.suggest-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1050;display:none;align-items:center;justify-content:center;padding:20px}
+.suggest-overlay.show{display:flex}
+.suggest-card{background:var(--card-bg);border-radius:16px;box-shadow:var(--shadow-lg);max-width:520px;width:100%;padding:24px 24px 20px}
+.suggest-head{display:flex;align-items:center;justify-content:space-between;font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px}
+.suggest-close{width:30px;height:30px;border-radius:50%;border:none;background:var(--bg);color:var(--text-muted);cursor:pointer;font-size:15px}
+.suggest-close:hover{background:var(--primary-light);color:var(--primary)}
+.suggest-text{font-size:13px;color:var(--text-secondary);line-height:1.8;margin-bottom:14px}
+.suggest-card textarea{width:100%;min-height:110px;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font-sans);color:var(--text);background:var(--bg);resize:vertical;box-sizing:border-box;outline:none}
+.suggest-card textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,.12)}
+.suggest-actions{display:flex;align-items:center;gap:14px;margin-top:12px}
+.suggest-submit{padding:9px 26px;border:none;border-radius:22px;background:linear-gradient(135deg,#1a56db,#0e3fa9);color:#fff;font-size:14px;font-weight:700;cursor:pointer;font-family:var(--font-sans)}
+.suggest-submit:hover{filter:brightness(1.1)}
+.suggest-submit:disabled{opacity:.6;cursor:not-allowed}
+.suggest-msg{font-size:13px;font-weight:600}
+@media(max-width:768px){.suggest-btn{position:static;display:inline-block;margin-bottom:8px}}
 </style>
 </head>
 <body>
@@ -818,6 +837,7 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
     <!-- ================================================================ -->
     <section class="stage active" id="stage-0">
       <div class="stage-hero">
+        <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
         <div class="home-float" style="top:28px;right:70px;font-size:34px">📚</div>
         <div class="home-float" style="top:74px;right:190px;font-size:26px;animation-delay:1.2s">🎓</div>
         <div class="home-float" style="bottom:22px;left:90px;font-size:30px;animation-delay:.6s">💪</div>
@@ -2572,6 +2592,19 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
   <iframe class="browser-frame" id="browserFrame" src="about:blank" title="站内浏览"></iframe>
 </div>
 
+<!-- ===== 建议栏弹窗 ===== -->
+<div class="suggest-overlay" id="suggestOverlay">
+  <div class="suggest-card">
+    <div class="suggest-head">💡 建议栏<button class="suggest-close" onclick="toggleSuggest()">✕</button></div>
+    <p class="suggest-text">一届又一届的毕业生使用中不断改进，欢迎你提出宝贵建议，让这个助手越来越好，更好地帮助下一届学弟学妹完成毕业论文。</p>
+    <textarea id="suggestInput" placeholder="写下你的改进建议（功能、内容、使用体验…）" maxlength="2000"></textarea>
+    <div class="suggest-actions">
+      <button class="suggest-submit" onclick="submitSuggest()">提交建议</button>
+      <span class="suggest-msg" id="suggestMsg"></span>
+    </div>
+  </div>
+</div>
+
 <!-- Mobile toggle -->
 <button class="sb-expand" id="sbExpand" onclick="toggleSidebar()" title="展开侧边栏">»</button>
 <button class="mobile-toggle" id="mobileToggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
@@ -3386,11 +3419,48 @@ function toggleSidebar() {
   sbPersist();
 }
 
+// ===== Cloudflare 访问计数 & 建议栏 =====
+const WORKER_URL = 'https://thesis-assistant-api.leooelcn.workers.dev';
+
+async function loadCounter() {
+  try {
+    const r = await fetch(WORKER_URL, { cache: 'no-store' });
+    const d = await r.json();
+    const pv = document.getElementById('busuanzi_value_site_pv');
+    const uv = document.getElementById('busuanzi_value_site_uv');
+    if (pv && typeof d.pv === 'number') pv.textContent = d.pv;
+    if (uv && typeof d.uv === 'number') uv.textContent = d.uv;
+  } catch (e) { /* 计数失败不阻塞页面 */ }
+}
+
+function toggleSuggest() {
+  const ov = document.getElementById('suggestOverlay');
+  ov.classList.toggle('show');
+  if (ov.classList.contains('show')) setTimeout(() => { try { document.getElementById('suggestInput').focus(); } catch (e) {} }, 100);
+}
+
+async function submitSuggest() {
+  const inp = document.getElementById('suggestInput');
+  const msg = document.getElementById('suggestMsg');
+  const text = (inp.value || '').trim();
+  if (!text) { msg.textContent = '请先写下建议内容'; msg.style.color = 'var(--danger)'; return; }
+  const btn = document.querySelector('.suggest-submit');
+  btn.disabled = true; btn.textContent = '提交中…';
+  try {
+    const r = await fetch(WORKER_URL + '/suggest', { method: 'POST', body: text });
+    const d = await r.json();
+    if (d.ok) { msg.textContent = '✅ 感谢你的建议！'; msg.style.color = 'var(--success)'; inp.value = ''; }
+    else { msg.textContent = '提交失败，请稍后再试'; msg.style.color = 'var(--danger)'; }
+  } catch (e) { msg.textContent = '提交失败（网络问题）'; msg.style.color = 'var(--danger)'; }
+  btn.disabled = false; btn.textContent = '提交建议';
+}
+
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   initGate();
   initSidebarUI();
+  loadCounter();
 
   // Restore persisted state
   if (Array.isArray(store.visited)) visitedStages = new Set(store.visited.filter(v => STAGES.includes(v)));
@@ -3467,6 +3537,5 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 </script>
-<script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
 </body>
 </html>

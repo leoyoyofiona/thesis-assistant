@@ -1,0 +1,7 @@
+name = "thesis-assistant-api"
+main = "worker.js"
+compatibility_date = "2026-01-01"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "d2064fa8352140bcbdf15e654ec5fff6"
