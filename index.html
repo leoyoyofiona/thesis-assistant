@@ -732,6 +732,13 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .suggest-msg{font-size:13px;font-weight:600}
 @media(max-width:1100px){.suggest-btn{top:102px;right:12px;padding:5px 12px;font-size:12px}}
 
+/* ===== 随机音乐按钮 ===== */
+.music-btn{position:fixed;top:124px;right:16px;z-index:500;width:42px;height:42px;border-radius:50%;border:none;background:linear-gradient(135deg,#10b981,#0ea5e9);color:#fff;font-size:19px;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(16,185,129,.4);transition:all .2s;display:flex;align-items:center;justify-content:center}
+.music-btn:hover{transform:translateY(-1px) scale(1.05)}
+.music-btn.playing{animation:musicPulse 1.6s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{box-shadow:0 0 0 0 rgba(16,185,129,.5)}50%{box-shadow:0 0 0 12px rgba(16,185,129,0)}}
+@media(max-width:1100px){.music-btn{top:150px;right:12px;width:36px;height:36px;font-size:16px}}
+
 /* ===== 状态栏（时间/天气/倒计时） ===== */
 .status-bar{position:fixed;left:var(--sidebar-width);right:0;bottom:0;height:34px;display:flex;align-items:center;gap:10px;padding:0 14px;background:rgba(255,255,255,.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-top:1px solid var(--border);font-size:12px;color:var(--text-secondary);z-index:400;white-space:nowrap;overflow:hidden}
 body.sb-collapsed .status-bar{left:0}
@@ -2622,6 +2629,7 @@ body.sb-collapsed .status-bar{left:0}
 
 <!-- ===== 建议栏按钮（全局固定右上角） ===== -->
 <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
+<button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放无版权音乐（30分钟）">🎵</button>
 
 <!-- ===== 建议栏弹窗 ===== -->
 <div class="suggest-overlay" id="suggestOverlay">
@@ -3655,6 +3663,46 @@ function startHealthTimer() {
     }
     lastTick = now;
   }, 30000);
+}
+
+// ===== 随机音乐（无版权 SoundHelix） =====
+const MUSIC_LIST = Array.from({ length: 16 }, (_, i) => ({
+  url: `https://www.soundhelix.com/examples/mp3/SoundHelix-Song-${i + 1}.mp3`,
+  title: `随机曲目 ${i + 1}`
+}));
+let audio = null, musicTimer = null, musicPlaying = false;
+
+function stopMusic() {
+  if (audio) { audio.pause(); audio.src = ''; }
+  clearTimeout(musicTimer); musicTimer = null;
+  musicPlaying = false;
+  const btn = document.getElementById('musicBtn');
+  if (btn) { btn.classList.remove('playing'); btn.title = '随机播放无版权音乐（30分钟）'; }
+}
+function playRandomMusic() {
+  const t = MUSIC_LIST[Math.floor(Math.random() * MUSIC_LIST.length)];
+  if (!audio) {
+    audio = new Audio();
+    audio.addEventListener('ended', () => { if (musicPlaying) playRandomMusic(); });
+  }
+  audio.src = t.url;
+  musicPlaying = true;
+  audio.play().catch(() => {
+    musicPlaying = false;
+    clearTimeout(musicTimer); musicTimer = null;
+    const b = document.getElementById('musicBtn');
+    if (b) b.classList.remove('playing');
+    showToast('音乐播放失败（网络原因，请再点一次）');
+  });
+  const btn = document.getElementById('musicBtn');
+  if (btn) { btn.classList.add('playing'); btn.title = '停止音乐（当前：' + t.title + '）'; }
+  showToast('🎵 正在播放：' + t.title + '（无版权音乐，30分钟后自动停止）');
+  clearTimeout(musicTimer);
+  musicTimer = setTimeout(stopMusic, 30 * 60 * 1000);
+}
+function toggleMusic() {
+  if (musicPlaying) { stopMusic(); return; }
+  playRandomMusic();
 }
 
 // ===== Init =====
