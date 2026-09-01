@@ -765,6 +765,10 @@ body.sb-collapsed .status-bar{left:0}
 .weather-canvas{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.65}
 .lightning-flash{position:fixed;inset:0;pointer-events:none;background:#fff;opacity:0;z-index:1;display:none}
 .fog-layer{position:fixed;inset:0;pointer-events:none;z-index:1;display:none;background:linear-gradient(180deg,rgba(190,205,220,.16),rgba(215,226,238,.26))}
+.weather-icon{position:fixed;top:calc(var(--header-height) + 14px);right:34px;z-index:1;pointer-events:none;font-size:52px;line-height:1;opacity:.42;user-select:none;animation:wxFloat 6s ease-in-out infinite}
+.weather-icon.sun{animation:wxFloat 6s ease-in-out infinite,sunGlow 4.5s ease-in-out infinite}
+@keyframes wxFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes sunGlow{0%,100%{filter:drop-shadow(0 0 8px rgba(253,224,71,.35))}50%{filter:drop-shadow(0 0 24px rgba(253,224,71,.7))}}
 
 /* ===== 健康提醒 ===== */
 .toast{position:fixed;left:50%;bottom:60px;transform:translateX(-50%) translateY(20px);background:var(--card-bg);color:var(--text);border:1px solid var(--primary);border-left:4px solid var(--primary);border-radius:10px;padding:12px 20px;font-size:14px;box-shadow:var(--shadow-lg);opacity:0;transition:all .4s;z-index:900;max-width:88vw;text-align:center}
@@ -2669,6 +2673,7 @@ body.sb-collapsed .status-bar{left:0}
 <canvas id="weatherCanvas" class="weather-canvas"></canvas>
 <div id="lightningFlash" class="lightning-flash"></div>
 <div id="fogLayer" class="fog-layer"></div>
+<div class="weather-icon" id="weatherIcon" aria-hidden="true"></div>
 
 <!-- ===== 状态栏（时间/天气/倒计时） ===== -->
 <div class="status-bar" id="statusBar">
@@ -3608,24 +3613,25 @@ function initCountdown() {
 }
 
 function weatherType(code) {
-  if (code == null) return { t: 'none', label: '天气未知' };
-  if (code === 0) return { t: 'none', label: '晴' };
-  if (code === 1) return { t: 'none', label: '多云' };
-  if (code <= 3) return { t: 'none', label: '阴' };
-  if (code <= 48) return { t: 'fog', label: '雾' };
-  if (code <= 55) return { t: 'rain', label: '小雨' };
-  if (code <= 57) return { t: 'rain', label: '毛毛雨' };
-  if (code === 61) return { t: 'rain', label: '小雨' };
-  if (code === 63) return { t: 'rain', label: '中雨' };
-  if (code === 65) return { t: 'rain', label: '大雨' };
-  if (code <= 67) return { t: 'rain', label: '雨' };
-  if (code <= 77) return { t: 'snow', label: '雪' };
-  if (code <= 82) return { t: 'rain', label: '阵雨' };
-  if (code <= 86) return { t: 'snow', label: '阵雪' };
-  if (code <= 99) return { t: 'thunder', label: '雷雨' };
-  return { t: 'none', label: '未知' };
+  if (code == null) return { t: 'none', icon: 'sun', label: '天气未知' };
+  if (code === 0) return { t: 'none', icon: 'sun', label: '晴' };
+  if (code === 1) return { t: 'none', icon: 'partly', label: '多云' };
+  if (code <= 3) return { t: 'none', icon: 'cloud', label: '阴' };
+  if (code <= 48) return { t: 'fog', icon: 'fog', label: '雾' };
+  if (code <= 55) return { t: 'rain', icon: 'rain', label: '小雨' };
+  if (code <= 57) return { t: 'rain', icon: 'rain', label: '毛毛雨' };
+  if (code === 61) return { t: 'rain', icon: 'rain', label: '小雨' };
+  if (code === 63) return { t: 'rain', icon: 'rain', label: '中雨' };
+  if (code === 65) return { t: 'rain', icon: 'rain', label: '大雨' };
+  if (code <= 67) return { t: 'rain', icon: 'rain', label: '雨' };
+  if (code <= 77) return { t: 'snow', icon: 'snow', label: '雪' };
+  if (code <= 82) return { t: 'rain', icon: 'rain', label: '阵雨' };
+  if (code <= 86) return { t: 'snow', icon: 'snow', label: '阵雪' };
+  if (code <= 99) return { t: 'thunder', icon: 'thunder', label: '雷雨' };
+  return { t: 'none', icon: 'sun', label: '未知' };
 }
 const WE_EMOJI = { none: '🌤', fog: '🌫', rain: '🌧', snow: '❄️', thunder: '⛈', wind: '🌬' };
+const WX_ICON = { sun: '☀️', partly: '⛅', cloud: '☁️', fog: '🌫️', rain: '🌧️', snow: '🌨️', thunder: '⛈️', wind: '🌬️' };
 
 let weatherRAF = null;
 function startWeatherEffect(type, code) {
@@ -3683,15 +3689,17 @@ function startWeatherEffect(type, code) {
 
 async function loadWeather() {
   const el = document.getElementById('sbWeather');
+  const iconEl = document.getElementById('weatherIcon');
   try {
     const r = await fetch(WORKER_URL + '/weather', { cache: 'no-store' });
     const d = await r.json();
     const wt = weatherType(d.code);
-    if (d.wind >= 25 && (wt.t === 'none')) wt.t = 'wind';
+    if (d.wind >= 25 && (wt.t === 'none')) { wt.t = 'wind'; wt.icon = 'wind'; }
     let label = `${WE_EMOJI[wt.t] || '🌤'} ${d.city || ''}`;
     if (typeof d.temp === 'number') label += ` ${d.temp}℃`;
     label += ` ${wt.label}`;
     if (el) el.textContent = label;
+    if (iconEl) { iconEl.textContent = WX_ICON[wt.icon] || '☀️'; iconEl.className = 'weather-icon ' + (wt.icon || 'sun'); }
     startWeatherEffect(wt.t, d.code);
   } catch (e) { if (el) el.textContent = '🌤 天气加载失败'; }
 }
