@@ -651,6 +651,25 @@ section.stage .stage-body{font-size:15px}
 [data-theme="dark"] .node-card.current{background:#2b2310}
 @media(max-width:1200px){.node-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:768px){.node-grid{grid-template-columns:1fr}}
+
+/* ===== 站内浏览器视图 ===== */
+.browser-overlay{position:fixed;left:var(--sidebar-width);top:var(--header-height);right:0;bottom:0;z-index:400;background:var(--card-bg);display:none;flex-direction:column;box-shadow:-6px 0 20px rgba(15,23,42,.15)}
+.browser-overlay.show{display:flex}
+body.sb-collapsed .browser-overlay{left:0}
+.browser-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;border-bottom:1px solid var(--border);background:var(--bg);flex-shrink:0;flex-wrap:nowrap}
+.browser-title{font-size:14px;font-weight:700;color:var(--text);max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex-shrink:0}
+.browser-url{font-size:11.5px;color:var(--text-muted);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.browser-btn{padding:6px 14px;border-radius:8px;border:1px solid var(--border);background:var(--card-bg);color:var(--text-secondary);cursor:pointer;font-size:13px;font-family:var(--font-sans);transition:all .15s;flex-shrink:0}
+.browser-btn:hover{border-color:var(--primary);color:var(--primary)}
+.browser-btn.primary{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:600}
+.browser-btn.primary:hover{background:var(--primary-dark)}
+.browser-frame{flex:1;border:none;width:100%;background:#fff}
+.browser-tip{padding:6px 16px;font-size:11.5px;color:#92400e;background:#fffbeb;border-bottom:1px solid #fde68a;flex-shrink:0}
+@media(max-width:768px){
+  .browser-overlay{left:0;top:0}
+  .browser-title{max-width:110px}
+  .browser-url{display:none}
+}
 </style>
 </head>
 <body>
@@ -727,7 +746,7 @@ section.stage .stage-body{font-size:15px}
     <!-- Built dynamically -->
   </nav>
   <div class="sidebar-footer">
-    <a class="site-btn" href="https://dengzhimin-site.onrender.com" target="_blank" rel="noopener" title="LEODENG 个人小站">🌟 强烈推荐我的个人小站</a>
+    <a class="site-btn" href="https://dengzhimin-site.onrender.com" target="_blank" rel="noopener" onclick="openSite('https://dengzhimin-site.onrender.com','LEODENG 个人小站');return false;" title="LEODENG 个人小站">🌟 强烈推荐我的个人小站</a>
   </div>
   <div class="sidebar-resizer" id="sidebarResizer" title="← 拖动可调整宽度 →"></div>
 </aside>
@@ -2501,6 +2520,19 @@ section.stage .stage-body{font-size:15px}
   </div>
 </main>
 
+<!-- ===== 站内浏览器视图 ===== -->
+<div class="browser-overlay" id="browserOverlay">
+  <div class="browser-bar">
+    <button class="browser-btn" onclick="closeBrowser()">← 返回</button>
+    <span class="browser-title" id="browserTitle">网站</span>
+    <span class="browser-url" id="browserUrl"></span>
+    <button class="browser-btn primary" onclick="openBrowserNew()">🔗 在新窗口打开</button>
+    <button class="browser-btn" onclick="closeBrowser()">✕</button>
+  </div>
+  <div class="browser-tip">💡 部分网站禁止内嵌显示（页面可能为空白），如遇空白请点击右上角「🔗 在新窗口打开」。</div>
+  <iframe class="browser-frame" id="browserFrame" src="about:blank" title="站内浏览"></iframe>
+</div>
+
 <!-- Mobile toggle -->
 <button class="sb-expand" id="sbExpand" onclick="toggleSidebar()" title="展开侧边栏">»</button>
 <button class="mobile-toggle" id="mobileToggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
@@ -2677,7 +2709,7 @@ function buildSidebar() {
     ${SITE_CATS.map(cat => `
     <div class="sidebar-label cat">${cat.title}</div>
     <div class="link-grid">
-      ${cat.items.map(l => `<a class="link-item" href="${l.url}" target="_blank" rel="noopener" title="${l.desc}"><span class="li-icon">${l.icon}</span><span class="li-name">${l.name}</span></a>`).join('')}
+      ${cat.items.map(l => `<a class="link-item" href="${l.url}" target="_blank" rel="noopener" onclick="openSite('${l.url}','${l.name}');return false;" title="${l.desc}"><span class="li-icon">${l.icon}</span><span class="li-name">${l.name}</span></a>`).join('')}
     </div>`).join('')}`;
   nav.innerHTML = `
     <div class="stage-group">
@@ -3243,6 +3275,33 @@ function initTheme() {
   } catch (e) {}
 }
 
+// ===== 站内浏览器视图 =====
+function openSite(url, name) {
+  const ov = document.getElementById('browserOverlay');
+  if (!ov) return;
+  document.getElementById('browserFrame').src = url;
+  document.getElementById('browserTitle').textContent = name || '网站';
+  document.getElementById('browserUrl').textContent = url;
+  ov.classList.add('show');
+}
+function closeBrowser() {
+  const ov = document.getElementById('browserOverlay');
+  if (!ov) return;
+  ov.classList.remove('show');
+  document.getElementById('browserFrame').src = 'about:blank';
+}
+function openBrowserNew() {
+  const url = document.getElementById('browserFrame').src;
+  if (!url || url === 'about:blank') return;
+  const a = document.createElement('a');
+  a.href = url;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 // ===== Sidebar resize & collapse =====
 const SB_STORE = 'thesis-sidebar';
 function sbLoad() { try { return JSON.parse(localStorage.getItem(SB_STORE)) || {}; } catch (e) { return {}; } }
@@ -3332,7 +3391,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Escape closes
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeSearch();
+    if (e.key === 'Escape') {
+      if (document.getElementById('browserOverlay').classList.contains('show')) closeBrowser();
+      else closeSearch();
+    }
     if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
     if (e.key === '/' && document.activeElement === document.body) { e.preventDefault(); openSearch(); }
   });
