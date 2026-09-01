@@ -46,6 +46,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .sub-item{display:flex;align-items:center;padding:7px 24px 7px 60px;cursor:pointer;font-size:13px;color:var(--text-secondary);transition:all .12s;border-left:3px solid transparent;text-decoration:none}
 .sub-item:hover{color:var(--primary);background:var(--primary-light)}
 .sub-item.active{color:var(--primary);font-weight:600;background:var(--primary-light);border-left-color:var(--primary)}
+.stage-header,.sub-item,.sidebar-label,.sidebar-brand h1,.sidebar-brand p,.site-btn,.progress-info{white-space:nowrap}
 .sidebar-footer{padding:12px 24px;border-top:1px solid var(--border);display:flex;gap:8px}
 .sidebar-footer button{flex:1;padding:8px 0;border:1px solid var(--border);border-radius:var(--radius);font-size:12px;cursor:pointer;transition:all .15s;background:var(--card-bg);color:var(--text-secondary);font-family:var(--font-sans)}
 .sidebar-footer button:hover{background:var(--primary-light);color:var(--primary);border-color:var(--primary)}
@@ -2871,6 +2872,7 @@ function buildSidebar() {
     ${linkBlock}
   `;
   updateProgress();
+  computeSidebarMinWidth();
 }
 
 function toggleStage(id) {
@@ -3448,6 +3450,36 @@ const SB_STORE = 'thesis-sidebar';
 function sbLoad() { try { return JSON.parse(localStorage.getItem(SB_STORE)) || {}; } catch (e) { return {}; } }
 let sbState = sbLoad();
 function sbPersist() { try { localStorage.setItem(SB_STORE, JSON.stringify(sbState)); } catch (e) {} }
+let SB_MIN_W = 200;
+
+function measureSidebarItemWidth(el) {
+  const s = el.style;
+  const prev = { w: s.width, mw: s.minWidth, mx: s.maxWidth, f: s.flex, ws: s.whiteSpace, js: s.justifySelf };
+  s.whiteSpace = 'nowrap'; s.minWidth = '0'; s.maxWidth = 'none'; s.flex = 'none'; s.justifySelf = 'start'; s.width = 'max-content';
+  const w = el.getBoundingClientRect().width;
+  s.width = prev.w; s.minWidth = prev.mw; s.maxWidth = prev.mx; s.flex = prev.f; s.whiteSpace = prev.ws; s.justifySelf = prev.js;
+  return w;
+}
+
+function computeSidebarMinWidth() {
+  const sb = document.getElementById('sidebar');
+  if (!sb) { SB_MIN_W = 200; return; }
+  // 临时展开所有子菜单，确保隐藏的子项也被测量
+  const subs = sb.querySelectorAll('.stage-sub');
+  const subStates = Array.from(subs, el => el.style.display);
+  subs.forEach(el => { el.style.display = 'block'; });
+  const sbRect = sb.getBoundingClientRect();
+  const sels = '.stage-header, .sub-item, .sidebar-label, .sidebar-brand h1, .sidebar-brand p, .sidebar-brand .brand-logo, .site-btn, .progress-info';
+  let maxRight = 0;
+  sb.querySelectorAll(sels).forEach(el => {
+    const left = el.getBoundingClientRect().left - sbRect.left;
+    const w = measureSidebarItemWidth(el);
+    const right = left + w;
+    if (right > maxRight) maxRight = right;
+  });
+  subs.forEach((el, i) => { el.style.display = subStates[i]; });
+  SB_MIN_W = Math.min(560, Math.max(200, Math.ceil(maxRight + 6)));
+}
 
 function initSidebarUI() {
   const root = document.documentElement;
@@ -3459,7 +3491,7 @@ function initSidebarUI() {
     let dragging = false, startX = 0, startW = 280;
     const onMove = (e) => {
       if (!dragging) return;
-      const w = Math.min(560, Math.max(200, startW + (e.clientX - startX)));
+      const w = Math.min(560, Math.max(SB_MIN_W, startW + (e.clientX - startX)));
       root.style.setProperty('--sidebar-width', w + 'px');
       sbState.width = Math.round(w);
     };
@@ -3483,6 +3515,11 @@ function initSidebarUI() {
     window.addEventListener('pointerup', end);
     window.addEventListener('pointercancel', end);
   }
+  let rzResizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(rzResizeTimer);
+    rzResizeTimer = setTimeout(computeSidebarMinWidth, 200);
+  });
 }
 
 function toggleSidebar() {
