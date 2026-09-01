@@ -400,6 +400,8 @@ body.sb-collapsed .sb-expand{display:flex;align-items:center;justify-content:cen
   section.stage:not(#stage-0) > .stage-body > .card{margin-bottom:0;padding:20px 24px}
   section.stage:not(#stage-0) .stage-hero{padding:22px 32px}
   .stage-nav{max-width:1440px}
+  #stage-1 .card:nth-child(2){grid-column:1/3}
+  #stage-3 .card:nth-child(2){grid-column:1/3}
 }
 
 /* ===== Lively: accents & colors ===== */
@@ -448,10 +450,10 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
 [data-theme="dark"] .header-contact{--pulse-bg:linear-gradient(135deg,#3a2a10,#3a1d24);background:linear-gradient(135deg,#3a2a10,#3a1d24);color:#fbbf24;border-color:#a16207}
 @media(max-width:1300px){.search-hint{display:none}}
 .tab-btn{white-space:nowrap;font-size:12.5px}
-.tb{display:inline-block;white-space:nowrap;margin-left:6px;font-size:11px;line-height:1.6;vertical-align:middle}
-.tb-w{color:#d97706;background:#fffbeb;border:1px solid #fde68a;border-radius:4px;padding:0 5px}
-.tb-d{color:#0369a1;background:#f0f9ff;border:1px solid #bae6fd;border-radius:4px;padding:0 5px}
-.tb-s{color:#475569;background:#f1f5f9;border:1px solid var(--border);border-radius:4px;padding:0 6px}
+.tb{display:inline-block;white-space:nowrap;margin-left:5px;font-size:10.5px;line-height:1.6;vertical-align:middle}
+.tb-w{color:#d97706;background:#fffbeb;border:1px solid #fde68a;border-radius:4px;padding:0 4px}
+.tb-d{color:#0369a1;background:#f0f9ff;border:1px solid #bae6fd;border-radius:4px;padding:0 4px}
+.tb-s{color:#475569;background:#f1f5f9;border:1px solid var(--border);border-radius:4px;padding:0 5px}
 .stage-body p,.stage-body li,.stage-body td{text-wrap:pretty}
 .sub-item{padding-left:46px;font-size:12.5px}
 .stage-body .card h4{font-size:13.5px;margin:12px 0 6px}
@@ -478,9 +480,53 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
 [data-theme="dark"] .tb-w{background:#3a2a10;border-color:#a16207;color:#fbbf24}
 [data-theme="dark"] .tb-d{background:#0c3a5a;border-color:#0e7490;color:#7dd3fc}
 [data-theme="dark"] .tb-s{background:#1e293b;border-color:var(--border);color:#cbd5e1}
+
+/* ===== v7: 选题排版整齐 + 动感交互 ===== */
+[id^="topic-"] ul{list-style:none;padding:0}
+[id^="topic-"] li{display:flex;align-items:center;gap:8px;padding:7px 4px;border-bottom:1px dashed var(--border-light);line-height:1.5}
+[id^="topic-"] li:last-child{border-bottom:none}
+[id^="topic-"] .tb-w{margin-left:auto}
+[id^="topic-"] h4{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:700;color:var(--text);border-left:3px solid #3b82f6;padding-left:8px;margin:14px 0 4px}
+[id^="topic-"] h4:nth-of-type(even){border-left-color:#8b5cf6}
+.tabs-wrap{overflow-x:auto}
+.top-glow{position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#3b82f6,#8b5cf6,#f59e0b,#10b981,#3b82f6);background-size:300% 100%;animation:glowMove 7s linear infinite;z-index:999;pointer-events:none}
+@keyframes glowMove{0%{background-position:0% 0}100%{background-position:300% 0}}
+.stage.active .card{animation:cardIn .45s ease both}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.stage.active .card:nth-child(1){animation-delay:.03s}
+.stage.active .card:nth-child(2){animation-delay:.08s}
+.stage.active .card:nth-child(3){animation-delay:.13s}
+.stage.active .card:nth-child(4){animation-delay:.18s}
+.stage.active .card:nth-child(5){animation-delay:.23s}
+.stage.active .card:nth-child(6){animation-delay:.28s}
+.stage.active .card:nth-child(7){animation-delay:.33s}
+.stage.active .card:nth-child(8){animation-delay:.38s}
+.stage.active .card:nth-child(9){animation-delay:.43s}
+.stage.active .card:nth-child(10){animation-delay:.48s}
+.stage.active .card:nth-child(11){animation-delay:.53s}
+.stage.active .card:nth-child(12){animation-delay:.58s}
+.sub-item:hover{transform:translateX(4px)}
+.stage-header:active,.tab-btn:active,.btn-next:active,.btn-prev:active,.sb-close:active{transform:scale(.97)}
+.gate-card{animation:gatePop .45s cubic-bezier(.2,.9,.3,1.2) both}
+@keyframes gatePop{from{opacity:0;transform:scale(.92) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s ease}
+.home-float{position:absolute;pointer-events:none;opacity:.32;animation:floatY 6s ease-in-out infinite;z-index:0;filter:drop-shadow(0 4px 8px rgba(0,0,0,.15))}
+@keyframes floatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+@media(max-width:768px){.home-float{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* ===== 侧边栏常用工具与网站 ===== */
+.link-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 12px 12px}
+.link-item{display:flex;align-items:center;gap:6px;padding:7px 8px;border:1px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--text-secondary);text-decoration:none;background:var(--bg);transition:all .15s}
+.link-item:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);transform:translateX(2px)}
+.link-item .li-icon{font-size:13px;flex-shrink:0}
+.link-item .li-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+[data-theme="dark"] .link-item{background:#0f1b33}
 </style>
 </head>
 <body>
+
+<div class="top-glow"></div>
 
 <!-- ===== Gate Overlay (密码 → 免责声明 → 引导) ===== -->
 <div class="gate-overlay" id="gateOverlay">
@@ -582,6 +628,10 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
     <!-- ================================================================ -->
     <section class="stage active" id="stage-0">
       <div class="stage-hero">
+        <div class="home-float" style="top:28px;right:70px;font-size:34px">📚</div>
+        <div class="home-float" style="top:74px;right:190px;font-size:26px;animation-delay:1.2s">🎓</div>
+        <div class="home-float" style="bottom:22px;left:90px;font-size:30px;animation-delay:.6s">💪</div>
+        <div class="home-float" style="bottom:44px;right:130px;font-size:22px;animation-delay:1.8s">⭐</div>
         <h2>毕业论文全程导航</h2>
         <p>从选题到最终提交，一站式掌握每个阶段的规范、操作与时间节点。</p>
         <div class="stage-meta">
@@ -2432,6 +2482,22 @@ function getSubs(id) {
     .map(h3 => stripNumPrefix(h3.textContent));
 }
 
+// ===== 侧边栏常用工具与网站 =====
+const SITE_LINKS = [
+  { icon: '📚', name: '知网 CNKI',      url: 'https://www.cnki.net',            desc: '中文学术文献检索下载' },
+  { icon: '🖥', name: '维普毕业论文系统', url: 'https://vpcs.cqvip.com/organ/lib/xzzjnu/', desc: '选题/任务书/提交/查重' },
+  { icon: '🔎', name: 'Google 学术',     url: 'https://scholar.google.com',     desc: '英文文献检索' },
+  { icon: '🎓', name: '百度学术',        url: 'https://xueshu.baidu.com',       desc: '中英文文献聚合检索' },
+  { icon: '📊', name: '国家统计局',      url: 'https://data.stats.gov.cn',      desc: '宏观经济数据' },
+  { icon: '🚢', name: '海关总署',        url: 'https://www.customs.gov.cn',     desc: '进出口贸易数据' },
+  { icon: '🌐', name: 'UN Comtrade',    url: 'https://comtradeplus.un.org',    desc: '全球贸易数据库' },
+  { icon: '🌍', name: '世界银行数据',    url: 'https://data.worldbank.org',     desc: '各国经济指标' },
+  { icon: '📝', name: '问卷星',          url: 'https://www.wjx.cn',             desc: '问卷设计与发放' },
+  { icon: '🗂', name: '知网研学',        url: 'https://x.cnki.net',             desc: '文献阅读与笔记管理' },
+  { icon: '🔖', name: 'Zotero',         url: 'https://www.zotero.org',         desc: '文献管理软件' },
+  { icon: '🏫', name: '浙师大图书馆',    url: 'https://lib.zjnu.edu.cn',        desc: '数据库入口/VPN' }
+];
+
 // ===== Build Sidebar =====
 function stageGroupHTML(s, subs, isTool) {
   const active = currentStage === s.id;
@@ -2455,6 +2521,11 @@ function buildSidebar() {
   const nav = document.getElementById('sidebarNav');
   const stageGroups = stages.map(s => stageGroupHTML(s, getSubs(s.id), false)).join('');
   const toolGroups = tools.map(t => stageGroupHTML(t, getSubs(t.id), true)).join('');
+  const linkBlock = `
+    <div class="sidebar-label">常用工具与网站</div>
+    <div class="link-grid">
+      ${SITE_LINKS.map(l => `<a class="link-item" href="${l.url}" target="_blank" rel="noopener" title="${l.desc}"><span class="li-icon">${l.icon}</span><span class="li-name">${l.name}</span></a>`).join('')}
+    </div>`;
   nav.innerHTML = `
     <div class="stage-group">
       <div class="stage-header${currentStage === HOME_ID ? ' active' : ''}" data-stage="0" onclick="toggleStage(0)">
@@ -2465,6 +2536,7 @@ function buildSidebar() {
     ${stageGroups}
     <div class="sidebar-label">参考工具</div>
     ${toolGroups}
+    ${linkBlock}
   `;
   updateProgress();
 }
