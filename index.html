@@ -1063,6 +1063,7 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
               <tr><td class="label">Google Scholar</td><td><code>scholar.google.com</code></td><td>支持自然语言检索；点击"被引用次数"追踪后续研究；设置"提醒"自动推送新论文</td></tr>
               <tr><td class="label">ScienceDirect</td><td><code>sciencedirect.com</code></td><td>Elsevier旗下，电商/国贸高质量期刊多；高级检索支持"Abstract/Title/Keywords"组合</td></tr>
               <tr><td class="label">ResearchGate</td><td><code>researchgate.net</code></td><td>可直接向作者索要全文；关注领域专家，获取最新工作论文</td></tr>
+              <tr><td class="label">必应学术</td><td><code>cn.bing.com/academic</code></td><td>Google 学术的大陆替代；中英文关键词均可检索，结果附引用格式</td></tr>
             </tbody>
           </table>
 
@@ -1085,6 +1086,19 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
               <tr><td class="label">4. 命名规范</td><td>下载的PDF统一命名为"年份_第一作者_期刊_标题关键词.pdf"，方便日后查找</td></tr>
             </tbody>
           </table>
+
+          <h4>⑤ AI 辅助检索与读文献（大陆可用，仅作辅助）</h4>
+          <table>
+            <thead><tr><th>工具</th><th>用途</th><th>注意</th></tr></thead>
+            <tbody>
+              <tr><td class="label">秘塔AI搜索 / 天工AI / 纳米AI</td><td>AI 检索并自动整理文献综述要点</td><td>结果可能出错，必须回原文核对</td></tr>
+              <tr><td class="label">Kimi</td><td>上传 PDF 长文献，快速总结与提问</td><td>引用原文时需人工核对</td></tr>
+              <tr><td class="label">DeepSeek / 豆包</td><td>概念解释、研究思路讨论、表达润色</td><td>核心分析与结论必须自己写</td></tr>
+            </tbody>
+          </table>
+          <div class="alert alert-warning" style="margin-top:10px;">
+            <strong>提醒：</strong>Google 学术在大陆访问不稳定，查英文文献可先用<strong>必应学术</strong>或校内图书馆数据库（ScienceDirect / Springer / Emerald 等）；AI 仅用于检索、总结、润色，正文与数据必须自己完成（AIGC 检测 ≤30%）。
+          </div>
         </div>
 
         <div class="card">
@@ -2501,15 +2515,31 @@ function getSubs(id) {
     .map(h3 => stripNumPrefix(h3.textContent));
 }
 
-// ===== 侧边栏常用工具与网站（按类别，全部大陆可访问，每类偶数项对齐） =====
+// ===== 侧边栏常用工具与网站（围绕本科毕业论文写作，9 类 48 个，全部大陆可访问，每类偶数对齐） =====
 const SITE_CATS = [
-  { title: '🔍 查文献方面', items: [
+  { title: '🔍 中文文献与期刊', items: [
     { icon: '📚', name: '知网 CNKI',     url: 'https://www.cnki.net',              desc: '中文学术文献检索下载' },
-    { icon: '🔎', name: '必应学术',      url: 'https://cn.bing.com/academic',     desc: '国际学术文献(大陆可访问)' },
-    { icon: '🎓', name: '百度学术',      url: 'https://xueshu.baidu.com',         desc: '中英文文献聚合+引用格式' },
     { icon: '🗂', name: '万方数据',      url: 'https://www.wanfangdata.com.cn',   desc: '期刊/学位论文检索' },
     { icon: '🖥', name: '维普期刊',      url: 'https://qikan.cqvip.com',          desc: '中文期刊检索(查重同家)' },
+    { icon: '🏛', name: '国家哲社文献中心', url: 'https://www.ncpssd.org',       desc: '哲学社会科学免费文献' },
+    { icon: '📑', name: '人大复印资料',  url: 'https://www.rdfybk.com',           desc: '商科核心期刊转载库' },
     { icon: '🏫', name: '浙师大图书馆',  url: 'https://lib.zjnu.edu.cn',          desc: '数据库入口/VPN' }
+  ]},
+  { title: '🌏 英文文献与期刊', items: [
+    { icon: '📗', name: 'ScienceDirect', url: 'https://www.sciencedirect.com',    desc: '爱思唯尔经管期刊' },
+    { icon: '📘', name: 'SpringerLink', url: 'https://link.springer.com',         desc: '施普林格学术期刊' },
+    { icon: '📙', name: 'Wiley',        url: 'https://onlinelibrary.wiley.com',  desc: '威利经管期刊' },
+    { icon: '📕', name: 'Taylor&Francis', url: 'https://www.tandfonline.com',    desc: 'T&F 社科期刊' },
+    { icon: '🟢', name: 'Emerald',      url: 'https://www.emerald.com',           desc: '经管类权威期刊' },
+    { icon: '🔵', name: 'SAGE 期刊',    url: 'https://journals.sagepub.com',      desc: 'SAGE 社科期刊' }
+  ]},
+  { title: '🤖 AI 检索与读文献（大陆可用）', items: [
+    { icon: '🔍', name: '秘塔AI搜索',   url: 'https://metaso.cn',                 desc: 'AI搜索+文献综述整理' },
+    { icon: '📖', name: 'Kimi',         url: 'https://kimi.moonshot.cn',          desc: '长文献阅读/总结' },
+    { icon: '💡', name: 'DeepSeek',     url: 'https://chat.deepseek.com',         desc: '对话问答·辅助构思' },
+    { icon: '🌊', name: '豆包',         url: 'https://www.doubao.com',            desc: 'AI助手·资料整理' },
+    { icon: '🔮', name: '天工AI',       url: 'https://www.tiangong.cn',           desc: 'AI搜索+文档分析' },
+    { icon: '🧬', name: '纳米AI搜索',   url: 'https://www.n.cn',                  desc: 'AI搜索+文库检索' }
   ]},
   { title: '📊 数据分析方面', items: [
     { icon: '📊', name: '国家统计局',    url: 'https://data.stats.gov.cn',        desc: '宏观经济数据' },
@@ -2531,9 +2561,11 @@ const SITE_CATS = [
     { icon: '📚', name: '语雀',          url: 'https://www.yuque.com',            desc: '知识库/写作笔记' },
     { icon: '💻', name: 'WPS Office',   url: 'https://www.wps.cn',                desc: '文档排版/三线表' }
   ]},
-  { title: '🎨 润色方面', items: [
+  { title: '🎨 翻译与润色方面', items: [
     { icon: '🌐', name: 'DeepL 翻译',   url: 'https://www.deepl.com',             desc: '中英互译(文献/摘要)' },
     { icon: '📖', name: '有道翻译',      url: 'https://fanyi.youdao.com',         desc: '中英互译/词典' },
+    { icon: '🎯', name: '百度翻译',      url: 'https://fanyi.baidu.com',          desc: '多语互译' },
+    { icon: '🔤', name: '必应翻译',      url: 'https://cn.bing.com/translator',   desc: '英文整篇翻译' },
     { icon: '🪄', name: '秘塔写作猫',   url: 'https://xiezuocat.com',             desc: '中文校对润色' },
     { icon: '✏️', name: '1Checker',    url: 'https://www.1checker.com',          desc: '英文语法校对' }
   ]},
@@ -2543,7 +2575,7 @@ const SITE_CATS = [
     { icon: '📈', name: '镝数图表',     url: 'https://dycharts.com',               desc: '数据图表制作' },
     { icon: '🎨', name: 'Canva 可画',   url: 'https://www.canva.cn',               desc: 'PPT/封面/海报' }
   ]},
-  { title: '🌐 学科专业方面（商科）', items: [
+  { title: '🌐 商科资讯与报告', items: [
     { icon: '🛒', name: '网经社',        url: 'https://www.100ec.cn',              desc: '电商行业报告/数据' },
     { icon: '📡', name: '艾瑞咨询',      url: 'https://www.iresearch.cn',          desc: '消费/电商研究报告' },
     { icon: '🧪', name: '阿里研究院',    url: 'https://www.aliresearch.com',       desc: '电商/数字经济研究' },
