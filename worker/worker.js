@@ -36,6 +36,20 @@ export default {
       }
     }
 
+    // ===== 随机歌曲（公有领域曲库，KV 存 1799 首） =====
+    if (url.pathname === '/song') {
+      try {
+        const list = JSON.parse((await env.KV.get('songlist')) || '[]');
+        if (list.length) {
+          const s = list[Math.floor(Math.random() * list.length)];
+          return json({ ok: true, url: s.url, title: s.title });
+        }
+        return json({ ok: false });
+      } catch (e) {
+        return json({ ok: false });
+      }
+    }
+
     // ===== 天气（按访问者 IP 定位，Open-Meteo 免费天气） =====
     if (url.pathname === '/weather') {
       try {

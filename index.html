@@ -3677,17 +3677,16 @@ function startHealthTimer() {
   }, 30000);
 }
 
-// ===== 随机音乐（公有领域人声歌曲，无版权） =====
-const MUSIC_LIST = [
-  { url: 'https://archive.org/download/www.VintageSense.com-Vintage-Indian-Music-32/09301_indian_music_VintageSense.com_1959_Naya_Sansar_1959_Kanaihya_re_kanaihya_Lata_Usha_Mageshkar_VintageSense.com_song_id_09301.mp3', title: '印度老歌 · Kanaihya' },
-  { url: 'https://archive.org/download/www.VintageSense.com-Vintage-Indian-Music-32/09303_indian_music_VintageSense.com_1959_O_Tera_Kya_Kehna_1959_Aa_Jaa_Aa_Jaa_Ke_Dil_Ko_Lata_VintageSense.com_song_id_09303.mp3', title: '印度老歌 · Aa Jaa' },
-  { url: 'https://archive.org/download/www.VintageSense.com-Vintage-Indian-Music-32/09305_indian_music_VintageSense.com_1959_O_Tera_Kya_Kehna_1959_Dil_Maange_Dil_De_Doon_I_Suman_Kalyanpur_Manna_Dey_Mahendar_Kapoor_VintageSense.com_song_id_09305.mp3', title: '印度老歌 · Dil Maange' },
-  { url: 'https://archive.org/download/LebaneseOldSong3/Aataba.mp3', title: '黎巴嫩老歌 · Aataba' },
-  { url: 'https://archive.org/download/LebaneseOldSong3/Ah%20Ya%20Zain.mp3', title: '黎巴嫩老歌 · Ah Ya Zain' },
-  { url: 'https://archive.org/download/BizetCarmenCluytens/01CarmenOpera_Ouverture.mp3', title: '卡门 · 序曲' },
-  { url: 'https://archive.org/download/BizetCarmenCluytens/02CarmenOpera_Act1.mp3', title: '卡门 · 第一幕' }
-];
+// ===== 随机音乐（公有领域曲库，Worker /song 随机取，1799 首） =====
 let audio = null, musicTimer = null, musicPlaying = false;
+
+async function fetchRandomSong() {
+  try {
+    const r = await fetch(WORKER_URL + '/song', { cache: 'no-store' });
+    const d = await r.json();
+    return d && d.ok ? d : null;
+  } catch (e) { return null; }
+}
 
 function stopMusic() {
   if (audio) { audio.pause(); audio.src = ''; }
@@ -3696,13 +3695,14 @@ function stopMusic() {
   const btn = document.getElementById('musicBtn');
   if (btn) { btn.classList.remove('playing'); btn.title = '随机播放无版权音乐（30分钟）'; }
 }
-function playRandomMusic() {
-  const t = MUSIC_LIST[Math.floor(Math.random() * MUSIC_LIST.length)];
+async function playRandomMusic() {
+  const s = await fetchRandomSong();
+  if (!s) { showToast('音乐加载失败（网络原因，请再试一次）'); return; }
   if (!audio) {
     audio = new Audio();
     audio.addEventListener('ended', () => { if (musicPlaying) playRandomMusic(); });
   }
-  audio.src = t.url;
+  audio.src = s.url;
   musicPlaying = true;
   audio.play().catch(() => {
     musicPlaying = false;
@@ -3712,8 +3712,8 @@ function playRandomMusic() {
     showToast('音乐播放失败（网络原因，请再点一次）');
   });
   const btn = document.getElementById('musicBtn');
-  if (btn) { btn.classList.add('playing'); btn.title = '停止音乐（当前：' + t.title + '）'; }
-  showToast('🎵 正在播放：' + t.title + '（无版权音乐，30分钟后自动停止）');
+  if (btn) { btn.classList.add('playing'); btn.title = '停止音乐（当前：' + (s.title || '随机歌曲') + '）'; }
+  showToast('🎵 正在播放：' + (s.title || '随机歌曲') + '（无版权曲库，30分钟后自动停止）');
   clearTimeout(musicTimer);
   musicTimer = setTimeout(stopMusic, 30 * 60 * 1000);
 }
