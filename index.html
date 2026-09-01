@@ -2357,15 +2357,7 @@ section.stage .stage-body{font-size:15px}
       <div class="stage-body">
 
         <div class="card">
-          <h3>送审意见 4 大类应对</h3>
-          <div class="tabs-wrap">
-            <button class="tab-btn active" onclick="switchInnerTab(this,'fb-design')">研究设计与论证类</button>
-            <button class="tab-btn" onclick="switchInnerTab(this,'fb-depth')">内容深度与创新类</button>
-            <button class="tab-btn" onclick="switchInnerTab(this,'fb-format')">格式文字规范类</button>
-            <button class="tab-btn" onclick="switchInnerTab(this,'fb-selfcheck')">送审前自查清单</button>
-          </div>
-
-          <div class="tab-content-area active" id="fb-design">
+          <h3>研究设计与论证类（送审高频意见）</h3>
             <div class="fb-item">
               <div class="fb-q">意见：选题过大、范围太宽，无法深入。</div>
               <div class="fb-a"><strong>诊断：</strong>题目未聚焦到具体行业/平台/人群。<br><strong>对策：</strong>把研究范围收敛到具体对象（如"以××平台为例"），题目表述准确、一般不超过20字。</div>
@@ -2398,7 +2390,8 @@ section.stage .stage-body{font-size:15px}
             </div>
           </div>
 
-          <div class="tab-content-area" id="fb-depth">
+        <div class="card">
+          <h3>内容深度与创新类（送审高频意见）</h3>
             <div class="fb-item">
               <div class="fb-q">意见：文献综述是"流水账"。</div>
               <div class="fb-a"><strong>诊断：</strong>按作者逐条罗列（"×××（2020）认为…×××（2021）提出…"）。<br><strong>对策：</strong>按主题分类归纳，对不同研究做对比评述，明确指出现有研究空白。</div>
@@ -2426,7 +2419,8 @@ section.stage .stage-body{font-size:15px}
             </div>
           </div>
 
-          <div class="tab-content-area" id="fb-format">
+        <div class="card">
+          <h3>格式文字规范类（送审高频意见）</h3>
             <div class="fb-item">
               <div class="fb-q">意见：表格不是三线表（有竖线、线型粗细错误）。</div>
               <div class="fb-a"><strong>诊断：</strong>直接用Word默认表格。<br><strong>对策：</strong>顶线1.5磅、栏目线0.75磅、底线1.5磅，取消竖线；续表标注"续表×-×"。</div>
@@ -2459,7 +2453,8 @@ section.stage .stage-body{font-size:15px}
             </div>
           </div>
 
-          <div class="tab-content-area" id="fb-selfcheck">
+        <div class="card">
+          <h3>送审前自查清单</h3>
             <div class="alert alert-info" style="margin-bottom:14px;">
               <strong>使用方法：</strong>提交送审前逐条核对，点击打勾（勾选状态会自动保存）。
             </div>
@@ -2478,9 +2473,6 @@ section.stage .stage-body{font-size:15px}
               <li><span class="check">✓</span>匿名抽检稿已按要求处理（如被抽中）</li>
             </ul>
           </div>
-
-        </div>
-
       </div>
       <div class="stage-nav">
         <button class="btn-prev" onclick="goStage(8)">← 上一模块：维普操作指南</button>
