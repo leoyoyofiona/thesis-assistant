@@ -3718,32 +3718,21 @@ function applyWeather(code, city, temp, wind) {
   startWeatherEffect(wt.t, code);
 }
 
-async function loadWeatherFallback() {
-  if (!('geolocation' in navigator)) return false;
+async function loadWeather() {
+  const el = document.getElementById('sbWeather');
+  // 浙师大行知学院所在地：金华市（不再依赖 workers.dev，网页直接请求天气接口）
+  const LAT = 29.08, LON = 119.65;
   try {
-    const pos = await new Promise((res, rej) => {
-      navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000, maximumAge: 300000 });
-    });
-    const wd = await fetchJSON(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`, 10000);
+    const wd = await fetchJSON(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current_weather=true`, 10000);
     const cw = wd.current_weather || {};
     const code = typeof cw.weathercode === 'number' ? cw.weathercode : null;
     const temp = typeof cw.temperature === 'number' ? Math.round(cw.temperature) : null;
     const wind = typeof cw.windspeed === 'number' ? Math.round(cw.windspeed) : null;
-    if (code == null && temp == null) return false;
-    applyWeather(code, '当前位置', temp, wind);
-    return true;
-  } catch (e) { return false; }
-}
-
-async function loadWeather() {
-  const el = document.getElementById('sbWeather');
-  try {
-    const d = await fetchJSON(WORKER_URL + '/weather', 10000);
-    applyWeather(d.code, d.city, d.temp, d.wind);
-    return;
-  } catch (e) {}
-  if (await loadWeatherFallback()) return;
-  if (el) { el.textContent = '🌤 天气加载失败（点我重试）'; el.style.cursor = 'pointer'; el.onclick = loadWeather; }
+    if (code == null && temp == null) throw new Error('no data');
+    applyWeather(code, '金华', temp, wind);
+  } catch (e) {
+    if (el) { el.textContent = '🌤 天气加载失败（点我重试）'; el.style.cursor = 'pointer'; el.onclick = loadWeather; }
+  }
 }
 
 let activeMs = 0, lastTick = Date.now(), w30 = false, w60 = false, nightWarned = false;
