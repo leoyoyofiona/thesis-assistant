@@ -382,6 +382,8 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
   .tl-node{display:flex;align-items:center;gap:14px;text-align:left;min-width:0;padding:8px 0 8px 14px;border-left:3px solid var(--border)}
   .tl-node .tl-dot{margin:0;flex-shrink:0}
   .search-hint{display:none}
+  .weather-icon{display:none}
+  .stage-body table,.demo-box table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;max-width:100%}
 }
 
 /* ===== Sidebar resize / collapse ===== */
@@ -3547,7 +3549,7 @@ function toggleSidebar() {
 // ===== Cloudflare 访问计数 & 建议栏 =====
 const WORKER_URL = 'https://thesis-assistant-api.leooelcn.workers.dev';
 
-async function fetchJSON(url, timeoutMs = 8000) {
+async function fetchJSON(url, timeoutMs = 15000) {
   const ctrl = new AbortController();
   const t = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
@@ -3703,25 +3705,44 @@ function startWeatherEffect(type, code) {
   frame();
 }
 
-async function loadWeather() {
+function applyWeather(code, city, temp, wind) {
   const el = document.getElementById('sbWeather');
   const iconEl = document.getElementById('weatherIcon');
-  for (let i = 0; i < 3; i++) {
-    try {
-      const d = await fetchJSON(WORKER_URL + '/weather');
-      const wt = weatherType(d.code);
-      if (d.wind >= 25 && (wt.t === 'none')) { wt.t = 'wind'; wt.icon = 'wind'; }
-      let label = `${WE_EMOJI[wt.t] || '🌤'} ${d.city || ''}`;
-      if (typeof d.temp === 'number') label += ` ${d.temp}℃`;
-      label += ` ${wt.label}`;
-      if (el) el.textContent = label;
-      if (iconEl) { iconEl.textContent = WX_ICON[wt.icon] || '☀️'; iconEl.className = 'weather-icon ' + (wt.icon || 'sun'); }
-      startWeatherEffect(wt.t, d.code);
-      return;
-    } catch (e) {
-      if (i < 2) await new Promise(res => setTimeout(res, 1500));
-    }
-  }
+  const wt = weatherType(code);
+  if (typeof wind === 'number' && wind >= 25 && wt.t === 'none') { wt.t = 'wind'; wt.icon = 'wind'; }
+  let label = `${WE_EMOJI[wt.t] || '🌤'} ${city || ''}`;
+  if (typeof temp === 'number') label += ` ${temp}℃`;
+  label += ` ${wt.label}`;
+  if (el) el.textContent = label;
+  if (iconEl) { iconEl.textContent = WX_ICON[wt.icon] || '☀️'; iconEl.className = 'weather-icon ' + (wt.icon || 'sun'); }
+  startWeatherEffect(wt.t, code);
+}
+
+async function loadWeatherFallback() {
+  if (!('geolocation' in navigator)) return false;
+  try {
+    const pos = await new Promise((res, rej) => {
+      navigator.geolocation.getCurrentPosition(res, rej, { timeout: 8000, maximumAge: 300000 });
+    });
+    const wd = await fetchJSON(`https://api.open-meteo.com/v1/forecast?latitude=${pos.coords.latitude}&longitude=${pos.coords.longitude}&current_weather=true`, 10000);
+    const cw = wd.current_weather || {};
+    const code = typeof cw.weathercode === 'number' ? cw.weathercode : null;
+    const temp = typeof cw.temperature === 'number' ? Math.round(cw.temperature) : null;
+    const wind = typeof cw.windspeed === 'number' ? Math.round(cw.windspeed) : null;
+    if (code == null && temp == null) return false;
+    applyWeather(code, '当前位置', temp, wind);
+    return true;
+  } catch (e) { return false; }
+}
+
+async function loadWeather() {
+  const el = document.getElementById('sbWeather');
+  try {
+    const d = await fetchJSON(WORKER_URL + '/weather', 10000);
+    applyWeather(d.code, d.city, d.temp, d.wind);
+    return;
+  } catch (e) {}
+  if (await loadWeatherFallback()) return;
   if (el) { el.textContent = '🌤 天气加载失败（点我重试）'; el.style.cursor = 'pointer'; el.onclick = loadWeather; }
 }
 
@@ -3756,7 +3777,7 @@ let audio = null, musicTimer = null, musicPlaying = false;
 
 async function fetchRandomSong() {
   try {
-    const d = await fetchJSON(WORKER_URL + '/song', 8000);
+    const d = await fetchJSON(WORKER_URL + '/song', 12000);
     return d && d.ok ? d : null;
   } catch (e) { return null; }
 }
