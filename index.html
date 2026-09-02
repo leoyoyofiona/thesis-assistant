@@ -3718,18 +3718,29 @@ function applyWeather(code, city, temp, wind) {
   startWeatherEffect(wt.t, code);
 }
 
+const CITY_ZH = { beijing:'北京', shanghai:'上海', guangzhou:'广州', shenzhen:'深圳', hangzhou:'杭州', jinhua:'金华', chengdu:'成都', wuhan:'武汉', nanjing:'南京', xian:'西安', chongqing:'重庆', tianjin:'天津', suzhou:'苏州', ningbo:'宁波', wenzhou:'温州', fuzhou:'福州', xiamen:'厦门', jinan:'济南', qingdao:'青岛', zhengzhou:'郑州', changsha:'长沙', hefei:'合肥', nanchang:'南昌', kunming:'昆明', guiyang:'贵阳', nanning:'南宁', haikou:'海口', lanzhou:'兰州', urumqi:'乌鲁木齐', hohhot:'呼和浩特', harbin:'哈尔滨', changchun:'长春', shenyang:'沈阳', shijiazhuang:'石家庄', taiyuan:'太原', xining:'西宁', yinchuan:'银川', lhasa:'拉萨', macau:'澳门', macao:'澳门', 'hong kong':'香港', taipei:'台北', kaohsiung:'高雄', dongguan:'东莞', foshan:'佛山', zhuhai:'珠海', shaoxing:'绍兴', jiaxing:'嘉兴', huzhou:'湖州', taizhou:'台州', lishui:'丽水', quzhou:'衢州', zhoushan:'舟山', seoul:'首尔', tokyo:'东京', 'new york':'纽约', 'los angeles':'洛杉矶', london:'伦敦', paris:'巴黎', bangkok:'曼谷', singapore:'新加坡', sydney:'悉尼', melbourne:'墨尔本', toronto:'多伦多', vancouver:'温哥华' };
+
 async function loadWeather() {
   const el = document.getElementById('sbWeather');
-  // 浙师大行知学院所在地：金华市（不再依赖 workers.dev，网页直接请求天气接口）
-  const LAT = 29.08, LON = 119.65;
+  // 1) 按访问者 IP 定位城市（免费接口 ipwho.is，无密钥）
+  let lat = 29.08, lon = 119.65, city = '金华'; // 兜底：浙师大所在地
   try {
-    const wd = await fetchJSON(`https://api.open-meteo.com/v1/forecast?latitude=${LAT}&longitude=${LON}&current_weather=true`, 10000);
+    const g = await fetchJSON('https://ipwho.is/', 5000);
+    if (g && g.success && typeof g.latitude === 'number' && typeof g.longitude === 'number') {
+      lat = g.latitude; lon = g.longitude;
+      const raw = String(g.city || '').trim();
+      city = CITY_ZH[raw.toLowerCase()] || raw || '当前位置';
+    }
+  } catch (e) {}
+  // 2) 请求该城市实时天气
+  try {
+    const wd = await fetchJSON(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`, 10000);
     const cw = wd.current_weather || {};
     const code = typeof cw.weathercode === 'number' ? cw.weathercode : null;
     const temp = typeof cw.temperature === 'number' ? Math.round(cw.temperature) : null;
     const wind = typeof cw.windspeed === 'number' ? Math.round(cw.windspeed) : null;
     if (code == null && temp == null) throw new Error('no data');
-    applyWeather(code, '金华', temp, wind);
+    applyWeather(code, city, temp, wind);
   } catch (e) {
     if (el) { el.textContent = '🌤 天气加载失败（点我重试）'; el.style.cursor = 'pointer'; el.onclick = loadWeather; }
   }
