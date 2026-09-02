@@ -3547,15 +3547,31 @@ function toggleSidebar() {
 // ===== Cloudflare 访问计数 & 建议栏 =====
 const WORKER_URL = 'https://thesis-assistant-api.leooelcn.workers.dev';
 
-async function loadCounter() {
+async function fetchJSON(url, timeoutMs = 8000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
-    const r = await fetch(WORKER_URL, { cache: 'no-store' });
-    const d = await r.json();
-    const pv = document.getElementById('busuanzi_value_site_pv');
-    const uv = document.getElementById('busuanzi_value_site_uv');
-    if (pv && typeof d.pv === 'number') pv.textContent = d.pv;
-    if (uv && typeof d.uv === 'number') uv.textContent = d.uv;
-  } catch (e) { /* 计数失败不阻塞页面 */ }
+    const r = await fetch(url, { cache: 'no-store', signal: ctrl.signal });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } finally { clearTimeout(t); }
+}
+
+async function loadCounter() {
+  for (let i = 0; i < 3; i++) {
+    try {
+      const d = await fetchJSON(WORKER_URL);
+      const pv = document.getElementById('busuanzi_value_site_pv');
+      const uv = document.getElementById('busuanzi_value_site_uv');
+      if (pv && typeof d.pv === 'number') pv.textContent = d.pv;
+      if (uv && typeof d.uv === 'number') uv.textContent = d.uv;
+      return;
+    } catch (e) {
+      if (i < 2) await new Promise(res => setTimeout(res, 1500));
+    }
+  }
+  const pv = document.getElementById('busuanzi_value_site_pv');
+  if (pv) pv.textContent = '—';
 }
 
 function toggleSuggest() {
@@ -3690,18 +3706,23 @@ function startWeatherEffect(type, code) {
 async function loadWeather() {
   const el = document.getElementById('sbWeather');
   const iconEl = document.getElementById('weatherIcon');
-  try {
-    const r = await fetch(WORKER_URL + '/weather', { cache: 'no-store' });
-    const d = await r.json();
-    const wt = weatherType(d.code);
-    if (d.wind >= 25 && (wt.t === 'none')) { wt.t = 'wind'; wt.icon = 'wind'; }
-    let label = `${WE_EMOJI[wt.t] || '🌤'} ${d.city || ''}`;
-    if (typeof d.temp === 'number') label += ` ${d.temp}℃`;
-    label += ` ${wt.label}`;
-    if (el) el.textContent = label;
-    if (iconEl) { iconEl.textContent = WX_ICON[wt.icon] || '☀️'; iconEl.className = 'weather-icon ' + (wt.icon || 'sun'); }
-    startWeatherEffect(wt.t, d.code);
-  } catch (e) { if (el) el.textContent = '🌤 天气加载失败'; }
+  for (let i = 0; i < 3; i++) {
+    try {
+      const d = await fetchJSON(WORKER_URL + '/weather');
+      const wt = weatherType(d.code);
+      if (d.wind >= 25 && (wt.t === 'none')) { wt.t = 'wind'; wt.icon = 'wind'; }
+      let label = `${WE_EMOJI[wt.t] || '🌤'} ${d.city || ''}`;
+      if (typeof d.temp === 'number') label += ` ${d.temp}℃`;
+      label += ` ${wt.label}`;
+      if (el) el.textContent = label;
+      if (iconEl) { iconEl.textContent = WX_ICON[wt.icon] || '☀️'; iconEl.className = 'weather-icon ' + (wt.icon || 'sun'); }
+      startWeatherEffect(wt.t, d.code);
+      return;
+    } catch (e) {
+      if (i < 2) await new Promise(res => setTimeout(res, 1500));
+    }
+  }
+  if (el) { el.textContent = '🌤 天气加载失败（点我重试）'; el.style.cursor = 'pointer'; el.onclick = loadWeather; }
 }
 
 let activeMs = 0, lastTick = Date.now(), w30 = false, w60 = false, nightWarned = false;
@@ -3735,8 +3756,7 @@ let audio = null, musicTimer = null, musicPlaying = false;
 
 async function fetchRandomSong() {
   try {
-    const r = await fetch(WORKER_URL + '/song', { cache: 'no-store' });
-    const d = await r.json();
+    const d = await fetchJSON(WORKER_URL + '/song', 8000);
     return d && d.ok ? d : null;
   } catch (e) { return null; }
 }

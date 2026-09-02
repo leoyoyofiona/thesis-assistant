@@ -59,7 +59,7 @@ export default {
         if (lat && lon) {
           const wr = await fetch(
             `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`,
-            { headers: { 'User-Agent': 'thesis-assistant/1.0' } }
+            { headers: { 'User-Agent': 'thesis-assistant/1.0' }, signal: AbortSignal.timeout(6000) }
           );
           if (wr.ok) {
             const wd = await wr.json();
