@@ -3775,10 +3775,16 @@ function startHealthTimer() {
 // ===== 随机音乐（公有领域曲库，Worker /song 随机取，1799 首） =====
 let audio = null, musicTimer = null, musicPlaying = false;
 
+let songCache = null;
 async function fetchRandomSong() {
   try {
-    const d = await fetchJSON(WORKER_URL + '/song', 12000);
-    return d && d.ok ? d : null;
+    if (!songCache) {
+      const list = await fetchJSON('songs.json', 12000);
+      if (!Array.isArray(list) || !list.length) return null;
+      songCache = list;
+    }
+    const s = songCache[Math.floor(Math.random() * songCache.length)];
+    return { ok: true, url: s.url, title: s.title, artist: s.artist || '' };
   } catch (e) { return null; }
 }
 
