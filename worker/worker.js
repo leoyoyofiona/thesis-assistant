@@ -17,7 +17,7 @@ export default {
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
 
     // ===== 建议弹幕（公开提交/可见 + 敏感词拦截 + 管理删除） =====
-    const ADMIN_PWD = 'xzleo2026';
+    const ADMIN_PWD = 'xz123';
     const BAD_WORDS = ['操你妈','你妈的','他妈的','草泥马','傻逼','傻b','煞笔','傻屌','cnm','wqnmlgb','nmsl','妈的','滚蛋','去死','贱人','妓女','嫖','卖淫','约炮','做爱','色情','裸聊','赌博','博彩','代写论文','代发论文','假学历','办证','毒品','冰毒','海洛因','枪支','弹药','恐怖','暴恐','反动','法轮','台独','藏独','港独','疆独'];
     const hasBad = (s) => BAD_WORDS.some(w => s.toLowerCase().includes(w));
 

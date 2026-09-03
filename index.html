@@ -3901,7 +3901,7 @@ function suggestAdminToggle() {
 function suggestAdminLogin() {
   const pwd = (document.getElementById('suggestAdminPwd') || {}).value || '';
   const m = document.getElementById('suggestAdminMsg');
-  if (pwd.trim() === 'xzleo2026') {
+  if (pwd.trim() === 'xz123') {
     suggestAdmin = true;
     const box = document.getElementById('suggestAdminBox');
     if (box) box.style.display = 'none';
@@ -3911,7 +3911,7 @@ function suggestAdminLogin() {
 async function suggestDelete(id) {
   if (!suggestAdmin) return;
   try {
-    const r = await fetch(WORKER_URL + '/suggest/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xzleo2026', id }) });
+    const r = await fetch(WORKER_URL + '/suggest/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xz123', id }) });
     const d = await r.json();
     if (d.ok) loadSuggestions();
   } catch (e) {}
@@ -3920,7 +3920,7 @@ async function suggestClear() {
   if (!suggestAdmin) return;
   if (!confirm('确定清空全部建议吗？此操作不可恢复。')) return;
   try {
-    const r = await fetch(WORKER_URL + '/suggest/clear', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xzleo2026' }) });
+    const r = await fetch(WORKER_URL + '/suggest/clear', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xz123' }) });
     const d = await r.json();
     if (d.ok) loadSuggestions();
   } catch (e) {}
