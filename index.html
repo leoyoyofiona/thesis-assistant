@@ -3688,8 +3688,8 @@ function danmaku(text, name) {
   const startX = layer.clientWidth;
   el.style.right = (-w - 20) + 'px';
   el.style.opacity = '1';
-  // 动画：从右侧移入→暂停→移出
-  const dur = 9000 + Math.random() * 4000;
+  // 动画：从右侧移入→暂停→缓慢移出
+  const dur = 17000 + Math.random() * 7000;
   el.animate([
     { transform: 'translateX(0)', opacity: 0 },
     { transform: 'translateX(0)', opacity: 1, offset: 0.05 },
