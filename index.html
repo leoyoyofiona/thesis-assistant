@@ -4061,7 +4061,7 @@ async function submitSuggest() {
 }
 
 // ===== 全屏轻弹幕（可悬停暂停 + 点赞） =====
-let danmakuPool = [], danmakuTimer = null, dmPoolTimer = null, dmLane = 0, lastDmId = null;
+let danmakuPool = [], danmakuTimer = null, dmPoolTimer = null, dmLane = 0, lastDmId = null, recentDmKeys = [];
 function dmLikedLoad() { try { return new Set(JSON.parse(localStorage.getItem('dmLiked') || '[]')); } catch (e) { return new Set(); } }
 let dmLiked = dmLikedLoad();
 function dmLikedSave() { try { localStorage.setItem('dmLiked', JSON.stringify([...dmLiked])); } catch (e) {} }
@@ -4086,7 +4086,7 @@ async function refreshDanmakuPool() {
       danmakuPool = list.filter(x => x.text).map(x => ({
         id: x.id || '', text: String(x.text || '').trim(),
         name: (x.name || '').trim(), likes: x.likes || 0
-      })).filter(x => { const k = x.id || (x.name + '|' + x.text); if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 12);
+      })).filter(x => { const k = x.name + '|' + x.text; if (seen[k]) return false; seen[k] = 1; return true; }).slice(0, 14);
       if (danmakuPool.length) return;
     }
   } catch (e) {}
@@ -4170,10 +4170,17 @@ function startDanmaku() {
   danmakuTimer = setInterval(() => {
     if (!danmakuPool.length) return;
     if (document.getElementById('suggestOverlay').classList.contains('show')) return; // 面板开着时不打扰
+    const maxAvoid = Math.min(3, danmakuPool.length - 1);
     let idx = Math.floor(Math.random() * danmakuPool.length);
-    if (danmakuPool.length > 1 && danmakuPool[idx].id === lastDmId) idx = (idx + 1) % danmakuPool.length;
+    const keyOf = s => (s.name || '') + '|' + (s.text || '');
+    for (let g = 0; g < 6 && maxAvoid > 0; g++) {
+      const cand = danmakuPool[idx];
+      if (recentDmKeys.indexOf(keyOf(cand)) === -1) break;
+      idx = (idx + 1) % danmakuPool.length;
+    }
     const s = danmakuPool[idx];
-    lastDmId = s.id;
+    recentDmKeys.push(keyOf(s));
+    if (recentDmKeys.length > maxAvoid) recentDmKeys.shift();
     try { danmaku(s); } catch (e) {}
   }, 11000);
 }

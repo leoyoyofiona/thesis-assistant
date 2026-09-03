@@ -41,7 +41,16 @@ export default {
       }
       if (request.method === 'GET') {
         const list = JSON.parse((await env.KV.get('suggestions')) || '[]');
-        return json(list.slice(-100).map(x => ({ id: x.id, t: x.t, name: x.name || '', text: x.text, likes: x.likes || 0 })).reverse()); // 公开仅返回最近100条
+        // 同人同内容只保留一条，点赞数合并
+        const seen = {};
+        const out = [];
+        for (const x of list) {
+          const k = String(x.name || '') + '|' + String(x.text || '');
+          if (seen[k] != null) { out[seen[k]].likes = (out[seen[k]].likes || 0) + (x.likes || 0); continue; }
+          seen[k] = out.length;
+          out.push({ id: x.id, t: x.t, name: x.name || '', text: x.text, likes: x.likes || 0 });
+        }
+        return json(out.slice(-100).reverse());
       }
     }
     // 点赞接口（按访问者IP指纹去重，同一人不能重复赞同一建议）
