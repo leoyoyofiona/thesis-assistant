@@ -32,7 +32,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .progress-info{display:flex;justify-content:space-between;margin-bottom:6px;font-size:11px;color:var(--text-muted)}
 .progress-track{height:4px;background:var(--border-light);border-radius:2px;margin-bottom:16px;overflow:hidden}
 .progress-fill{height:100%;background:var(--primary);border-radius:2px;transition:width .5s ease;width:0%}
-.sidebar-nav{flex:1;overflow-y:auto;padding:8px 0}
+.sidebar-nav{flex:1;overflow-y:auto;overflow-x:hidden;padding:8px 0}
 .stage-group{margin-bottom:4px}
 .stage-header{display:flex;align-items:center;padding:10px 24px;cursor:pointer;font-size:14px;font-weight:600;color:var(--text);transition:all .15s;border-left:3px solid transparent;user-select:none;gap:10px}
 .stage-header:hover{background:var(--bg)}
@@ -560,11 +560,11 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 /* ===== 侧边栏常用工具与网站 ===== */
-.link-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 12px 12px}
-.link-item{display:flex;align-items:center;gap:6px;padding:7px 8px;border:1px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--text-secondary);text-decoration:none;background:var(--bg);transition:all .15s}
+.link-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 12px 12px;align-items:stretch}
+.link-item{display:flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--text-secondary);text-decoration:none;background:var(--bg);transition:all .15s;min-height:32px}
 .link-item:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);transform:translateX(2px)}
 .link-item .li-icon{font-size:13px;flex-shrink:0}
-.link-item .li-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.link-item .li-name{font-weight:600;white-space:normal;word-break:break-word;overflow-wrap:anywhere;line-height:1.4;display:block;width:100%}
 [data-theme="dark"] .link-item{background:#0f1b33}
 .sidebar-label.cat{margin-top:4px;padding:8px 24px 2px;font-size:10.5px;color:var(--text-muted);letter-spacing:.5px}
 .sidebar-footer .site-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#1a56db,#7c3aed);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;font-family:var(--font-sans);box-shadow:0 0 0 0 rgba(124,58,237,.5);animation:sitePulse 2s ease-in-out infinite;transition:transform .15s}
