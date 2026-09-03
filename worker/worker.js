@@ -44,16 +44,24 @@ export default {
         return json(list.slice(-100).map(x => ({ id: x.id, t: x.t, name: x.name || '', text: x.text, likes: x.likes || 0 })).reverse()); // 公开仅返回最近100条
       }
     }
-    // 点赞接口
+    // 点赞接口（按访问者IP指纹去重，同一人不能重复赞同一建议）
     if (url.pathname === '/suggest/like' && request.method === 'POST') {
       try {
         const j = await request.json();
         let list = JSON.parse((await env.KV.get('suggestions')) || '[]');
         const it = list.find(x => String(x.id) === String(j.id));
         if (!it) return json({ ok: false, msg: '未找到该条' });
+        const ip = (request.headers.get('cf-connecting-ip') || '').trim();
+        const ua = (request.headers.get('user-agent') || 'ua').slice(0, 60);
+        const fp = ip + '|' + ua;
+        const likers = it.likers || [];
+        if (likers.includes(fp)) return json({ ok: true, already: true, likes: it.likes || 0 });
+        likers.push(fp);
+        if (likers.length > 300) likers.splice(0, likers.length - 300);
+        it.likers = likers;
         it.likes = (it.likes || 0) + 1;
         await env.KV.put('suggestions', JSON.stringify(list));
-        return json({ ok: true, likes: it.likes });
+        return json({ ok: true, already: false, likes: it.likes });
       } catch (e) { return json({ ok: false }); }
     }
     // 管理接口：删除单条 / 清空（需站密码）
