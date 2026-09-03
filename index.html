@@ -4198,27 +4198,26 @@ function musicNext() {
 // ===== Init =====
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
-  initGate();
-  initSidebarUI();
-  loadCounter();
-  initClock();
-  initCountdown();
-  loadWeather();
-  startDanmaku();
-  startHealthTimer();
-
-  // Restore persisted state
+  // 先恢复状态与构建侧栏（最关键），任何模块出错都不影响侧栏显示
+  try { initGate(); } catch (e) {}
   if (Array.isArray(store.visited)) visitedStages = new Set(store.visited.filter(v => STAGES.includes(v)));
   if (typeof store.current === 'number') {
     if (STAGES.includes(store.current) || TOOLS.includes(store.current) || store.current === HOME_ID) currentStage = store.current;
   }
-
-  numberCards();
-  buildSidebar();
-  buildSearchIndex();
-  initChecklists();
-  updateBreadcrumb();
-  navigateStage(currentStage);
+  try { initSidebarUI(); } catch (e) {}
+  try { numberCards(); } catch (e) {}
+  try { buildSidebar(); } catch (e) {}
+  // 其余功能各自容错，互不拖累
+  try { buildSearchIndex(); } catch (e) {}
+  try { initChecklists(); } catch (e) {}
+  try { updateBreadcrumb(); } catch (e) {}
+  try { navigateStage(currentStage); } catch (e) {}
+  try { loadCounter(); } catch (e) {}
+  try { initClock(); } catch (e) {}
+  try { initCountdown(); } catch (e) {}
+  try { loadWeather(); } catch (e) {}
+  try { startDanmaku(); } catch (e) {}
+  try { startHealthTimer(); } catch (e) {}
 
   // Search overlay input
   const overlayInput = document.getElementById('searchOverlayInput');
