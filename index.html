@@ -753,9 +753,23 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .suggest-empty{font-size:13px;color:var(--text-muted);text-align:center;padding:18px 0}
 .suggest-name{width:100%;padding:9px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:var(--font-sans);color:var(--text);background:var(--bg);box-sizing:border-box;outline:none;margin-bottom:8px}
 .suggest-name:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,.12)}
-.danmaku-layer{position:fixed;top:calc(var(--header-height) + 10px);left:0;right:0;height:44px;z-index:2;pointer-events:none;overflow:hidden}
-.danmaku-item{position:absolute;top:0;white-space:nowrap;font-size:15px;font-weight:700;color:var(--primary);opacity:0;will-change:transform,opacity;text-shadow:0 0 12px rgba(255,255,255,.7);max-width:70vw;overflow:hidden;text-overflow:ellipsis}
-[data-theme="dark"] .danmaku-item{color:#93b4ff;text-shadow:0 0 12px rgba(0,0,0,.6)}
+.danmaku-layer{position:fixed;top:calc(var(--header-height) + 4px);left:0;right:0;height:110px;z-index:2;pointer-events:none;overflow:visible}
+.danmaku-item{position:absolute;display:flex;flex-direction:column;align-items:flex-start;gap:4px;pointer-events:auto;will-change:transform,opacity;opacity:0;max-width:78vw}
+.dm-main{white-space:nowrap;display:inline-flex;align-items:center;gap:6px;font-size:15px;font-weight:700;color:var(--primary);text-shadow:0 0 12px rgba(255,255,255,.8);background:rgba(255,255,255,.5);padding:3px 12px 3px 14px;border-radius:16px;cursor:default}
+[data-theme="dark"] .dm-main{color:#93b4ff;background:rgba(15,23,42,.6);text-shadow:0 0 12px rgba(0,0,0,.6)}
+.dm-hint{display:inline-flex;align-items:center;gap:2px;font-size:12px;font-weight:600;color:#d97706;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:0 7px;line-height:1.6}
+[data-theme="dark"] .dm-hint{background:#3a2a10;color:#fbbf24;border-color:#a16207}
+.dm-act{display:none;align-items:center;gap:6px;background:var(--card-bg);border:1px solid var(--border);border-radius:12px;padding:4px 8px;box-shadow:var(--shadow-lg);position:relative}
+.danmaku-item:hover .dm-act{display:inline-flex}
+.dm-like-btn{border:1px solid #fca5a5;background:#fff;color:#dc2626;border-radius:12px;padding:2px 10px;font-size:13px;cursor:pointer;font-family:var(--font-sans)}
+.dm-like-btn:hover{background:#fef2f2}
+.dm-like-btn.liked{background:#fee2e2;cursor:default}
+.dm-like-tip{font-size:12px;color:var(--text-muted)}
+.dm-burst{position:absolute;right:4px;top:-18px;font-size:30px;z-index:3;pointer-events:none;animation:dmBurst .9s ease-out forwards}
+@keyframes dmBurst{0%{transform:scale(.3);opacity:1}60%{transform:scale(1.5);opacity:1}100%{transform:scale(.9) translateY(-24px);opacity:0}}
+.sug-like{border:1px solid #fde68a;background:#fffbeb;color:#b45309;border-radius:10px;padding:1px 8px;font-size:11.5px;cursor:pointer;font-family:var(--font-sans);display:inline-flex;align-items:center;gap:3px;margin-top:4px}
+.sug-like:hover{background:#fef3c7}
+.sug-like.liked{background:#fde68a;cursor:default}
 @media(max-width:1100px){.suggest-btn{padding:5px 12px;font-size:12px}}
 
 /* ===== 随机音乐按钮 + 悬停控制面板 ===== */
@@ -3936,11 +3950,25 @@ function renderSuggestions(list) {
   const items = list.map(x => {
     const name = (x.name || '').trim() ? `<span class="sug-name">${escapeHtml(x.name)}</span>` : '<span class="sug-name">匿名同学</span>';
     const txt = String(x.text || '').trim();
-    const del = suggestAdmin ? `<button class="sug-del" onclick="suggestDelete('${escapeHtml(x.id || '')}')">删除</button>` : '';
-    return `<div class="suggest-item"><div class="sug-meta">${name}<span class="sug-tag">${sugMetaTime(x.t)}</span>${del}</div><div>${escapeHtml(txt)}</div></div>`;
+    const id = x.id || '';
+    const liked = dmLiked.has(id);
+    const del = suggestAdmin ? `<button class="sug-del" onclick="suggestDelete('${escapeHtml(id)}')">删除</button>` : '';
+    const like = `<button class="sug-like${liked ? ' liked' : ''}" onclick="likeFromPanel(this,${JSON.stringify(id)})">${liked ? '👍 ' : '👍 '}<b>${x.likes || 0}</b></button>`;
+    return `<div class="suggest-item"><div class="sug-meta">${name}<span class="sug-tag">${sugMetaTime(x.t)}</span>${del}</div><div>${escapeHtml(txt)}</div><div>${like}</div></div>`;
   }).join('');
   const clearRow = suggestAdmin ? '<div class="sug-clear-row"><button class="sug-clear-btn" onclick="suggestClear()">🗑 清空全部</button></div>' : '';
   box.innerHTML = clearRow + items;
+}
+
+async function likeFromPanel(btn, id) {
+  if (!id) return;
+  if (btn.classList.contains('liked')) return;
+  const likes = await apiLike(id);
+  if (likes != null) {
+    dmLiked.add(id); dmLikedSave();
+    btn.classList.add('liked');
+    btn.innerHTML = '👍 <b>' + likes + '</b>';
+  }
 }
 
 async function loadSuggestions() {
@@ -3969,46 +3997,102 @@ async function submitSuggest() {
       msg.textContent = '✅ 已发布，感谢你的建议！'; msg.style.color = 'var(--success)';
       inp.value = '';
       loadSuggestions();
-      danmaku(text, name || '匿名同学');
+      danmaku({ id: (d && d.id) || '', text: text, name: name || '', likes: 0 });
     } else { msg.textContent = d.msg || '提交失败，请稍后再试'; msg.style.color = 'var(--danger)'; }
   } catch (e) { msg.textContent = '提交失败（网络问题）'; msg.style.color = 'var(--danger)'; }
   btn.disabled = false; btn.textContent = '📨 发布建议';
 }
 
-// ===== 全屏轻弹幕 =====
-let danmakuPool = [], danmakuTimer = null;
+// ===== 全屏轻弹幕（可悬停暂停 + 点赞） =====
+let danmakuPool = [], danmakuTimer = null, dmLane = 0;
+function dmLikedLoad() { try { return new Set(JSON.parse(localStorage.getItem('dmLiked') || '[]')); } catch (e) { return new Set(); } }
+let dmLiked = dmLikedLoad();
+function dmLikedSave() { try { localStorage.setItem('dmLiked', JSON.stringify([...dmLiked])); } catch (e) {} }
+
+async function apiLike(id) {
+  try {
+    const r = await fetch(WORKER_URL + '/suggest/like', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id }) });
+    const d = await r.json();
+    return d && d.ok && typeof d.likes === 'number' ? d.likes : null;
+  } catch (e) { return null; }
+}
+
 async function refreshDanmakuPool() {
   try {
     const list = await fetchJSON(WORKER_URL + '/suggest', 6000);
     if (Array.isArray(list) && list.length) {
-      danmakuPool = list.slice(0,12).map(x => ({
-        text: String(x.text || '').trim(),
-        name: (x.name || '').trim() || '匿名同学'
-      })).filter(x => x.text);
+      danmakuPool = list.slice(0, 12).filter(x => x.text).map(x => ({
+        id: x.id || '', text: String(x.text || '').trim(),
+        name: (x.name || '').trim(), likes: x.likes || 0
+      }));
     }
   } catch (e) {}
 }
-function danmaku(text, name) {
+
+function spawnThumb(el) {
+  const t = document.createElement('span');
+  t.className = 'dm-burst'; t.textContent = '👍';
+  el.appendChild(t);
+  setTimeout(() => t.remove(), 950);
+}
+
+async function likeDanmaku(btn) {
+  const item = btn.closest('.danmaku-item');
+  const id = item ? item.dataset.id : '';
+  if (!id) return;
+  if (dmLiked.has(id)) { showDmLikeTip(btn, '已赞过 👍'); return; }
+  spawnThumb(item);
+  const likes = await apiLike(id);
+  if (likes != null) {
+    dmLiked.add(id); dmLikedSave();
+    const hintN = item.querySelector('.dm-hint .dm-n');
+    if (hintN) hintN.textContent = likes;
+    btn.textContent = '👍 已赞（' + likes + '）';
+    btn.classList.add('liked');
+    showDmLikeTip(btn, '');
+  } else { showDmLikeTip(btn, '点赞失败，请重试'); }
+}
+function showDmLikeTip(btn, txt) {
+  const tip = btn.closest('.dm-act').querySelector('.dm-like-tip');
+  if (tip) tip.textContent = txt;
+}
+
+function danmaku(it) {
   const layer = document.getElementById('danmakuLayer');
-  if (!layer) return;
+  if (!it || !layer) return;
+  const text = String(it.text || '').trim();
+  if (!text) return;
+  const name = String(it.name || '').trim();
+  const id = it.id || '';
+  const likes = it.likes || 0;
   const el = document.createElement('div');
   el.className = 'danmaku-item';
-  el.textContent = (name ? name + '：' : '') + text;
+  el.dataset.id = id;
+  const liked = dmLiked.has(id);
+  el.innerHTML =
+    '<span class="dm-main">' + escapeHtml(name ? name + '：' : '') + escapeHtml(text) +
+      '<span class="dm-hint">👍<b class="dm-n">' + likes + '</b></span></span>' +
+    '<span class="dm-act"><button class="dm-like-btn' + (liked ? ' liked' : '') + '" onclick="likeDanmaku(this)">' +
+      (liked ? '👍 已赞' : '👍 点赞') + '</button><span class="dm-like-tip"></span></span>';
   layer.appendChild(el);
-  const w = el.offsetWidth;
+  // 双车道
+  el.style.top = (dmLane % 2 === 0 ? 0 : 52) + 'px';
+  dmLane++;
+  const w = el.querySelector('.dm-main').offsetWidth;
   const startX = layer.clientWidth;
-  el.style.right = (-w - 20) + 'px';
-  el.style.opacity = '1';
-  // 动画：从右侧移入→暂停→缓慢移出
-  const dur = 17000 + Math.random() * 7000;
-  el.animate([
+  const dur = 19000 + Math.random() * 6000;
+  const anim = el.animate([
     { transform: 'translateX(0)', opacity: 0 },
-    { transform: 'translateX(0)', opacity: 1, offset: 0.05 },
-    { transform: `translateX(-${startX + w + 60}px)`, opacity: 1, offset: 0.75 },
-    { transform: `translateX(-${startX + w + 80}px)`, opacity: 0 }
+    { transform: 'translateX(0)', opacity: 1, offset: 0.04 },
+    { transform: `translateX(-${startX + w + 40}px)`, opacity: 1, offset: 0.78 },
+    { transform: `translateX(-${startX + w + 60}px)`, opacity: 0 }
   ], { duration: dur, easing: 'linear' });
-  setTimeout(() => el.remove(), dur + 200);
+  anim.onfinish = () => el.remove();
+  // 悬停暂停 / 移开继续
+  el.addEventListener('mouseenter', () => { if (anim.playState === 'running') anim.pause(); });
+  el.addEventListener('mouseleave', () => { if (anim.playState === 'paused') anim.play(); });
 }
+
 function startDanmaku() {
   refreshDanmakuPool();
   clearInterval(danmakuTimer);
@@ -4016,192 +4100,8 @@ function startDanmaku() {
     if (!danmakuPool.length) return;
     if (document.getElementById('suggestOverlay').classList.contains('show')) return; // 面板开着时不打扰
     const s = danmakuPool[Math.floor(Math.random() * danmakuPool.length)];
-    danmaku(s.text, s.name);
+    danmaku(s);
   }, 11000);
-}
-
-// ===== 时间 / 倒计时 / 天气 / 健康提醒 =====
-const DEADLINES = [
-  { name: '开题答辩', date: '2026-10-14' },
-  { name: '正式答辩', date: '2026-12-14' },
-  { name: '最终稿', date: '2026-12-29' }
-];
-const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
-const pad2 = (n) => (n < 10 ? '0' + n : '' + n);
-
-function initClock() {
-  const el = document.getElementById('sbClock');
-  if (!el) return;
-  const tick = () => {
-    const d = new Date();
-    el.textContent = `📅 ${d.getFullYear()}年${d.getMonth() + 1}月${d.getDate()}日 星期${WEEK[d.getDay()]} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`;
-  };
-  tick();
-  setInterval(tick, 30000);
-}
-
-function initCountdown() {
-  const el = document.getElementById('sbCountdown');
-  if (!el) return;
-  const today = new Date(); today.setHours(0, 0, 0, 0);
-  const parts = DEADLINES.map((dl) => {
-    const t = new Date(dl.date + 'T00:00:00');
-    const days = Math.round((t - today) / 86400000);
-    return days > 0 ? `${dl.name}还有${days}天` : (days === 0 ? `${dl.name}就是今天` : `${dl.name}已过${-days}天`);
-  });
-  el.textContent = '⏳ ' + parts.join(' · ');
-}
-
-function weatherType(code) {
-  if (code == null) return { t: 'none', icon: 'sun', label: '天气未知' };
-  if (code === 0) return { t: 'none', icon: 'sun', label: '晴' };
-  if (code === 1) return { t: 'none', icon: 'partly', label: '多云' };
-  if (code <= 3) return { t: 'none', icon: 'cloud', label: '阴' };
-  if (code <= 48) return { t: 'fog', icon: 'fog', label: '雾' };
-  if (code <= 55) return { t: 'rain', icon: 'rain', label: '小雨' };
-  if (code <= 57) return { t: 'rain', icon: 'rain', label: '毛毛雨' };
-  if (code === 61) return { t: 'rain', icon: 'rain', label: '小雨' };
-  if (code === 63) return { t: 'rain', icon: 'rain', label: '中雨' };
-  if (code === 65) return { t: 'rain', icon: 'rain', label: '大雨' };
-  if (code <= 67) return { t: 'rain', icon: 'rain', label: '雨' };
-  if (code <= 77) return { t: 'snow', icon: 'snow', label: '雪' };
-  if (code <= 82) return { t: 'rain', icon: 'rain', label: '阵雨' };
-  if (code <= 86) return { t: 'snow', icon: 'snow', label: '阵雪' };
-  if (code <= 99) return { t: 'thunder', icon: 'thunder', label: '雷雨' };
-  return { t: 'none', icon: 'sun', label: '未知' };
-}
-const WE_EMOJI = { none: '🌤', fog: '🌫', rain: '🌧', snow: '❄️', thunder: '⛈', wind: '🌬' };
-const WX_ICON = { sun: '☀️', partly: '⛅', cloud: '☁️', fog: '🌫️', rain: '🌧️', snow: '🌨️', thunder: '⛈️', wind: '🌬️' };
-
-let weatherRAF = null;
-function startWeatherEffect(type, code) {
-  if (weatherRAF) { cancelAnimationFrame(weatherRAF); weatherRAF = null; }
-  const canvas = document.getElementById('weatherCanvas');
-  const fog = document.getElementById('fogLayer');
-  const flash = document.getElementById('lightningFlash');
-  const ctx = canvas.getContext('2d');
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  fog.style.display = 'none';
-  flash.style.display = 'none';
-  if (type === 'none') return;
-  if (type === 'fog') { fog.style.display = 'block'; return; }
-
-  const heavy = (code === 65 || code === 63 || code >= 95);
-  const density = type === 'snow' ? 140 : (type === 'thunder' ? 240 : (heavy ? 220 : 150));
-  const P = [];
-  for (let i = 0; i < density; i++) {
-    P.push({
-      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
-      sp: (type === 'snow' ? 1 + Math.random() * 2 : 5 + Math.random() * 8) * (heavy ? 1.7 : 1),
-      len: (type === 'rain' || type === 'thunder') ? 14 + Math.random() * 14 : 6 + Math.random() * 6,
-      r: type === 'snow' ? 2.5 + Math.random() * 3.5 : 1.4 + Math.random() * 0.8,
-      sw: Math.random() * Math.PI * 2
-    });
-  }
-  let lastFlash = 0;
-  const frame = () => {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    for (const p of P) {
-      if (type === 'snow') { p.y += p.sp; p.x += Math.sin(p.sw) * 0.7; }
-      else if (type === 'rain' || type === 'thunder') { p.y += p.sp; p.x += (heavy ? 2 : 0.8); }
-      if (p.y > canvas.height) { p.y = -20; p.x = Math.random() * canvas.width; }
-      ctx.beginPath();
-      if (type === 'snow') { ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fill(); }
-      else { ctx.strokeStyle = 'rgba(120,165,220,.6)'; ctx.lineWidth = p.r; ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.sp * 0.55, p.y - p.len); ctx.stroke(); }
-    }
-    if (type === 'thunder') {
-      const now = Date.now();
-      if (now - lastFlash > 3200 + Math.random() * 4200) {
-        lastFlash = now;
-        flash.style.display = 'block';
-        const seq = [0.55, 0.1, 0.5, 0.1];
-        let i = 0;
-        const step = () => { flash.style.opacity = seq[i++] || '0'; if (i < seq.length) setTimeout(step, 90); else { flash.style.opacity = '0'; flash.style.display = 'none'; } };
-        step();
-      }
-    }
-    weatherRAF = requestAnimationFrame(frame);
-  };
-  frame();
-}
-
-function applyWeather(code, city, temp, wind) {
-  const el = document.getElementById('sbWeather');
-  const iconEl = document.getElementById('weatherIcon');
-  const wt = weatherType(code);
-  if (typeof wind === 'number' && wind >= 25 && wt.t === 'none') { wt.t = 'wind'; wt.icon = 'wind'; }
-  let label = `${WE_EMOJI[wt.t] || '🌤'} ${city || ''}`;
-  if (typeof temp === 'number') label += ` ${temp}℃`;
-  label += ` ${wt.label}`;
-  if (el) el.textContent = label;
-  if (iconEl) { iconEl.textContent = WX_ICON[wt.icon] || '☀️'; iconEl.className = 'weather-icon ' + (wt.icon || 'sun'); }
-  startWeatherEffect(wt.t, code);
-}
-
-const CITY_ZH = { beijing:'北京', shanghai:'上海', guangzhou:'广州', shenzhen:'深圳', hangzhou:'杭州', jinhua:'金华', chengdu:'成都', wuhan:'武汉', nanjing:'南京', xian:'西安', chongqing:'重庆', tianjin:'天津', suzhou:'苏州', ningbo:'宁波', wenzhou:'温州', fuzhou:'福州', xiamen:'厦门', jinan:'济南', qingdao:'青岛', zhengzhou:'郑州', changsha:'长沙', hefei:'合肥', nanchang:'南昌', kunming:'昆明', guiyang:'贵阳', nanning:'南宁', haikou:'海口', lanzhou:'兰州', urumqi:'乌鲁木齐', hohhot:'呼和浩特', harbin:'哈尔滨', changchun:'长春', shenyang:'沈阳', shijiazhuang:'石家庄', taiyuan:'太原', xining:'西宁', yinchuan:'银川', lhasa:'拉萨', macau:'澳门', macao:'澳门', 'hong kong':'香港', taipei:'台北', kaohsiung:'高雄', dongguan:'东莞', foshan:'佛山', zhuhai:'珠海', shaoxing:'绍兴', jiaxing:'嘉兴', huzhou:'湖州', taizhou:'台州', lishui:'丽水', quzhou:'衢州', zhoushan:'舟山', seoul:'首尔', tokyo:'东京', 'new york':'纽约', 'los angeles':'洛杉矶', london:'伦敦', paris:'巴黎', bangkok:'曼谷', singapore:'新加坡', sydney:'悉尼', melbourne:'墨尔本', toronto:'多伦多', vancouver:'温哥华' };
-
-async function loadWeather() {
-  const el = document.getElementById('sbWeather');
-  // 1) 按访问者 IP 定位城市（免费接口 ipwho.is，无密钥）
-  let lat = 29.08, lon = 119.65, city = '金华'; // 兜底：浙师大所在地
-  try {
-    const g = await fetchJSON('https://ipwho.is/', 5000);
-    if (g && g.success && typeof g.latitude === 'number' && typeof g.longitude === 'number') {
-      lat = g.latitude; lon = g.longitude;
-      const raw = String(g.city || '').trim();
-      city = CITY_ZH[raw.toLowerCase()] || raw || '当前位置';
-    }
-  } catch (e) {}
-  // 2) 请求该城市实时天气
-  try {
-    const wd = await fetchJSON(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`, 10000);
-    const cw = wd.current_weather || {};
-    const code = typeof cw.weathercode === 'number' ? cw.weathercode : null;
-    const temp = typeof cw.temperature === 'number' ? Math.round(cw.temperature) : null;
-    const wind = typeof cw.windspeed === 'number' ? Math.round(cw.windspeed) : null;
-    if (code == null && temp == null) throw new Error('no data');
-    applyWeather(code, city, temp, wind);
-  } catch (e) {
-    if (el) { el.textContent = '🌤 天气加载失败（点我重试）'; el.style.cursor = 'pointer'; el.onclick = loadWeather; }
-  }
-}
-
-let activeMs = 0, lastTick = Date.now(), w30 = false, w60 = false, nightWarned = false;
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  clearTimeout(t._h);
-  t._h = setTimeout(() => t.classList.remove('show'), 9000);
-}
-function closeRest() {
-  document.getElementById('restOverlay').classList.remove('show');
-  activeMs = 0; w30 = false; w60 = false;
-}
-function startHealthTimer() {
-  setInterval(() => {
-    const now = Date.now();
-    if (!document.hidden) {
-      activeMs += now - lastTick;
-      if (!w30 && activeMs >= 30 * 60 * 1000) { w30 = true; showToast('💪 已连续使用 30 分钟，起来活动一下、喝口水再继续吧！'); }
-      if (!w60 && activeMs >= 60 * 60 * 1000) { w60 = true; document.getElementById('restOverlay').classList.add('show'); }
-      const h = new Date().getHours();
-      if (!nightWarned && (h >= 22 || h < 6) && activeMs >= 5 * 60 * 1000) { nightWarned = true; showToast('🌙 夜深了，身体是革命的本钱，好好睡觉，明天再奋斗！'); }
-    }
-    lastTick = now;
-  }, 30000);
-}
-
-// ===== 随机音乐（公有领域曲库，Worker /song 随机取，1799 首） =====
-let audio = null, musicTimer = null, musicPlaying = false;
-
-const SONG_LIST = [{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/000.mp3","title":"午夜钟声","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/001.mp3","title":"不能停步","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/002.mp3","title":"想象力","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/003.mp3","title":"元","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/004.mp3","title":"记忆挥不散","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/005.mp3","title":"礼物","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/006.mp3","title":"红河","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/007.mp3","title":"简单的不知","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/008.mp3","title":"秋晚露清","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/009.mp3","title":"心跳","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/010.mp3","title":"乡关千里梦","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/011.mp3","title":"蒙住的眼","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/012.mp3","title":"樱花树下","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/013.mp3","title":"旅途的歌","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/014.mp3","title":"故乡语","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/015.mp3","title":"裙摆","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/016.mp3","title":"重新开始","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/017.mp3","title":"狼烟四起","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/018.mp3","title":"着了迷","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/019.mp3","title":"花时无处觅","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/020.mp3","title":"冻结时间","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/021.mp3","title":"飘飘荡","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/022.mp3","title":"微醺","artist":"DG MUSIC"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/023.mp3","title":"Indie Pop","artist":"The_Mountain"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/024.mp3","title":"not shout at early morning","artist":"Giocol"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/025.mp3","title":"Homage","artist":"Cam Hutch"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/026.mp3","title":"Funny Idea","artist":"Emmraan"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/027.mp3","title":"Never Easy","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/028.mp3","title":"The Last Slice of Pecan Pie","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/029.mp3","title":"In Your Face","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/030.mp3","title":"Come Back","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/031.mp3","title":"Feel Free! Plastic Surgery!","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/032.mp3","title":"Guess Who's a Mess","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/033.mp3","title":"Waste of TV","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/034.mp3","title":"Model Home","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/035.mp3","title":"The First Thing About Me","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/036.mp3","title":"Thanks for the Add","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/037.mp3","title":"Fluoride","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/038.mp3","title":"Just in a Phase","artist":"Brad Sucks"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/039.mp3","title":"Summer Disco","artist":"Veaceslav Draganov | Royalty Free Music Licensing"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/040.mp3","title":"Pheromones","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/041.mp3","title":"When I Look Up at the Sky","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/042.mp3","title":"Heart Stopping Lies","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/043.mp3","title":"Okay, Alright","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/044.mp3","title":"Something Right","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/045.mp3","title":"The Most Generic Thing","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/046.mp3","title":"To Be Sensitive","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/047.mp3","title":"Recall","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/048.mp3","title":"A Heart With Your Name On It","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/049.mp3","title":"These Years and Still","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/050.mp3","title":"Everybody Else","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/051.mp3","title":"Just a Glass","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/052.mp3","title":"Start Each Day With Love","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/053.mp3","title":"Music Through Love","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/054.mp3","title":"5. Prime Teen TV","artist":"Prime"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/055.mp3","title":"6. Prime Take Me To Your Crew","artist":"Prime"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/056.mp3","title":"7. Prime Nothing But The Beat","artist":"Prime"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/057.mp3","title":"8. Prime Du What You Du","artist":"Prime"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/058.mp3","title":"He Follows","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/059.mp3","title":"Age of AI","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/060.mp3","title":"Net Neutrality","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/061.mp3","title":"Dinosaur Bones","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/062.mp3","title":"Build","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/063.mp3","title":"Blindly Love","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/064.mp3","title":"You Gotta Just Try","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/065.mp3","title":"You Give Me the Reason","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/066.mp3","title":"Get Out to Vote","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/067.mp3","title":"Yeah, I Do","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/068.mp3","title":"Democrazy","artist":"Kara Square and Piero Peluche"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/069.mp3","title":"Intro","artist":"Kristoffer Robin"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/070.mp3","title":"Homo Homini Lupus Est","artist":"Kristoffer Robin"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/071.mp3","title":"The Greatest Sect","artist":"Kristoffer Robin"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/072.mp3","title":"Hello Razorblade","artist":"Kristoffer Robin"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/073.mp3","title":"Birdy","artist":"Kristoffer Robin"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/074.mp3","title":"Alternative Freedom","artist":"Kristoffer Robin"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/075.mp3","title":"drone 1 vocal 30sec","artist":"nikproteus"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/076.mp3","title":"No one's like you","artist":"rosu"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/077.mp3","title":"The Little Things (Loveshadow)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/078.mp3","title":"Winter Glow (Zep Hurme feat. Snowflake)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/079.mp3","title":"Gaudete (texasradiofish feat. Karen Savage, Javolenus with Copperhead, Wired Ant)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/080.mp3","title":"Amanita Muscaria (Jeris with Kara Square)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/081.mp3","title":"Give It Away (This Holiday) (Snowflake with Jeris, Sound ArtSea)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/082.mp3","title":"Snowman (Piero Peluche feat. Paula Sare, Coruscate with Imaginario)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/083.mp3","title":"Like Decembers Do (Loveshadow feat. Snowflake)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/084.mp3","title":"Heaven In Their Eyes (unreal_dm feat. Javolenus)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/085.mp3","title":"God Rest Ye Merry Gentlemen (Copperhead feat. Admiral Bob, Sackjo22 with Robert Siekawitch, Javolenus)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/086.mp3","title":"I Will Give You Delicacies (urmymuse feat. Sackjo22)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/087.mp3","title":"We Give, We Get (Kara Square with unreal_dm)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/088.mp3","title":"This Christmas (Admiral Bob feat. Snowflake)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/089.mp3","title":"Auld Lang Syne (Jeris feat. Sackjo22, Admiral Bob)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/090.mp3","title":"Ebon - This Fear Of","artist":"Ebon"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/091.mp3","title":"Indie Pop Dance","artist":"The_Mountain"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/092.mp3","title":"Christmas Countdown","artist":"Sound Gallery by Dmitry Taras"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/093.mp3","title":"Folk Indie Pop","artist":"Alexey Anisimov"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/094.mp3","title":"Alive","artist":"RYO"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/095.mp3","title":"California Lullabye","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/096.mp3","title":"Edith Ann (Single, Kedra Vocal, v1)","artist":"Truman"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/097.mp3","title":"Come on boy","artist":"Sofia Vaina"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/098.mp3","title":"Presentation Deep House (Fashion House)","artist":"Janevo"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/099.mp3","title":"Upbeat Fun Days","artist":"Bulbasound"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/100.mp3","title":"Biodiesel Family (Snowflake feat. spinningmerkaba, SackJo22, Anchor Mejans, & panu moon)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/101.mp3","title":"Recycle Our Love (unreal_dm feat. Admiral Bob)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/102.mp3","title":"Terra Incognita (ditto ditto feat. Anchor Mejans & panu moon)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/103.mp3","title":"Give Me Homegrown (spinningmerkaba feat. SackJo22, panu moon, Snowflake, Leza2unes, & CiggiBurns)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/104.mp3","title":"Harmony (Wellman feat. Snowflake & Pitx)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/105.mp3","title":"Independence Day (Scomber feat. DoKashiteru & the Scomber Fingerlings)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/106.mp3","title":"Future Shock (Alex Beroza feat. georgeboyland)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/107.mp3","title":"Recycle This (unreal_dm feat. panu moon)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/108.mp3","title":"Eclecticism","artist":"Insky Project"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/109.mp3","title":"Emerald Meadows Female Vocal Soundscape Texture","artist":"Bobby Cole"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/110.mp3","title":"Party Disco Funk (short 3)","artist":"Bulbasound"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/111.mp3","title":"Beyond Shadows","artist":"Rabbit Music"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/112.mp3","title":"Harmony (Alex Beroza feat. Snowflake)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/113.mp3","title":"Feet in the Sand (morgantj feat. Snowflake & Pitx)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/114.mp3","title":"A Billion Years (Vidian feat. Leza2unes & Neurowaxx)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/115.mp3","title":"Climate Shifts (morgantj feat. Snowflake, Anchor Mejans, & panu moon)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/116.mp3","title":"The Earth Is My Church (Alex Beroza feat. Periel Marr Stanfield & Brad Stanfield)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/117.mp3","title":"Nourishment (Mana Junkie feat. Anchor Mejans)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/118.mp3","title":"Sustainability (morgantj feat. Snowflake)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/119.mp3","title":"Harmony (DJ Quenique Live Continuous Mix)","artist":"ccMixter"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/120.mp3","title":"Prelude 1","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/121.mp3","title":"Prelude 2","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/122.mp3","title":"Prelude 3","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/123.mp3","title":"Prelude 4","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/124.mp3","title":"Prelude 5","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/125.mp3","title":"Prelude 6","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/126.mp3","title":"Prelude 7","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/127.mp3","title":"Prelude 8","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/128.mp3","title":"Prelude 9","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/129.mp3","title":"Prelude 10","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/130.mp3","title":"Prelude 11","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/131.mp3","title":"Prelude 12","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/132.mp3","title":"Prelude 13","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/133.mp3","title":"Prelude 14","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/134.mp3","title":"Prelude 15","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/135.mp3","title":"Prelude 16","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/136.mp3","title":"Prelude 17","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/137.mp3","title":"Prelude 18","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/138.mp3","title":"Prelude 19","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/139.mp3","title":"Prelude 20","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/140.mp3","title":"Prelude 21","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/141.mp3","title":"Prelude 22","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/142.mp3","title":"Prelude 23","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/143.mp3","title":"Prelude 24","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/144.mp3","title":"Prelude 25","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/145.mp3","title":"Prelude 26","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/146.mp3","title":"Prelude 27","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/147.mp3","title":"Prelude 28","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/148.mp3","title":"Prelude 29","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/149.mp3","title":"Prelude 30","artist":"Josh Woodward"},{"url":"https://thesis-music-1303737693.cos.ap-shanghai.myqcloud.com/music/150.mp3","title":"Everything will work out","artist":"Heavenless"}];
-async function fetchRandomSong() {
-  if (!SONG_LIST.length) return null;
-  const s = SONG_LIST[Math.floor(Math.random() * SONG_LIST.length)];
-  return { ok: true, url: s.url, title: s.title, artist: s.artist || '' };
 }
 
 function stopMusic() {

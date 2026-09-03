@@ -34,14 +34,27 @@ export default {
         if (hasBad(text) || hasBad(name)) return json({ ok: false, msg: '内容包含不当词汇，请修改后重试' });
         const list = JSON.parse((await env.KV.get('suggestions')) || '[]');
         if (list.length >= 500) list.splice(0, list.length - 499); // 上限500条，超出删最旧
-        list.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), t: Date.now(), name, text });
+        const nid = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+        list.push({ id: nid, t: Date.now(), name, text, likes: 0 });
         await env.KV.put('suggestions', JSON.stringify(list));
-        return json({ ok: true });
+        return json({ ok: true, id: nid });
       }
       if (request.method === 'GET') {
         const list = JSON.parse((await env.KV.get('suggestions')) || '[]');
-        return json(list.slice(-100).reverse()); // 公开仅返回最近100条
+        return json(list.slice(-100).map(x => ({ id: x.id, t: x.t, name: x.name || '', text: x.text, likes: x.likes || 0 })).reverse()); // 公开仅返回最近100条
       }
+    }
+    // 点赞接口
+    if (url.pathname === '/suggest/like' && request.method === 'POST') {
+      try {
+        const j = await request.json();
+        let list = JSON.parse((await env.KV.get('suggestions')) || '[]');
+        const it = list.find(x => String(x.id) === String(j.id));
+        if (!it) return json({ ok: false, msg: '未找到该条' });
+        it.likes = (it.likes || 0) + 1;
+        await env.KV.put('suggestions', JSON.stringify(list));
+        return json({ ok: true, likes: it.likes });
+      } catch (e) { return json({ ok: false }); }
     }
     // 管理接口：删除单条 / 清空（需站密码）
     if (url.pathname === '/suggest/delete' && request.method === 'POST') {
