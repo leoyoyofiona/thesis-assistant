@@ -716,7 +716,7 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .vip-card table th:first-child,.vip-card table td:first-child{width:44%;white-space:nowrap}
 .stage-body .demo-box p{text-wrap:pretty;word-break:break-word}
 
-/* ===== 建议栏 ===== */
+/* ===== 建议弹幕 ===== */
 .suggest-btn{flex-shrink:0;white-space:nowrap;padding:6px 14px;border:none;border-radius:18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(139,92,246,.4);transition:all .2s}
 .suggest-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(139,92,246,.5)}
 .suggest-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1050;display:none;align-items:center;justify-content:center;padding:20px}
@@ -896,7 +896,7 @@ body.sb-collapsed .status-bar{left:0}
       搜索全部内容<kbd>Ctrl+K</kbd>
     </button>
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="切换深色/浅色模式">🌙</button>
-    <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议栏</button>
+    <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议弹幕</button>
     <div class="music-wrap">
       <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放中英文经典老歌（30分钟）"><span class="music-icon">🎵</span></button>
       <div class="music-below" id="musicBelow">
@@ -3803,7 +3803,7 @@ function toggleSidebar() {
   sbPersist();
 }
 
-// ===== Cloudflare 访问计数 & 建议栏 =====
+// ===== Cloudflare 访问计数 & 建议弹幕 =====
 const WORKER_URL = 'https://thesis-assistant-api.leooelcn.workers.dev';
 
 async function fetchJSON(url, timeoutMs = 15000) {
