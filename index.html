@@ -3788,7 +3788,10 @@ function computeSidebarMinWidth() {
 function initSidebarUI() {
   const root = document.documentElement;
   if (sbState.width) root.style.setProperty('--sidebar-width', sbState.width + 'px');
-  if (sbState.collapsed) document.body.classList.add('sb-collapsed');
+  // 桌面宽度（>768px）下始终显示侧栏，避免旧的"折叠记忆"让侧栏消失；仅移动端保留折叠
+  const desktop = window.innerWidth > 768;
+  if (!desktop && sbState.collapsed) document.body.classList.add('sb-collapsed');
+  if (desktop && sbState.collapsed) { sbState.collapsed = false; sbPersist(); }
 
   const rz = document.getElementById('sidebarResizer');
   if (rz) {
