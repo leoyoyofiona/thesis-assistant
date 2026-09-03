@@ -308,7 +308,8 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 ::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
 
 /* ===== Header contact & theme toggle ===== */
-.header-contact{font-size:13px;font-weight:700;color:#92400e;background:linear-gradient(135deg,#fff7ed,#ffe8cc);border:2px solid #f59e0b;border-radius:22px;padding:6px 16px;white-space:nowrap;flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis;letter-spacing:.3px;box-shadow:0 0 0 0 rgba(245,158,11,.55);animation:contactPulse 1.4s ease-in-out infinite}
+.header-contact{font-size:12px;font-weight:700;color:#92400e;background:linear-gradient(135deg,#fff7ed,#ffe8cc);border:2px solid #f59e0b;border-radius:12px;padding:4px 16px;display:flex;flex-direction:column;justify-content:center;gap:0;line-height:1.5;flex-shrink:1;min-width:0;letter-spacing:.2px;box-shadow:0 0 0 0 rgba(245,158,11,.55);animation:contactPulse 1.4s ease-in-out infinite}
+.header-contact .hc-l1,.header-contact .hc-l2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .theme-btn:hover{border-color:var(--primary);background:var(--primary-light)}
 
@@ -915,7 +916,8 @@ body.sb-collapsed .status-bar{left:0}
     <div class="breadcrumb" id="breadcrumb"></div>
     <div class="visit-count">👥 累计访问 246 人 · 累计浏览 346 次<span class="vc-uv"> · 今日浏览 23 次</span></div>
     <div class="header-contact" title="欢迎找我交流">
-      💬 欢迎找我交流：E-mail:23774201@qq.com · VX:leoyoyofiona<span class="ct-hint">（暗号：我喜欢的运动是什么？）</span>
+      <span class="hc-l1">💬 欢迎找我交流 · E-mail:23774201@qq.com</span>
+      <span class="hc-l2">VX:leoyoyofiona<span class="ct-hint">（暗号：我喜欢的运动是什么？）</span></span>
     </div>
     <div class="search-hint">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
