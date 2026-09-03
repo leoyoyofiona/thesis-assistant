@@ -16,26 +16,51 @@ export default {
 
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
 
-    // ===== 建议墙（公开：所有人可提交、所有人可见） =====
+    // ===== 建议弹幕（公开提交/可见 + 敏感词拦截 + 管理删除） =====
+    const ADMIN_PWD = 'xzleo2026';
+    const BAD_WORDS = ['操你妈','你妈的','他妈的','草泥马','傻逼','傻b','煞笔','傻屌','cnm','wqnmlgb','nmsl','妈的','滚蛋','去死','贱人','妓女','嫖','卖淫','约炮','做爱','色情','裸聊','赌博','博彩','代写论文','代发论文','假学历','办证','毒品','冰毒','海洛因','枪支','弹药','恐怖','暴恐','反动','法轮','台独','藏独','港独','疆独'];
+    const hasBad = (s) => BAD_WORDS.some(w => s.toLowerCase().includes(w));
+
     if (url.pathname === '/suggest') {
       if (request.method === 'POST') {
         let raw = '';
-        try { raw = (await request.text()).slice(0, 2000); } catch (e) {}
+        try { raw = (await request.text()).slice(0, 1500); } catch (e) {}
         let name = '', text = raw;
-        try { const j = JSON.parse(raw); if (j && typeof j === 'object') { text = String(j.text || '').slice(0, 2000); name = String(j.name || '').slice(0, 20); } } catch (e) {}
-        text = (text || '').trim();
-        if (text) {
-          const list = JSON.parse((await env.KV.get('suggestions')) || '[]');
-          list.push({ t: Date.now(), name: (name || '').trim(), text });
-          await env.KV.put('suggestions', JSON.stringify(list));
-          return json({ ok: true });
-        }
-        return json({ ok: false, msg: '内容为空' });
+        try { const j = JSON.parse(raw); if (j && typeof j === 'object') { text = String(j.text || ''); name = String(j.name || ''); } } catch (e) {}
+        text = (text || '').trim(); name = (name || '').trim();
+        if (!text) return json({ ok: false, msg: '内容不能为空' });
+        if (text.length > 1000) return json({ ok: false, msg: '内容过长（最多1000字）' });
+        if (name.length > 20) return json({ ok: false, msg: '昵称过长（最多20字）' });
+        if (hasBad(text) || hasBad(name)) return json({ ok: false, msg: '内容包含不当词汇，请修改后重试' });
+        const list = JSON.parse((await env.KV.get('suggestions')) || '[]');
+        if (list.length >= 500) list.splice(0, list.length - 499); // 上限500条，超出删最旧
+        list.push({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), t: Date.now(), name, text });
+        await env.KV.put('suggestions', JSON.stringify(list));
+        return json({ ok: true });
       }
       if (request.method === 'GET') {
         const list = JSON.parse((await env.KV.get('suggestions')) || '[]');
-        return json(list);
+        return json(list.slice(-100).reverse()); // 公开仅返回最近100条
       }
+    }
+    // 管理接口：删除单条 / 清空（需站密码）
+    if (url.pathname === '/suggest/delete' && request.method === 'POST') {
+      try {
+        const j = await request.json();
+        if (j.pwd !== ADMIN_PWD) return json({ ok: false, msg: '密码错误' });
+        let list = JSON.parse((await env.KV.get('suggestions')) || '[]');
+        list = list.filter(x => String(x.id) !== String(j.id));
+        await env.KV.put('suggestions', JSON.stringify(list));
+        return json({ ok: true });
+      } catch (e) { return json({ ok: false }); }
+    }
+    if (url.pathname === '/suggest/clear' && request.method === 'POST') {
+      try {
+        const j = await request.json();
+        if (j.pwd !== ADMIN_PWD) return json({ ok: false, msg: '密码错误' });
+        await env.KV.put('suggestions', '[]');
+        return json({ ok: true });
+      } catch (e) { return json({ ok: false }); }
     }
 
     // ===== 随机歌曲（CC 授权曲库，KV 存中英文现代歌曲） =====

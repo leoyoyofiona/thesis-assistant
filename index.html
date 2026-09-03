@@ -725,6 +725,17 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .suggest-head{display:flex;align-items:center;justify-content:space-between;font-size:17px;font-weight:700;color:var(--text);margin-bottom:8px}
 .suggest-close{width:30px;height:30px;border-radius:50%;border:none;background:var(--bg);color:var(--text-muted);cursor:pointer;font-size:15px}
 .suggest-close:hover{background:var(--primary-light);color:var(--primary)}
+.sug-admin-btn{width:auto;padding:4px 10px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text-muted);cursor:pointer;font-size:12px;font-family:var(--font-sans)}
+.sug-admin-btn:hover{border-color:var(--primary);color:var(--primary)}
+.suggest-admin-box{margin-bottom:8px;padding:8px 10px;background:var(--bg);border:1px dashed var(--border);border-radius:8px}
+.suggest-admin-box input{flex:1;min-width:0;padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;font-family:var(--font-sans);outline:none;background:var(--card-bg);color:var(--text)}
+.suggest-admin-box input:focus{border-color:var(--primary)}
+.suggest-admin-msg{font-size:12px;color:var(--danger);margin:4px 0 0}
+.sug-del{display:inline-block;margin-left:6px;padding:0 8px;border-radius:10px;border:1px solid #fecaca;background:#fef2f2;color:#dc2626;font-size:11px;cursor:pointer;font-family:var(--font-sans)}
+.sug-del:hover{background:#fee2e2}
+.sug-clear-row{display:flex;justify-content:flex-end;margin-bottom:6px}
+.sug-clear-btn{padding:4px 14px;border-radius:12px;border:1px solid #fecaca;background:#fef2f2;color:#dc2626;font-size:12px;cursor:pointer;font-family:var(--font-sans)}
+.sug-clear-btn:hover{background:#fee2e2}
 .suggest-text{font-size:13px;color:var(--text-secondary);line-height:1.8;margin-bottom:14px}
 .suggest-card textarea{width:100%;min-height:110px;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:14px;font-family:var(--font-sans);color:var(--text);background:var(--bg);resize:vertical;box-sizing:border-box;outline:none}
 .suggest-card textarea:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,.12)}
@@ -2913,7 +2924,14 @@ body.sb-collapsed .status-bar{left:0}
 <!-- ===== 建议墙弹窗（公开，所有人可见） ===== -->
 <div class="suggest-overlay" id="suggestOverlay">
   <div class="suggest-card">
-    <div class="suggest-head">💡 建议墙 · 所有人可见<button class="suggest-close" onclick="toggleSuggest()">✕</button></div>
+    <div class="suggest-head"><span>💡 建议弹幕 · 所有人可见</span><span style="display:flex;align-items:center;gap:8px;"><button class="sug-admin-btn" id="sugAdminBtn" onclick="suggestAdminToggle()" title="管理员入口（需站密码）">⚙️ 管理</button><button class="suggest-close" onclick="toggleSuggest()">✕</button></span></div>
+    <div class="suggest-admin-box" id="suggestAdminBox" style="display:none;">
+      <div style="display:flex;gap:8px;">
+        <input id="suggestAdminPwd" type="password" placeholder="输入站密码进入管理" maxlength="30">
+        <button class="suggest-submit" style="padding:6px 16px;font-size:13px;" onclick="suggestAdminLogin()">进入管理</button>
+      </div>
+      <p class="suggest-admin-msg" id="suggestAdminMsg"></p>
+    </div>
     <p class="suggest-text">众人拾柴火焰高。写下你的建议，大家都能看到，一起让这个助手越来越好，帮助下一届学弟学妹完成毕业论文。</p>
     <div class="suggest-list" id="suggestList"><div class="suggest-empty">📭 还没有建议，来发第一条吧～</div></div>
     <input class="suggest-name" id="suggestName" maxlength="20" placeholder="昵称（选填，匿名也可以）">
@@ -3856,6 +3874,58 @@ function sugMetaTime(ts) {
   } catch (e) { return ''; }
 }
 
+function sugMetaTime(ts) {
+  try {
+    const d = new Date(ts);
+    const p = n => (n < 10 ? '0' + n : '' + n);
+    return `${d.getMonth() + 1}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  } catch (e) { return ''; }
+}
+
+const CLIENT_BAD = ['操你妈','你妈的','他妈的','傻逼','傻b','傻屌','傻叉','cnm','nmsl','妈的','滚蛋','去死','贱人','妓女','卖淫','色情','裸聊','赌博','博彩','代写论文','代发论文','办证','毒品','冰毒','枪支','弹药','恐怖','暴恐','法轮','台独','藏独','港独','疆独'];
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+let suggestAdmin = false;
+function suggestAdminToggle() {
+  const box = document.getElementById('suggestAdminBox');
+  if (!box) return;
+  box.style.display = box.style.display === 'none' ? 'block' : 'none';
+  const p = document.getElementById('suggestAdminPwd');
+  if (p) { p.value = ''; p.focus(); }
+  const m = document.getElementById('suggestAdminMsg');
+  if (m) m.textContent = '';
+}
+function suggestAdminLogin() {
+  const pwd = (document.getElementById('suggestAdminPwd') || {}).value || '';
+  const m = document.getElementById('suggestAdminMsg');
+  if (pwd.trim() === 'xzleo2026') {
+    suggestAdmin = true;
+    const box = document.getElementById('suggestAdminBox');
+    if (box) box.style.display = 'none';
+    loadSuggestions();
+  } else if (m) { m.textContent = '密码错误'; }
+}
+async function suggestDelete(id) {
+  if (!suggestAdmin) return;
+  try {
+    const r = await fetch(WORKER_URL + '/suggest/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xzleo2026', id }) });
+    const d = await r.json();
+    if (d.ok) loadSuggestions();
+  } catch (e) {}
+}
+async function suggestClear() {
+  if (!suggestAdmin) return;
+  if (!confirm('确定清空全部建议吗？此操作不可恢复。')) return;
+  try {
+    const r = await fetch(WORKER_URL + '/suggest/clear', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xzleo2026' }) });
+    const d = await r.json();
+    if (d.ok) loadSuggestions();
+  } catch (e) {}
+}
+
 function renderSuggestions(list) {
   const box = document.getElementById('suggestList');
   if (!box) return;
@@ -3863,15 +3933,14 @@ function renderSuggestions(list) {
     box.innerHTML = '<div class="suggest-empty">📭 还没有建议，来发第一条吧～</div>';
     return;
   }
-  box.innerHTML = list.slice().reverse().map((x, idx) => {
+  const items = list.map(x => {
     const name = (x.name || '').trim() ? `<span class="sug-name">${escapeHtml(x.name)}</span>` : '<span class="sug-name">匿名同学</span>';
     const txt = String(x.text || '').trim();
-    return `<div class="suggest-item"><div class="sug-meta">${name}<span class="sug-tag">${sugMetaTime(x.t)}</span></div><div>${escapeHtml(txt)}</div></div>`;
+    const del = suggestAdmin ? `<button class="sug-del" onclick="suggestDelete('${escapeHtml(x.id || '')}')">删除</button>` : '';
+    return `<div class="suggest-item"><div class="sug-meta">${name}<span class="sug-tag">${sugMetaTime(x.t)}</span>${del}</div><div>${escapeHtml(txt)}</div></div>`;
   }).join('');
-}
-
-function escapeHtml(s) {
-  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const clearRow = suggestAdmin ? '<div class="sug-clear-row"><button class="sug-clear-btn" onclick="suggestClear()">🗑 清空全部</button></div>' : '';
+  box.innerHTML = clearRow + items;
 }
 
 async function loadSuggestions() {
@@ -3888,6 +3957,9 @@ async function submitSuggest() {
   const text = (inp.value || '').trim();
   const name = (nameInp ? nameInp.value : '').trim();
   if (!text) { msg.textContent = '请先写下建议内容'; msg.style.color = 'var(--danger)'; return; }
+  if (text.length > 1000) { msg.textContent = '内容过长（最多1000字）'; msg.style.color = 'var(--danger)'; return; }
+  const lower = (text + name).toLowerCase();
+  if (CLIENT_BAD.some(w => lower.includes(w))) { msg.textContent = '内容包含不当词汇，请修改后重试'; msg.style.color = 'var(--danger)'; return; }
   const btn = document.querySelector('.suggest-submit');
   btn.disabled = true; btn.textContent = '发布中…';
   try {
@@ -3896,7 +3968,6 @@ async function submitSuggest() {
     if (d.ok) {
       msg.textContent = '✅ 已发布，感谢你的建议！'; msg.style.color = 'var(--success)';
       inp.value = '';
-      if (nameInp) { /* 保留昵称便于连续发言 */ }
       loadSuggestions();
       danmaku(text, name || '匿名同学');
     } else { msg.textContent = d.msg || '提交失败，请稍后再试'; msg.style.color = 'var(--danger)'; }
@@ -3910,7 +3981,7 @@ async function refreshDanmakuPool() {
   try {
     const list = await fetchJSON(WORKER_URL + '/suggest', 6000);
     if (Array.isArray(list) && list.length) {
-      danmakuPool = list.slice(-12).map(x => ({
+      danmakuPool = list.slice(0,12).map(x => ({
         text: String(x.text || '').trim(),
         name: (x.name || '').trim() || '匿名同学'
       })).filter(x => x.text);
