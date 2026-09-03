@@ -733,6 +733,18 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .suggest-submit:hover{filter:brightness(1.1)}
 .suggest-submit:disabled{opacity:.6;cursor:not-allowed}
 .suggest-msg{font-size:13px;font-weight:600}
+.suggest-list{max-height:230px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;background:var(--bg);padding:10px 12px;margin-bottom:10px;display:flex;flex-direction:column;gap:8px;-webkit-overflow-scrolling:touch}
+.suggest-item{font-size:13px;color:var(--text);line-height:1.6;background:var(--card-bg);border:1px solid var(--border-light);border-radius:10px;padding:8px 12px;animation:sugIn .35s ease}
+.suggest-item .sug-meta{font-size:11px;color:var(--text-muted);margin-bottom:2px;display:flex;align-items:center;gap:6px}
+.suggest-item .sug-name{color:var(--primary);font-weight:700}
+.suggest-item .sug-tag{background:var(--primary-light);color:var(--primary);padding:1px 7px;border-radius:8px;font-size:10.5px}
+@keyframes sugIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.suggest-empty{font-size:13px;color:var(--text-muted);text-align:center;padding:18px 0}
+.suggest-name{width:100%;padding:9px 14px;border:1.5px solid var(--border);border-radius:10px;font-size:13px;font-family:var(--font-sans);color:var(--text);background:var(--bg);box-sizing:border-box;outline:none;margin-bottom:8px}
+.suggest-name:focus{border-color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,.12)}
+.danmaku-layer{position:fixed;top:calc(var(--header-height) + 10px);left:0;right:0;height:44px;z-index:2;pointer-events:none;overflow:hidden}
+.danmaku-item{position:absolute;top:0;white-space:nowrap;font-size:15px;font-weight:700;color:var(--primary);opacity:0;will-change:transform,opacity;text-shadow:0 0 12px rgba(255,255,255,.7);max-width:70vw;overflow:hidden;text-overflow:ellipsis}
+[data-theme="dark"] .danmaku-item{color:#93b4ff;text-shadow:0 0 12px rgba(0,0,0,.6)}
 @media(max-width:1100px){.suggest-btn{padding:5px 12px;font-size:12px}}
 
 /* ===== 随机音乐按钮 + 悬停控制面板 ===== */
@@ -2658,18 +2670,23 @@ body.sb-collapsed .status-bar{left:0}
   <iframe class="browser-frame" id="browserFrame" src="about:blank" title="站内浏览"></iframe>
 </div>
 
-<!-- ===== 建议栏弹窗 ===== -->
+<!-- ===== 建议墙弹窗（公开，所有人可见） ===== -->
 <div class="suggest-overlay" id="suggestOverlay">
   <div class="suggest-card">
-    <div class="suggest-head">💡 建议栏<button class="suggest-close" onclick="toggleSuggest()">✕</button></div>
-    <p class="suggest-text">众人拾柴火焰高，欢迎你提出宝贵建议，让这个助手越来越好，更好地帮助下一届学弟学妹完成毕业论文。</p>
-    <textarea id="suggestInput" placeholder="写下你的改进建议（功能、内容、使用体验…）" maxlength="2000"></textarea>
+    <div class="suggest-head">💡 建议墙 · 所有人可见<button class="suggest-close" onclick="toggleSuggest()">✕</button></div>
+    <p class="suggest-text">众人拾柴火焰高。写下你的建议，大家都能看到，一起让这个助手越来越好，帮助下一届学弟学妹完成毕业论文。</p>
+    <div class="suggest-list" id="suggestList"><div class="suggest-empty">📭 还没有建议，来发第一条吧～</div></div>
+    <input class="suggest-name" id="suggestName" maxlength="20" placeholder="昵称（选填，匿名也可以）">
+    <textarea id="suggestInput" placeholder="写下你的建议（功能、内容、使用体验…）" maxlength="2000"></textarea>
     <div class="suggest-actions">
-      <button class="suggest-submit" onclick="submitSuggest()">提交建议</button>
+      <button class="suggest-submit" onclick="submitSuggest()">📨 发布建议</button>
       <span class="suggest-msg" id="suggestMsg"></span>
     </div>
   </div>
 </div>
+
+<!-- ===== 弹幕容器 ===== -->
+<div class="danmaku-layer" id="danmakuLayer"></div>
 
 <!-- ===== 天气背景动效 ===== -->
 <canvas id="weatherCanvas" class="weather-canvas"></canvas>
@@ -3576,26 +3593,120 @@ async function loadCounter() {
   if (pv) pv.textContent = '—';
 }
 
+let suggestRefreshTimer = null;
 function toggleSuggest() {
   const ov = document.getElementById('suggestOverlay');
   ov.classList.toggle('show');
-  if (ov.classList.contains('show')) setTimeout(() => { try { document.getElementById('suggestInput').focus(); } catch (e) {} }, 100);
+  if (ov.classList.contains('show')) {
+    loadSuggestions();
+    clearInterval(suggestRefreshTimer);
+    suggestRefreshTimer = setInterval(loadSuggestions, 20000);
+    setTimeout(() => { try { document.getElementById('suggestInput').focus(); } catch (e) {} }, 100);
+  } else {
+    clearInterval(suggestRefreshTimer);
+    suggestRefreshTimer = null;
+  }
+}
+
+function sugMetaTime(ts) {
+  try {
+    const d = new Date(ts);
+    const p = n => (n < 10 ? '0' + n : '' + n);
+    return `${d.getMonth() + 1}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+  } catch (e) { return ''; }
+}
+
+function renderSuggestions(list) {
+  const box = document.getElementById('suggestList');
+  if (!box) return;
+  if (!Array.isArray(list) || !list.length) {
+    box.innerHTML = '<div class="suggest-empty">📭 还没有建议，来发第一条吧～</div>';
+    return;
+  }
+  box.innerHTML = list.slice().reverse().map((x, idx) => {
+    const name = (x.name || '').trim() ? `<span class="sug-name">${escapeHtml(x.name)}</span>` : '<span class="sug-name">匿名同学</span>';
+    const txt = String(x.text || '').trim();
+    return `<div class="suggest-item"><div class="sug-meta">${name}<span class="sug-tag">${sugMetaTime(x.t)}</span></div><div>${escapeHtml(txt)}</div></div>`;
+  }).join('');
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+async function loadSuggestions() {
+  try {
+    const list = await fetchJSON(WORKER_URL + '/suggest', 8000);
+    if (Array.isArray(list)) renderSuggestions(list);
+  } catch (e) {}
 }
 
 async function submitSuggest() {
   const inp = document.getElementById('suggestInput');
+  const nameInp = document.getElementById('suggestName');
   const msg = document.getElementById('suggestMsg');
   const text = (inp.value || '').trim();
+  const name = (nameInp ? nameInp.value : '').trim();
   if (!text) { msg.textContent = '请先写下建议内容'; msg.style.color = 'var(--danger)'; return; }
   const btn = document.querySelector('.suggest-submit');
-  btn.disabled = true; btn.textContent = '提交中…';
+  btn.disabled = true; btn.textContent = '发布中…';
   try {
-    const r = await fetch(WORKER_URL + '/suggest', { method: 'POST', body: text });
+    const r = await fetch(WORKER_URL + '/suggest', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, text }) });
     const d = await r.json();
-    if (d.ok) { msg.textContent = '✅ 感谢你的建议！'; msg.style.color = 'var(--success)'; inp.value = ''; }
-    else { msg.textContent = '提交失败，请稍后再试'; msg.style.color = 'var(--danger)'; }
+    if (d.ok) {
+      msg.textContent = '✅ 已发布，感谢你的建议！'; msg.style.color = 'var(--success)';
+      inp.value = '';
+      if (nameInp) { /* 保留昵称便于连续发言 */ }
+      loadSuggestions();
+      danmaku(text, name || '匿名同学');
+    } else { msg.textContent = d.msg || '提交失败，请稍后再试'; msg.style.color = 'var(--danger)'; }
   } catch (e) { msg.textContent = '提交失败（网络问题）'; msg.style.color = 'var(--danger)'; }
-  btn.disabled = false; btn.textContent = '提交建议';
+  btn.disabled = false; btn.textContent = '📨 发布建议';
+}
+
+// ===== 全屏轻弹幕 =====
+let danmakuPool = [], danmakuTimer = null;
+async function refreshDanmakuPool() {
+  try {
+    const list = await fetchJSON(WORKER_URL + '/suggest', 6000);
+    if (Array.isArray(list) && list.length) {
+      danmakuPool = list.slice(-12).map(x => ({
+        text: String(x.text || '').trim(),
+        name: (x.name || '').trim() || '匿名同学'
+      })).filter(x => x.text);
+    }
+  } catch (e) {}
+}
+function danmaku(text, name) {
+  const layer = document.getElementById('danmakuLayer');
+  if (!layer) return;
+  const el = document.createElement('div');
+  el.className = 'danmaku-item';
+  el.textContent = (name ? name + '：' : '') + text;
+  layer.appendChild(el);
+  const w = el.offsetWidth;
+  const startX = layer.clientWidth;
+  el.style.right = (-w - 20) + 'px';
+  el.style.opacity = '1';
+  // 动画：从右侧移入→暂停→移出
+  const dur = 9000 + Math.random() * 4000;
+  el.animate([
+    { transform: 'translateX(0)', opacity: 0 },
+    { transform: 'translateX(0)', opacity: 1, offset: 0.05 },
+    { transform: `translateX(-${startX + w + 60}px)`, opacity: 1, offset: 0.75 },
+    { transform: `translateX(-${startX + w + 80}px)`, opacity: 0 }
+  ], { duration: dur, easing: 'linear' });
+  setTimeout(() => el.remove(), dur + 200);
+}
+function startDanmaku() {
+  refreshDanmakuPool();
+  clearInterval(danmakuTimer);
+  danmakuTimer = setInterval(() => {
+    if (!danmakuPool.length) return;
+    if (document.getElementById('suggestOverlay').classList.contains('show')) return; // 面板开着时不打扰
+    const s = danmakuPool[Math.floor(Math.random() * danmakuPool.length)];
+    danmaku(s.text, s.name);
+  }, 11000);
 }
 
 // ===== 时间 / 倒计时 / 天气 / 健康提醒 =====
@@ -3847,6 +3958,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initClock();
   initCountdown();
   loadWeather();
+  startDanmaku();
   startHealthTimer();
 
   // Restore persisted state

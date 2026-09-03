@@ -16,21 +16,23 @@ export default {
 
     if (request.method === 'OPTIONS') return new Response(null, { headers: cors });
 
-    // ===== 建议栏 =====
+    // ===== 建议墙（公开：所有人可提交、所有人可见） =====
     if (url.pathname === '/suggest') {
       if (request.method === 'POST') {
-        let text = '';
-        try { text = (await request.text()).slice(0, 2000); } catch (e) {}
-        if (text && text.trim()) {
+        let raw = '';
+        try { raw = (await request.text()).slice(0, 2000); } catch (e) {}
+        let name = '', text = raw;
+        try { const j = JSON.parse(raw); if (j && typeof j === 'object') { text = String(j.text || '').slice(0, 2000); name = String(j.name || '').slice(0, 20); } } catch (e) {}
+        text = (text || '').trim();
+        if (text) {
           const list = JSON.parse((await env.KV.get('suggestions')) || '[]');
-          list.push({ t: Date.now(), text: text.trim() });
+          list.push({ t: Date.now(), name: (name || '').trim(), text });
           await env.KV.put('suggestions', JSON.stringify(list));
           return json({ ok: true });
         }
         return json({ ok: false, msg: '内容为空' });
       }
       if (request.method === 'GET') {
-        // 查看建议（管理员用，可在 URL 加 ?key=xxx 简单保护，这里直接返回）
         const list = JSON.parse((await env.KV.get('suggestions')) || '[]');
         return json(list);
       }
