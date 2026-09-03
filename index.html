@@ -16,7 +16,7 @@
   --radius: 8px; --radius-lg: 12px;
   --shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
   --shadow-lg: 0 4px 16px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
-  --sidebar-width: 280px; --header-height: 64px;
+  --sidebar-width: 260px; --header-height: 64px;
   --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -560,13 +560,12 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 /* ===== 侧边栏常用工具与网站 ===== */
-.link-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 12px 12px;align-items:stretch}
-@container (max-width: 245px){ .link-grid{grid-template-columns:1fr} }
-.link-item{display:flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--text-secondary);text-decoration:none;background:var(--bg);transition:all .15s;min-height:32px}
-.link-item:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);transform:translateX(2px)}
-.link-item .li-icon{font-size:13px;flex-shrink:0}
-.link-item .li-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;width:100%;font-size:11px;line-height:1.2}
-[data-theme="dark"] .link-item{background:#0f1b33}
+.link-grid{display:grid;grid-template-columns:1fr;gap:1px;padding:2px 8px 8px 12px}
+.link-item{display:flex;align-items:flex-start;gap:6px;padding:2.5px 3px;border:none;background:transparent;box-shadow:none;font-size:12px;line-height:1.35;color:var(--text-secondary);text-decoration:none;transition:color .12s}
+.link-item:hover{color:var(--primary)}
+.link-item .li-icon{font-size:12px;width:16px;text-align:center;flex-shrink:0;line-height:1.35}
+.link-item .li-name{font-weight:500;white-space:normal;word-break:break-word;display:block;width:100%}
+[data-theme="dark"] .link-item{background:transparent}
 .sidebar-label.cat{margin-top:4px;padding:8px 24px 2px;font-size:10.5px;color:var(--text-muted);letter-spacing:.5px}
 .sidebar-footer .site-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#1a56db,#7c3aed);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;font-family:var(--font-sans);box-shadow:0 0 0 0 rgba(124,58,237,.5);animation:sitePulse 2s ease-in-out infinite;transition:transform .15s}
 .sidebar-footer .site-btn:hover{transform:translateY(-1px);filter:brightness(1.1)}
@@ -3108,6 +3107,24 @@ function getSubs(id) {
 // ===== 侧边栏常用工具与网站（围绕本科毕业论文写作，9 类 48 个，全部大陆可访问，每类偶数对齐） =====
 const SITE_CATS = [{"title": "🔍 文献检索（中文）", "items": [{"name": "中国知网 CNKI", "url": "https://www.cnki.net"}, {"name": "万方数据", "url": "https://www.wanfangdata.com.cn"}, {"name": "维普期刊", "url": "https://qikan.cqvip.com"}, {"name": "国家哲学社会科学文献中心", "url": "https://www.ncpssd.org"}, {"name": "人大复印报刊资料", "url": "https://www.rdfybk.com"}, {"name": "百度学术", "url": "https://xueshu.baidu.com"}]}, {"title": "🌏 文献检索（英文）", "items": [{"name": "Web of Science（校内授权）", "url": "https://www.webofscience.com"}, {"name": "Scopus（校内授权）", "url": "https://www.scopus.com"}, {"name": "EBSCO Business Source（校内授权）", "url": "https://search.ebscohost.com"}, {"name": "ProQuest ABI/INFORM（校内授权）", "url": "https://www.proquest.com"}, {"name": "Emerald Insight（校内授权）", "url": "https://www.emerald.com/insight"}, {"name": "ScienceDirect（校内授权）", "url": "https://www.sciencedirect.com"}, {"name": "Springer Nature Link（校内授权）", "url": "https://link.springer.com"}, {"name": "SSRN", "url": "https://www.ssrn.com"}]}, {"title": "🤖 文献检索（AI辅助）", "items": [{"name": "万方智搜", "url": "https://www.wanfangdata.com.cn"}, {"name": "万方智研", "url": "https://www.wanfangdata.com.cn"}, {"name": "知网研学", "url": "https://x.cnki.net"}, {"name": "ReadPaper", "url": "https://readpaper.com"}, {"name": "DeepSeek", "url": "https://chat.deepseek.com"}, {"name": "Kimi", "url": "https://kimi.moonshot.cn"}]}, {"title": "📊 数据统计与分析", "items": [{"name": "Excel", "url": "https://www.microsoft.com/microsoft-365/excel"}, {"name": "WPS 表格", "url": "https://www.wps.cn"}, {"name": "SPSS", "url": "https://www.ibm.com/spss"}, {"name": "Stata", "url": "https://www.stata.com"}, {"name": "R / RStudio", "url": "https://posit.co/"}, {"name": "AMOS", "url": "https://www.ibm.com/products/spss-amos"}, {"name": "Mplus", "url": "https://www.statmodel.com"}, {"name": "fsQCA", "url": "https://www.fsqca.com"}, {"name": "NVivo", "url": "https://lumivero.com/products/nvivo"}]}, {"title": "🗃️ 商科数据平台", "items": [{"name": "CSMAR（校内授权）", "url": "https://www.gtarsc.com"}, {"name": "Wind 万得（校内授权）", "url": "https://www.wind.com.cn"}, {"name": "CNRDS（校内授权）", "url": "https://www.cnrds.com"}, {"name": "RESSET（校内授权）", "url": "https://www.resset.cn"}, {"name": "EPS 数据平台（校内授权）", "url": "https://www.epsnet.com.cn"}, {"name": "巨潮资讯", "url": "http://www.cninfo.com.cn"}]}, {"title": "🧠 专业理论与方法学习", "items": [{"name": "国家高等教育智慧教育平台", "url": "https://higher.smartedu.cn"}, {"name": "中国大学 MOOC", "url": "https://www.icourse163.org"}, {"name": "学堂在线", "url": "https://www.xuetangx.com"}, {"name": "SAGE Research Methods（校内授权）", "url": "https://methods.sagepub.com"}, {"name": "哈佛商业评论中文版", "url": "https://www.hbrchina.org"}]}, {"title": "✍️ 写作、引文与文献管理", "items": [{"name": "Zotero", "url": "https://www.zotero.org"}, {"name": "NoteExpress", "url": "http://www.inoteexpress.com"}, {"name": "EndNote（校内授权）", "url": "https://endnote.com"}, {"name": "知网研学", "url": "https://x.cnki.net"}, {"name": "WPS Office", "url": "https://www.wps.cn"}]}, {"title": "🎨 翻译与语言润色", "items": [{"name": "CNKI 翻译助手", "url": "https://dict.cnki.net"}, {"name": "有道翻译", "url": "https://fanyi.youdao.com"}, {"name": "腾讯交互翻译", "url": "https://trans.qq.com"}, {"name": "百度翻译", "url": "https://fanyi.baidu.com"}]}, {"title": "📐 图表、模型与展示", "items": [{"name": "Excel", "url": "https://www.microsoft.com/microsoft-365/excel"}, {"name": "WPS 表格", "url": "https://www.wps.cn"}, {"name": "ECharts", "url": "https://echarts.apache.org"}, {"name": "镝数聚", "url": "https://www.dycharts.com"}, {"name": "ProcessOn", "url": "https://www.processon.com"}, {"name": "Origin", "url": "https://www.originlab.com"}]}, {"title": "🌐 资讯、政策与权威报告", "items": [{"name": "国家统计局·国家数据", "url": "https://data.stats.gov.cn"}, {"name": "商务部商务数据中心", "url": "https://data.mofcom.gov.cn"}, {"name": "中国人民银行", "url": "https://www.pbc.gov.cn"}, {"name": "海关总署", "url": "http://www.customs.gov.cn"}, {"name": "CNNIC", "url": "https://www.cnnic.cn"}, {"name": "中国信通院 CAICT", "url": "https://www.caict.ac.cn"}, {"name": "中国证监会", "url": "http://www.csrc.gov.cn"}, {"name": "国家市场监督管理总局", "url": "https://www.samr.gov.cn"}, {"name": "艾瑞咨询", "url": "https://www.iresearch.com.cn"}, {"name": "QuestMobile", "url": "https://www.questmobile.com.cn"}]}, {"title": "🌍 国际比较数据与报告", "items": [{"name": "World Bank Open Data", "url": "https://data.worldbank.org"}, {"name": "IMF Data", "url": "https://www.imf.org/en/Data"}, {"name": "OECD Data Explorer", "url": "https://data.oecd.org"}, {"name": "UNCTAD Data Hub", "url": "https://unctadstat.unctad.org"}]}];
 
+function toolIcon(name) {
+  const rules = [
+    [/知网|cnki/i, '📚'], [/万方/i, '🗂️'], [/维普/i, '🗃️'], [/国家哲社|ncpssd/i, '🏛️'], [/人大/i, '📑'], [/百度学术/i, '🎓'],
+    [/Web of Science/i, '🔬'], [/Scopus/i, '🧪'], [/EBSCO/i, '🗄️'], [/ProQuest/i, '📇'], [/Emerald/i, '💎'], [/ScienceDirect/i, '🔬'], [/Springer/i, '📗'], [/SSRN/i, '📘'],
+    [/知网研学/i, '🖊️'], [/ReadPaper/i, '📖'], [/DeepSeek/i, '🤖'], [/Kimi/i, '🌙'],
+    [/Excel/i, '📊'], [/WPS/i, '📝'], [/SPSS/i, '📈'], [/Stata/i, '📉'], [/RStudio/i, '📐'], [/AMOS/i, '🧮'], [/Mplus/i, '🧩'], [/fsQCA/i, '🔗'], [/NVivo/i, '🗒️'],
+    [/CSMAR/i, '📊'], [/Wind/i, '🌬️'], [/CNRDS/i, '🗄️'], [/RESSET/i, '📁'], [/EPS/i, '🧾'], [/巨潮/i, '🏦'],
+    [/智慧教育/i, '🏫'], [/MOOC/i, '🎓'], [/学堂在线/i, '🏛️'], [/SAGE/i, '📚'], [/哈佛|HBR/i, '💼'],
+    [/Zotero/i, '📚'], [/NoteExpress/i, '📌'], [/EndNote/i, '🗂️'],
+    [/翻译助手|CNKI 翻译/i, '🌐'], [/有道/i, '🈶'], [/腾讯交互/i, '💬'], [/百度翻译/i, '🈷️'],
+    [/ECharts/i, '📈'], [/镝数/i, '📊'], [/ProcessOn/i, '🔄'], [/Origin/i, '🧬'],
+    [/统计局/i, '📈'], [/商务部/i, '🏢'], [/人民银行/i, '🏦'], [/海关/i, '🚢'], [/CNNIC/i, '🌐'], [/信通院/i, '📡'], [/证监会/i, '⚖️'], [/市场监管/i, '🏛️'], [/艾瑞/i, '📊'], [/QuestMobile/i, '📱'],
+    [/World Bank/i, '🌍'], [/IMF/i, '💰'], [/OECD/i, '🏙️'], [/UNCTAD/i, '📦']
+  ];
+  for (const [re, e] of rules) if (re.test(name)) return e;
+  return '🔗';
+}
+
 // ===== Build Sidebar =====
 function stageGroupHTML(s, subs, isTool) {
   const active = currentStage === s.id;
@@ -3135,7 +3152,7 @@ function buildSidebar() {
     ${SITE_CATS.map(cat => `
     <div class="sidebar-label cat">${cat.title}</div>
     <div class="link-grid">
-      ${cat.items.map(l => `<a class="link-item" href="${l.url}" target="_blank" rel="noopener" onclick="openSite('${l.url}','${l.name}');return false;" title="${l.name}"><span class="li-name">${l.name}</span></a>`).join('')}
+      ${cat.items.map(l => `<a class="link-item" href="${l.url}" target="_blank" rel="noopener" onclick="openSite('${l.url}','${l.name}');return false;" title="${l.name}"><span class="li-icon">${toolIcon(l.name)}</span><span class="li-name">${l.name}</span></a>`).join('')}
     </div>`).join('')}`;
   nav.innerHTML = `
     <div class="stage-group">
