@@ -771,6 +771,9 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .dm-like-btn.liked{background:#fee2e2;cursor:default}
 .dm-like-tip{font-size:12px;color:var(--text-muted)}
 .dm-burst{position:absolute;right:4px;top:-18px;font-size:30px;z-index:3;pointer-events:none;animation:dmBurst .9s ease-out forwards}
+.danmaku-item{animation:dmgo 19s linear forwards}
+@keyframes dmgo{0%{transform:translateX(0);opacity:0}3%{opacity:1}90%{opacity:1}100%{transform:translateX(var(--dx,-1200px));opacity:0}}
+
 @keyframes dmBurst{0%{transform:scale(.3);opacity:1}60%{transform:scale(1.5);opacity:1}100%{transform:scale(.9) translateY(-24px);opacity:0}}
 .sug-like{border:1px solid #fde68a;background:#fffbeb;color:#b45309;border-radius:10px;padding:1px 8px;font-size:11.5px;cursor:pointer;font-family:var(--font-sans);display:inline-flex;align-items:center;gap:3px;margin-top:4px}
 .sug-like:hover{background:#fef3c7}
@@ -4105,22 +4108,17 @@ function danmaku(it) {
       (liked ? '👍 已赞' : '👍 点赞') + '</button><span class="dm-like-tip"></span></span>';
   el.innerHTML = '<span class="dm-main">' + escapeHtml(name ? name + '：' : '') + escapeHtml(text) + hintHtml + '</span>' + actHtml;
   layer.appendChild(el);
-  // 双车道
   el.style.top = (dmLane % 2 === 0 ? 0 : 52) + 'px';
   dmLane++;
   const w = el.querySelector('.dm-main').offsetWidth;
   const startX = layer.clientWidth;
   const dur = 19000 + Math.random() * 6000;
-  const anim = el.animate([
-    { transform: 'translateX(0)', opacity: 0 },
-    { transform: 'translateX(0)', opacity: 1, offset: 0.04 },
-    { transform: `translateX(-${startX + w + 40}px)`, opacity: 1, offset: 0.78 },
-    { transform: `translateX(-${startX + w + 60}px)`, opacity: 0 }
-  ], { duration: dur, easing: 'linear' });
-  anim.onfinish = () => el.remove();
-  // 悬停暂停 / 移开继续
-  el.addEventListener('mouseenter', () => { if (anim.playState === 'running') anim.pause(); });
-  el.addEventListener('mouseleave', () => { if (anim.playState === 'paused') anim.play(); });
+  el.style.setProperty('--dx', -(startX + w + 60) + 'px');
+  el.style.animation = 'dmgo ' + dur + 'ms linear forwards';
+  el.style.animationPlayState = 'running';
+  el.addEventListener('animationend', () => el.remove());
+  el.addEventListener('mouseenter', () => { if (el.style.animationPlayState !== 'paused') el.style.animationPlayState = 'paused'; });
+  el.addEventListener('mouseleave', () => { if (el.style.animationPlayState === 'paused') el.style.animationPlayState = 'running'; });
 }
 
 function startDanmaku() {
