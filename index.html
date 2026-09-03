@@ -16,7 +16,7 @@
   --radius: 8px; --radius-lg: 12px;
   --shadow: 0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);
   --shadow-lg: 0 4px 16px rgba(0,0,0,.08),0 2px 4px rgba(0,0,0,.04);
-  --sidebar-width: 260px; --header-height: 64px;
+  --sidebar-width: 340px; --header-height: 64px;
   --font-sans: -apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei","Helvetica Neue",sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
@@ -560,11 +560,11 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 /* ===== 侧边栏常用工具与网站 ===== */
-.link-grid{display:grid;grid-template-columns:1fr;gap:1px;padding:2px 8px 8px 12px}
+.link-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px 8px;padding:2px 8px 8px 12px;align-items:start}
 .link-item{display:flex;align-items:flex-start;gap:6px;padding:2.5px 3px;border:none;background:transparent;box-shadow:none;font-size:12px;line-height:1.35;color:var(--text-secondary);text-decoration:none;transition:color .12s}
 .link-item:hover{color:var(--primary)}
 .link-item .li-icon{font-size:12px;width:16px;text-align:center;flex-shrink:0;line-height:1.35}
-.link-item .li-name{font-weight:500;white-space:normal;word-break:break-word;display:block;width:100%}
+.link-item .li-name{font-weight:500;white-space:normal;word-break:break-word;overflow-wrap:anywhere;display:block;width:100%;line-height:1.3}
 [data-theme="dark"] .link-item{background:transparent}
 .sidebar-label.cat{margin-top:4px;padding:8px 24px 2px;font-size:10.5px;color:var(--text-muted);letter-spacing:.5px}
 .sidebar-footer .site-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#1a56db,#7c3aed);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;font-family:var(--font-sans);box-shadow:0 0 0 0 rgba(124,58,237,.5);animation:sitePulse 2s ease-in-out infinite;transition:transform .15s}
@@ -3772,7 +3772,7 @@ function computeSidebarMinWidth() {
     if (right > maxRight) maxRight = right;
   });
   subs.forEach((el, i) => { el.style.display = subStates[i]; });
-  SB_MIN_W = Math.min(560, Math.max(170, Math.ceil(maxRight + 6)));
+  SB_MIN_W = Math.min(560, Math.max(300, Math.ceil(maxRight + 6)));
 }
 
 function initSidebarUI() {
