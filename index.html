@@ -396,9 +396,10 @@ body.sb-collapsed .main{margin-left:0}
 body.sb-collapsed .sidebar-resizer{display:none}
 .sb-toggle{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
 .sb-toggle:hover{border-color:var(--primary);background:var(--primary-light)}
-.sb-expand{position:fixed;left:0;top:50%;transform:translateY(-50%);width:26px;height:58px;border-radius:0 10px 10px 0;border:1px solid var(--border);border-left:none;background:var(--card-bg);color:var(--primary);cursor:pointer;font-size:14px;z-index:150;display:none;box-shadow:var(--shadow)}
+.sb-expand{position:fixed;left:0;top:50%;transform:translateY(-50%);width:34px;height:72px;border-radius:0 14px 14px 0;border:2px solid var(--primary);border-left:none;background:linear-gradient(135deg,#1a56db,#7c3aed);color:#fff;cursor:pointer;font-size:17px;z-index:150;display:none;box-shadow:0 4px 14px rgba(26,86,219,.4);animation:expandGlow 2s ease-in-out infinite}
 body.sb-collapsed .sb-expand{display:flex;align-items:center;justify-content:center}
-.sb-expand:hover{background:var(--primary-light)}
+.sb-expand:hover{filter:brightness(1.12)}
+@keyframes expandGlow{0%,100%{box-shadow:0 4px 14px rgba(26,86,219,.35)}50%{box-shadow:0 4px 22px rgba(124,58,237,.6)}}
 
 /* ===== Stage content tiled kanban (sections 1-9) ===== */
 @media(min-width:901px){
@@ -442,7 +443,7 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
 .stage-header.active .stage-num{color:#fff;transform:scale(1.15);box-shadow:0 0 0 3px rgba(255,255,255,.4)}
 [data-theme="dark"] body{background:linear-gradient(180deg,#0f172a 0%,#0d1626 100%)}
 [data-theme="dark"] #stage-0 .stage-hero{background:linear-gradient(120deg,#14213d,#101b33,#1a1330);animation:none}
-[data-theme="dark"] .sb-expand{background:var(--card-bg)}
+[data-theme="dark"] .sb-expand{background:linear-gradient(135deg,#1e3a8a,#5b21b6);color:#fff}
 @media(max-width:768px){
   .sidebar-resizer{display:none}
   .sb-expand{display:none!important}
@@ -716,7 +717,7 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .vip-card table th:first-child,.vip-card table td:first-child{width:44%;white-space:nowrap}
 .stage-body .demo-box p{text-wrap:pretty;word-break:break-word}
 
-/* ===== 建议弹幕 ===== */
+/* ===== 弹幕交流 ===== */
 .suggest-btn{flex-shrink:0;white-space:nowrap;padding:6px 14px;border:none;border-radius:18px;background:linear-gradient(135deg,#8b5cf6,#ec4899);color:#fff;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(139,92,246,.4);transition:all .2s}
 .suggest-btn:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(139,92,246,.5)}
 .suggest-overlay{position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:1050;display:none;align-items:center;justify-content:center;padding:20px}
@@ -921,7 +922,7 @@ body.sb-collapsed .status-bar{left:0}
       搜索全部内容<kbd>Ctrl+K</kbd>
     </button>
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="切换深色/浅色模式">🌙</button>
-    <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 建议弹幕</button>
+    <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 弹幕交流</button>
     <div class="music-wrap">
       <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放中英文经典老歌（30分钟）"><span class="music-icon">🎵</span></button>
       <div class="music-below" id="musicBelow">
@@ -2938,7 +2939,7 @@ body.sb-collapsed .status-bar{left:0}
 <!-- ===== 建议墙弹窗（公开，所有人可见） ===== -->
 <div class="suggest-overlay" id="suggestOverlay">
   <div class="suggest-card">
-    <div class="suggest-head"><span>💡 建议弹幕 · 所有人可见</span><span style="display:flex;align-items:center;gap:8px;"><button class="sug-admin-btn" id="sugAdminBtn" onclick="suggestAdminToggle()" title="管理员入口（需站密码）">⚙️ 管理</button><button class="suggest-close" onclick="toggleSuggest()">✕</button></span></div>
+    <div class="suggest-head"><span>💡 弹幕交流 · 所有人可见</span><span style="display:flex;align-items:center;gap:8px;"><button class="sug-admin-btn" id="sugAdminBtn" onclick="suggestAdminToggle()" title="管理员入口（需站密码）">⚙️ 管理</button><button class="suggest-close" onclick="toggleSuggest()">✕</button></span></div>
     <div class="suggest-admin-box" id="suggestAdminBox" style="display:none;">
       <div style="display:flex;gap:8px;">
         <input id="suggestAdminPwd" type="password" placeholder="输入站密码进入管理" maxlength="30">
@@ -3835,7 +3836,7 @@ function toggleSidebar() {
   sbPersist();
 }
 
-// ===== Cloudflare 访问计数 & 建议弹幕 =====
+// ===== Cloudflare 访问计数 & 弹幕交流 =====
 const WORKER_URL = 'https://thesis-assistant-api.leooelcn.workers.dev';
 
 async function fetchJSON(url, timeoutMs = 15000) {
