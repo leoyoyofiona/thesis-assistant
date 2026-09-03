@@ -928,12 +928,12 @@ body.sb-collapsed .status-bar{left:0}
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="切换深色/浅色模式">🌙</button>
     <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 弹幕交流</button>
     <div class="music-wrap">
-      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="随机播放中英文经典老歌（30分钟）"><span class="music-icon">🎵</span></button>
+      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="播放 / 暂停">▶</button>
       <div class="music-below" id="musicBelow">
         <span class="music-title" id="musicTitle"></span>
         <div class="music-popup">
-          <button class="mp-btn" onclick="musicPlay()" title="播放">▶</button>
-          <button class="mp-btn" onclick="musicPause()" title="暂停">⏸</button>
+          <button class="mp-btn" onclick="musicPrev()" title="上一曲">⏮</button>
+          <button class="mp-btn" id="mpPlayPause" onclick="musicPlayPause()" title="播放/暂停">▶</button>
           <button class="mp-btn" onclick="musicNext()" title="下一曲">⏭</button>
         </div>
       </div>
@@ -4152,40 +4152,51 @@ function fetchRandomSong() {
   return Promise.resolve({ ok: true, url: s.url, title: s.title, artist: s.artist || '' });
 }
 
+function setPlayIcon(playing) {
+  const b = document.getElementById('musicBtn');
+  if (b) b.textContent = playing ? '⏸' : '▶';
+  const pp = document.getElementById('mpPlayPause');
+  if (pp) pp.textContent = playing ? '⏸' : '▶';
+}
 function stopMusic() {
   if (audio) { audio.pause(); audio.src = ''; }
   clearTimeout(musicTimer); musicTimer = null;
   musicPlaying = false;
+  musicPaused = false;
   const btn = document.getElementById('musicBtn');
-  if (btn) { btn.classList.remove('playing'); btn.title = '随机播放中英文经典老歌（30分钟）'; }
+  if (btn) { btn.classList.remove('playing'); btn.title = '播放音乐'; }
+  setPlayIcon(false);
   const titleEl = document.getElementById('musicTitle');
   if (titleEl) { titleEl.textContent = ''; titleEl.classList.remove('show'); }
   const below = document.getElementById('musicBelow');
   if (below) below.classList.remove('show');
 }
-async function playRandomMusic() {
-  const s = await fetchRandomSong();
-  if (!s) { showToast('音乐加载失败（网络原因，请再试一次）'); return; }
+
+function loadTrack(s) {
+  if (!s || !s.url) return;
   if (!audio) {
     audio = new Audio();
     audio.preload = 'auto';
-    audio.addEventListener('ended', () => { if (musicPlaying) playRandomMusic(); });
+    audio.addEventListener('ended', () => { if (musicPlaying && !musicPaused) musicNext(); });
   }
   audio.src = s.url;
   musicPlaying = true;
+  musicPaused = false;
+  const btn = document.getElementById('musicBtn');
+  if (btn) { btn.classList.add('playing'); btn.title = '暂停'; }
+  setPlayIcon(true);
   audio.play().catch(() => {
     musicPlaying = false;
     clearTimeout(musicTimer); musicTimer = null;
     const b = document.getElementById('musicBtn');
     if (b) b.classList.remove('playing');
+    setPlayIcon(false);
     const t2 = document.getElementById('musicTitle');
     if (t2) { t2.textContent = ''; t2.classList.remove('show'); }
     const b2 = document.getElementById('musicBelow');
     if (b2) b2.classList.remove('show');
     showToast('音乐播放失败（网络原因，请再点一次）');
   });
-  const btn = document.getElementById('musicBtn');
-  if (btn) { btn.classList.add('playing'); btn.title = '停止音乐（当前：' + (s.title || '随机歌曲') + (s.artist ? ' - ' + s.artist : '') + '）'; }
   const titleEl = document.getElementById('musicTitle');
   if (titleEl) { titleEl.textContent = (s.title || '随机歌曲') + (s.artist ? ' - ' + s.artist : ''); titleEl.classList.add('show'); }
   const below = document.getElementById('musicBelow');
@@ -4193,23 +4204,47 @@ async function playRandomMusic() {
   clearTimeout(musicTimer);
   musicTimer = setTimeout(stopMusic, 30 * 60 * 1000);
 }
-function toggleMusic() {
-  if (musicPlaying) { stopMusic(); return; }
-  playRandomMusic();
+
+let songHistory = [], currentSong = null;
+function pickSong() {
+  if (!SONG_LIST.length) return null;
+  const s = SONG_LIST[Math.floor(Math.random() * SONG_LIST.length)];
+  return s;
 }
-function musicPlay() {
-  if (musicPlaying) { if (audio && audio.paused) audio.play().catch(() => {}); return; }
-  playRandomMusic();
+function playRandomMusic() {
+  if (currentSong) { songHistory.push(currentSong); if (songHistory.length > 60) songHistory.shift(); }
+  currentSong = pickSong();
+  loadTrack(currentSong);
 }
-function musicPause() {
-  if (audio && !audio.paused) audio.pause();
+function musicPrev() {
+  if (!songHistory.length) { playRandomMusic(); return; }
+  const back = songHistory.pop();
+  if (back) { currentSong = back; loadTrack(back); }
+  else playRandomMusic();
 }
 function musicNext() {
   playRandomMusic();
 }
+function toggleMusic() {
+  if (musicPlaying && audio) {
+    if (audio.paused) {
+      audio.play().then(() => { musicPaused = false; setPlayIcon(true); }).catch(() => {});
+    } else {
+      audio.pause(); musicPaused = true; setPlayIcon(false);
+    }
+    return;
+  }
+  playRandomMusic();
+}
+function musicPlayPause() { toggleMusic(); }
+function musicPlay() {
+  if (musicPlaying && audio && audio.paused) { audio.play().then(() => { musicPaused = false; setPlayIcon(true); }).catch(() => {}); return; }
+  playRandomMusic();
+}
+function musicPause() {
+  if (audio && !audio.paused) { audio.pause(); musicPaused = true; setPlayIcon(false); }
+}
 
-// ===== Init =====
-// ===== 时钟 / 倒计时 / 轻提示 / 健康提醒 =====
 const DEADLINES = [
   { name: '开题答辩', date: '2026-10-14' },
   { name: '正式答辩', date: '2026-12-14' },
@@ -4273,6 +4308,120 @@ function startHealthTimer() {
     }
     lastTick = now;
   }, 30000);
+}
+
+// ===== 天气：按访问者IP定位 + 直连 Open-Meteo（含背景动效） =====
+function weatherType(code) {
+  if (code == null) return { t: 'none', icon: 'sun', label: '天气未知' };
+  if (code === 0) return { t: 'none', icon: 'sun', label: '晴' };
+  if (code === 1) return { t: 'none', icon: 'partly', label: '多云' };
+  if (code <= 3) return { t: 'none', icon: 'cloud', label: '阴' };
+  if (code <= 48) return { t: 'fog', icon: 'fog', label: '雾' };
+  if (code <= 55) return { t: 'rain', icon: 'rain', label: '小雨' };
+  if (code <= 57) return { t: 'rain', icon: 'rain', label: '毛毛雨' };
+  if (code === 61) return { t: 'rain', icon: 'rain', label: '小雨' };
+  if (code === 63) return { t: 'rain', icon: 'rain', label: '中雨' };
+  if (code === 65) return { t: 'rain', icon: 'rain', label: '大雨' };
+  if (code <= 67) return { t: 'rain', icon: 'rain', label: '雨' };
+  if (code <= 77) return { t: 'snow', icon: 'snow', label: '雪' };
+  if (code <= 82) return { t: 'rain', icon: 'rain', label: '阵雨' };
+  if (code <= 86) return { t: 'snow', icon: 'snow', label: '阵雪' };
+  if (code <= 99) return { t: 'thunder', icon: 'thunder', label: '雷雨' };
+  return { t: 'none', icon: 'sun', label: '未知' };
+}
+const WE_EMOJI = { none: '🌤', fog: '🌫', rain: '🌧', snow: '❄️', thunder: '⛈', wind: '🌬' };
+const WX_ICON = { sun: '☀️', partly: '⛅', cloud: '☁️', fog: '🌫️', rain: '🌧️', snow: '🌨️', thunder: '⛈️', wind: '🌬️' };
+const CITY_ZH = { beijing:'北京', shanghai:'上海', guangzhou:'广州', shenzhen:'深圳', hangzhou:'杭州', jinhua:'金华', chengdu:'成都', wuhan:'武汉', nanjing:'南京', xian:'西安', chongqing:'重庆', tianjin:'天津', suzhou:'苏州', ningbo:'宁波', wenzhou:'温州', fuzhou:'福州', xiamen:'厦门', jinan:'济南', qingdao:'青岛', zhengzhou:'郑州', changsha:'长沙', hefei:'合肥', nanchang:'南昌', kunming:'昆明', guiyang:'贵阳', nanning:'南宁', haikou:'海口', lanzhou:'兰州', urumqi:'乌鲁木齐', hohhot:'呼和浩特', harbin:'哈尔滨', changchun:'长春', shenyang:'沈阳', shijiazhuang:'石家庄', taiyuan:'太原', xining:'西宁', yinchuan:'银川', lhasa:'拉萨', macau:'澳门', macao:'澳门', 'hong kong':'香港', taipei:'台北', kaohsiung:'高雄', dongguan:'东莞', foshan:'佛山', zhuhai:'珠海', shaoxing:'绍兴', jiaxing:'嘉兴', huzhou:'湖州', taizhou:'台州', lishui:'丽水', quzhou:'衢州', zhoushan:'舟山', seoul:'首尔', tokyo:'东京', 'new york':'纽约', 'los angeles':'洛杉矶', london:'伦敦', paris:'巴黎', bangkok:'曼谷', singapore:'新加坡', sydney:'悉尼', melbourne:'墨尔本', toronto:'多伦多', vancouver:'温哥华' };
+
+let weatherRAF = null;
+function startWeatherEffect(type, code) {
+  if (weatherRAF) { cancelAnimationFrame(weatherRAF); weatherRAF = null; }
+  const canvas = document.getElementById('weatherCanvas');
+  const fog = document.getElementById('fogLayer');
+  const flash = document.getElementById('lightningFlash');
+  if (!canvas || !fog || !flash) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  fog.style.display = 'none';
+  flash.style.display = 'none';
+  if (type === 'none') return;
+  if (type === 'fog') { fog.style.display = 'block'; return; }
+  const heavy = (code === 65 || code === 63 || code >= 95);
+  const density = type === 'snow' ? 140 : (type === 'thunder' ? 240 : (heavy ? 220 : 150));
+  const P = [];
+  for (let i = 0; i < density; i++) {
+    P.push({
+      x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+      sp: (type === 'snow' ? 1 + Math.random() * 2 : 5 + Math.random() * 8) * (heavy ? 1.7 : 1),
+      len: (type === 'rain' || type === 'thunder') ? 14 + Math.random() * 14 : 6 + Math.random() * 6,
+      r: type === 'snow' ? 2.5 + Math.random() * 3.5 : 1.4 + Math.random() * 0.8,
+      sw: Math.random() * Math.PI * 2
+    });
+  }
+  let lastFlash = 0;
+  const frame = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (const p of P) {
+      if (type === 'snow') { p.y += p.sp; p.x += Math.sin(p.sw) * 0.7; }
+      else if (type === 'rain' || type === 'thunder') { p.y += p.sp; p.x += (heavy ? 2 : 0.8); }
+      if (p.y > canvas.height) { p.y = -20; p.x = Math.random() * canvas.width; }
+      ctx.beginPath();
+      if (type === 'snow') { ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fill(); }
+      else { ctx.strokeStyle = 'rgba(120,165,220,.6)'; ctx.lineWidth = p.r; ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.sp * 0.55, p.y - p.len); ctx.stroke(); }
+    }
+    if (type === 'thunder') {
+      const now = Date.now();
+      if (now - lastFlash > 3200 + Math.random() * 4200) {
+        lastFlash = now;
+        flash.style.display = 'block';
+        const seq = [0.55, 0.1, 0.5, 0.1];
+        let i = 0;
+        const step = () => { flash.style.opacity = seq[i++] || '0'; if (i < seq.length) setTimeout(step, 90); else { flash.style.opacity = '0'; flash.style.display = 'none'; } };
+        step();
+      }
+    }
+    weatherRAF = requestAnimationFrame(frame);
+  };
+  frame();
+}
+
+function applyWeather(code, city, temp, wind) {
+  const el = document.getElementById('sbWeather');
+  const iconEl = document.getElementById('weatherIcon');
+  const wt = weatherType(code);
+  if (typeof wind === 'number' && wind >= 25 && wt.t === 'none') { wt.t = 'wind'; wt.icon = 'wind'; }
+  let label = (WE_EMOJI[wt.t] || '🌤') + ' ' + (city || '');
+  if (typeof temp === 'number') label += ' ' + temp + '℃';
+  label += ' ' + wt.label;
+  if (el) el.textContent = label;
+  if (iconEl) { iconEl.textContent = WX_ICON[wt.icon] || '☀️'; iconEl.className = 'weather-icon ' + (wt.icon || 'sun'); }
+  startWeatherEffect(wt.t, code);
+}
+
+async function loadWeather() {
+  const el = document.getElementById('sbWeather');
+  let lat = 29.08, lon = 119.65, city = '金华';
+  try {
+    const g = await fetchJSON('https://ipwho.is/', 5000);
+    if (g && g.success && typeof g.latitude === 'number' && typeof g.longitude === 'number') {
+      lat = g.latitude; lon = g.longitude;
+      const raw = String(g.city || '').trim();
+      city = CITY_ZH[raw.toLowerCase()] || raw || '当前位置';
+    }
+  } catch (e) {}
+  try {
+    const wd = await fetchJSON('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current_weather=true', 10000);
+    const cw = wd.current_weather || {};
+    const code = typeof cw.weathercode === 'number' ? cw.weathercode : null;
+    const temp = typeof cw.temperature === 'number' ? Math.round(cw.temperature) : null;
+    const wind = typeof cw.windspeed === 'number' ? Math.round(cw.windspeed) : null;
+    if (code == null && temp == null) throw new Error('no data');
+    applyWeather(code, city, temp, wind);
+  } catch (e) {
+    if (el) { el.textContent = '🌤 天气加载失败（点我重试）'; el.style.cursor = 'pointer'; el.onclick = loadWeather; }
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
