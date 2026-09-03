@@ -1277,7 +1277,7 @@ body.sb-collapsed .status-bar{left:0}
           <button class="btn-download" onclick="downloadWord('kt')">📥 下载开题报告 Word 模板</button>
           <div class="demo-box" style="line-height:2.2;">
             <div class="demo-label">📄 开题报告标准模板（按学校格式）</div>
-            <p style="font-weight:700;text-align:center;font-size:15px;margin-bottom:10px;">浙江师范大学</p>
+            <p style="font-weight:700;text-align:center;font-size:15px;margin-bottom:10px;">浙江师范大学行知学院</p>
             <p style="font-weight:700;text-align:center;font-size:15px;margin-bottom:18px;">本科毕业设计（论文）开题报告</p>
             <table style="width:100%;font-size:12px;margin:12px 0;">
               <tr><td style="width:90px;font-weight:600;">论文题目</td><td colspan="3" style="border-bottom:1px solid #ccc;">直播电商中KOL特征对消费者购买意愿的影响研究</td></tr>
@@ -1614,7 +1614,7 @@ body.sb-collapsed .status-bar{left:0}
           <button class="btn-download" onclick="downloadWord('main')">📥 下载论文正文 Word 模板</button>
           <div class="demo-box" style="line-height:2.2;font-size:13px;">
             <div class="demo-label">📄 论文正文排版模板（页面格式：A4，上3cm/下2.5cm/左3cm/右2.5cm）</div>
-            <p style="text-align:center;font-size:16px;font-weight:700;">浙江师范大学</p>
+            <p style="text-align:center;font-size:16px;font-weight:700;">浙江师范大学行知学院</p>
             <p style="text-align:center;font-size:16px;font-weight:700;margin-bottom:16px;">本科毕业设计（论文）</p>
             <p style="text-align:center;font-size:14px;font-weight:700;">题目：直播电商中KOL特征对消费者购买意愿的影响研究</p>
             <p style="text-align:center;font-size:12px;margin-top:10px;">学生姓名：×××（学号：××××××）</p>
@@ -2426,7 +2426,7 @@ body.sb-collapsed .status-bar{left:0}
           <ul class="checklist" id="anonymCheck">
             <li><span class="check">✓</span>封面：去除学生姓名、学号</li>
             <li><span class="check">✓</span>封面：去除指导教师姓名</li>
-            <li><span class="check">✓</span>封面：去除学校名称（含"浙江师范大学"）</li>
+            <li><span class="check">✓</span>封面：去除学校名称（含"浙江师范大学行知学院"）</li>
             <li><span class="check">✓</span>封面：去除学院、专业信息</li>
             <li><span class="check">✓</span>页眉：去除可能含姓名/学校的页眉</li>
             <li><span class="check">✓</span>致谢：去除指导教师姓名、学校名称</li>
@@ -3529,8 +3529,8 @@ function initChecklists() {
 // ===== Word template download =====
 function downloadWord(kind) {
   let title, body;
-  if (kind === 'kt') { title = '开题报告模板-浙江师范大学'; body = ktDocHTML(); }
-  else { title = '论文正文模板-浙江师范大学'; body = mainDocHTML(); }
+  if (kind === 'kt') { title = '开题报告模板-浙江师范大学行知学院'; body = ktDocHTML(); }
+  else { title = '论文正文模板-浙江师范大学行知学院'; body = mainDocHTML(); }
   const html = `<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
 <head>
 <meta charset="UTF-8">
@@ -3564,7 +3564,7 @@ ${body}
 
 function ktDocHTML() {
   return `
-  <h2>浙江师范大学</h2>
+  <h2>浙江师范大学行知学院</h2>
   <h2>本科毕业设计（论文）开题报告</h2>
   <table class="info">
     <tr><td style="width:100px;">论文题目</td><td>（填写最终论文题目）</td></tr>
@@ -3596,7 +3596,7 @@ function ktDocHTML() {
 
 function mainDocHTML() {
   return `
-  <h2>浙江师范大学本科毕业设计（论文）</h2>
+  <h2>浙江师范大学行知学院本科毕业设计（论文）</h2>
   <p style="text-align:center;font-size:14pt;"><strong>题目：××××××研究</strong></p>
   <p style="text-align:center;">学生姓名：×××（学号：××××××）　指导教师：×××　专业：电子商务</p>
   <p style="text-align:center;font-weight:700;">摘　要</p>
