@@ -928,7 +928,7 @@ body.sb-collapsed .status-bar{left:0}
     <button class="theme-btn" id="themeBtn" onclick="toggleTheme()" title="切换深色/浅色模式">🌙</button>
     <button class="suggest-btn" onclick="toggleSuggest()" title="给这个助手提改进建议">💡 弹幕交流</button>
     <div class="music-wrap">
-      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="播放 / 暂停">▶</button>
+      <button class="music-btn" id="musicBtn" onclick="toggleMusic()" title="播放 / 暂停"><span class="music-icon">🎵</span></button>
       <div class="music-below" id="musicBelow">
         <span class="music-title" id="musicTitle"></span>
         <div class="music-popup">
@@ -4154,7 +4154,7 @@ function fetchRandomSong() {
 
 function setPlayIcon(playing) {
   const b = document.getElementById('musicBtn');
-  if (b) b.textContent = playing ? '⏸' : '▶';
+  if (b) b.classList.toggle('playing', !!playing);   // 播放中🎵顺时针旋转
   const pp = document.getElementById('mpPlayPause');
   if (pp) pp.textContent = playing ? '⏸' : '▶';
 }
