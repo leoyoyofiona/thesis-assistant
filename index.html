@@ -4113,6 +4113,9 @@ function danmaku(it) {
   const w = el.querySelector('.dm-main').offsetWidth;
   const startX = layer.clientWidth;
   const dur = 19000 + Math.random() * 6000;
+  // 从右边缘外开始，向左穿过整个屏幕
+  el.style.left = 'auto';
+  el.style.right = (-w - 20) + 'px';
   el.style.setProperty('--dx', -(startX + w + 60) + 'px');
   el.style.animation = 'dmgo ' + dur + 'ms linear forwards';
   el.style.animationPlayState = 'running';
