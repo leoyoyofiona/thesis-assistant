@@ -3076,7 +3076,7 @@ function getSubs(id) {
 
 // ===== 侧边栏常用工具与网站（围绕本科毕业论文写作，9 类 48 个，全部大陆可访问，每类偶数对齐） =====
 const SITE_CATS = [
-  { title: '🔍 中文文献与期刊', items: [
+  { title: '🔍 文献检索（中文）', items: [
     { icon: '📚', name: '知网 CNKI',     url: 'https://www.cnki.net',              desc: '中文学术文献检索下载' },
     { icon: '🗂', name: '万方数据',      url: 'https://www.wanfangdata.com.cn',   desc: '期刊/学位论文检索' },
     { icon: '🖥', name: '维普期刊',      url: 'https://qikan.cqvip.com',          desc: '中文期刊检索(查重同家)' },
@@ -3084,7 +3084,7 @@ const SITE_CATS = [
     { icon: '📑', name: '人大复印资料',  url: 'https://www.rdfybk.com',           desc: '商科核心期刊转载库' },
     { icon: '🏫', name: '浙师大图书馆',  url: 'https://lib.zjnu.edu.cn',          desc: '数据库入口/VPN' }
   ]},
-  { title: '🌏 英文文献与期刊', items: [
+  { title: '🌏 文献检索（英文）', items: [
     { icon: '📗', name: 'ScienceDirect', url: 'https://www.sciencedirect.com',    desc: '爱思唯尔经管期刊' },
     { icon: '📘', name: 'SpringerLink', url: 'https://link.springer.com',         desc: '施普林格学术期刊' },
     { icon: '📙', name: 'Wiley',        url: 'https://onlinelibrary.wiley.com',  desc: '威利经管期刊' },
@@ -3092,7 +3092,7 @@ const SITE_CATS = [
     { icon: '🟢', name: 'Emerald',      url: 'https://www.emerald.com',           desc: '经管类权威期刊' },
     { icon: '🔵', name: 'SAGE 期刊',    url: 'https://journals.sagepub.com',      desc: 'SAGE 社科期刊' }
   ]},
-  { title: '🤖 AI 检索与读文献', items: [
+  { title: '🤖 文献检索（AI辅助）', items: [
     { icon: '🔍', name: '秘塔AI搜索',   url: 'https://metaso.cn',                 desc: 'AI搜索+文献综述整理' },
     { icon: '📖', name: 'Kimi',         url: 'https://kimi.moonshot.cn',          desc: '长文献阅读/总结' },
     { icon: '💡', name: 'DeepSeek',     url: 'https://chat.deepseek.com',         desc: '对话问答·辅助构思' },
@@ -3100,7 +3100,7 @@ const SITE_CATS = [
     { icon: '🔮', name: '天工AI',       url: 'https://www.tiangong.cn',           desc: 'AI搜索+文档分析' },
     { icon: '🧬', name: '纳米AI搜索',   url: 'https://www.n.cn',                  desc: 'AI搜索+文库检索' }
   ]},
-  { title: '📊 数据分析方面', items: [
+  { title: '📊 数据统计与分析', items: [
     { icon: '📊', name: '国家统计局',    url: 'https://data.stats.gov.cn',        desc: '宏观经济数据' },
     { icon: '🚢', name: '海关总署',      url: 'https://www.customs.gov.cn',       desc: '进出口贸易数据' },
     { icon: '🌐', name: 'UN Comtrade',  url: 'https://comtradeplus.un.org',      desc: '全球贸易数据库' },
@@ -3108,19 +3108,19 @@ const SITE_CATS = [
     { icon: '📝', name: '问卷星',        url: 'https://www.wjx.cn',               desc: '问卷设计/发放/回收' },
     { icon: '📋', name: '腾讯问卷',      url: 'https://wj.qq.com',                desc: '问卷设计(微信生态)' }
   ]},
-  { title: '🧠 专业理论或模型方面', items: [
+  { title: '🧠 专业理论', items: [
     { icon: '📖', name: 'MBA智库百科',  url: 'https://wiki.mbalib.com',          desc: '经管理论与模型速查' },
     { icon: '💬', name: '经管之家',      url: 'https://bbs.pinggu.org',           desc: '商科论坛/资料/讨论' },
     { icon: '📘', name: '百度百科',      url: 'https://baike.baidu.com',          desc: '概念与背景速查' },
     { icon: '🧑‍🎓', name: '知乎',       url: 'https://www.zhihu.com',             desc: '经管话题讨论/经验' }
   ]},
-  { title: '✍️ 写作方面', items: [
+  { title: '✍️ 写作工具', items: [
     { icon: '🗂', name: '知网研学',      url: 'https://x.cnki.net',               desc: '边读文献边写作' },
     { icon: '📑', name: '幕布',          url: 'https://mubu.com',                 desc: '论文大纲/思维导图' },
     { icon: '📚', name: '语雀',          url: 'https://www.yuque.com',            desc: '知识库/写作笔记' },
     { icon: '💻', name: 'WPS Office',   url: 'https://www.wps.cn',                desc: '文档排版/三线表' }
   ]},
-  { title: '🎨 翻译与润色方面', items: [
+  { title: '🎨 翻译与润色', items: [
     { icon: '🌐', name: 'DeepL 翻译',   url: 'https://www.deepl.com',             desc: '中英互译(文献/摘要)' },
     { icon: '📖', name: '有道翻译',      url: 'https://fanyi.youdao.com',         desc: '中英互译/词典' },
     { icon: '🎯', name: '百度翻译',      url: 'https://fanyi.baidu.com',          desc: '多语互译' },
@@ -3128,13 +3128,13 @@ const SITE_CATS = [
     { icon: '🪄', name: '秘塔写作猫',   url: 'https://xiezuocat.com',             desc: '中文校对润色' },
     { icon: '✏️', name: '1Checker',    url: 'https://www.1checker.com',          desc: '英文语法校对' }
   ]},
-  { title: '📐 制作方面', items: [
+  { title: '📐 图表制作', items: [
     { icon: '🔄', name: 'ProcessOn',   url: 'https://www.processon.com',         desc: '流程图/技术路线图' },
     { icon: '✏️', name: 'draw.io',     url: 'https://app.diagrams.net',           desc: '免费绘图(离线可用)' },
     { icon: '📈', name: '镝数图表',     url: 'https://dycharts.com',               desc: '数据图表制作' },
     { icon: '🎨', name: 'Canva 可画',   url: 'https://www.canva.cn',               desc: 'PPT/封面/海报' }
   ]},
-  { title: '🌐 商科资讯与报告', items: [
+  { title: '🌐 资讯与报告', items: [
     { icon: '🛒', name: '网经社',        url: 'https://www.100ec.cn',              desc: '电商行业报告/数据' },
     { icon: '📡', name: '艾瑞咨询',      url: 'https://www.iresearch.cn',          desc: '消费/电商研究报告' },
     { icon: '🧪', name: '阿里研究院',    url: 'https://www.aliresearch.com',       desc: '电商/数字经济研究' },
