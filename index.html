@@ -4039,7 +4039,7 @@ async function submitSuggest() {
 }
 
 // ===== 全屏轻弹幕（可悬停暂停 + 点赞） =====
-let danmakuPool = [], danmakuTimer = null, dmLane = 0;
+let danmakuPool = [], danmakuTimer = null, dmPoolTimer = null, dmLane = 0;
 function dmLikedLoad() { try { return new Set(JSON.parse(localStorage.getItem('dmLiked') || '[]')); } catch (e) { return new Set(); } }
 let dmLiked = dmLikedLoad();
 function dmLikedSave() { try { localStorage.setItem('dmLiked', JSON.stringify([...dmLiked])); } catch (e) {} }
@@ -4129,13 +4129,17 @@ function danmaku(it) {
 }
 
 function startDanmaku() {
-  refreshDanmakuPool();
+  const refresh = () => { try { refreshDanmakuPool(); } catch (e) {} };
+  refresh();
+  // 网络恢复后也能拿到建议：每60秒重取一次曲目池
+  clearInterval(dmPoolTimer);
+  dmPoolTimer = setInterval(refresh, 60000);
   clearInterval(danmakuTimer);
   danmakuTimer = setInterval(() => {
     if (!danmakuPool.length) return;
     if (document.getElementById('suggestOverlay').classList.contains('show')) return; // 面板开着时不打扰
     const s = danmakuPool[Math.floor(Math.random() * danmakuPool.length)];
-    danmaku(s);
+    try { danmaku(s); } catch (e) {}
   }, 11000);
 }
 
@@ -4196,6 +4200,72 @@ function musicNext() {
 }
 
 // ===== Init =====
+// ===== 时钟 / 倒计时 / 轻提示 / 健康提醒 =====
+const DEADLINES = [
+  { name: '开题答辩', date: '2026-10-14' },
+  { name: '正式答辩', date: '2026-12-14' },
+  { name: '最终稿', date: '2026-12-29' }
+];
+const WEEK = ['日', '一', '二', '三', '四', '五', '六'];
+const pad2 = n => (n < 10 ? '0' + n : '' + n);
+
+function initClock() {
+  const el = document.getElementById('sbClock');
+  const tick = () => {
+    if (!el) return;
+    const d = new Date();
+    el.textContent = '📅 ' + d.getFullYear() + '年' + (d.getMonth() + 1) + '月' + d.getDate() + '日 星期' + WEEK[d.getDay()] + '  ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()) + ':' + pad2(d.getSeconds());
+  };
+  tick();
+  setInterval(tick, 1000);
+}
+function initCountdown() {
+  const el = document.getElementById('sbCountdown');
+  const calc = () => {
+    if (!el) return;
+    const now = new Date();
+    const list = [];
+    for (const dl of DEADLINES) {
+      const t = new Date(dl.date + 'T00:00:00');
+      const diff = Math.ceil((t.getTime() - now.getTime()) / 86400000);
+      if (diff > 0) list.push(dl.name + ' 剩' + diff + '天');
+      else if (diff === 0) list.push(dl.name + ' 今天');
+      else if (diff > -3) list.push(dl.name + ' 已过' + (-diff) + '天');
+    }
+    el.textContent = '⏳ ' + (list.length ? list.join('  ') : '暂无节点');
+  };
+  calc();
+  setInterval(calc, 60000);
+}
+
+let activeMs = 0, lastTick = Date.now(), w30 = false, w60 = false, nightWarned = false;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => t.classList.remove('show'), 9000);
+}
+function closeRest() {
+  const o = document.getElementById('restOverlay');
+  if (o) o.classList.remove('show');
+  activeMs = 0; w30 = false; w60 = false;
+}
+function startHealthTimer() {
+  setInterval(() => {
+    const now = Date.now();
+    if (!document.hidden) {
+      activeMs += now - lastTick;
+      if (!w30 && activeMs >= 30 * 60 * 1000) { w30 = true; showToast('💪 已连续使用 30 分钟，起来活动一下、喝口水再继续吧！'); }
+      if (!w60 && activeMs >= 60 * 60 * 1000) { w60 = true; const o = document.getElementById('restOverlay'); if (o) o.classList.add('show'); }
+      const h = new Date().getHours();
+      if (!nightWarned && (h >= 22 || h < 6) && activeMs >= 5 * 60 * 1000) { nightWarned = true; showToast('🌙 夜深了，身体是革命的本钱，好好睡觉，明天再奋斗！'); }
+    }
+    lastTick = now;
+  }, 30000);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   // 先恢复状态与构建侧栏（最关键），任何模块出错都不影响侧栏显示
