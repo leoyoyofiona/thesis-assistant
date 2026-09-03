@@ -281,6 +281,9 @@ table .row-current{background:#fff7ed}
 
 /* Mobile toggle */
 .mobile-toggle{display:none;position:fixed;bottom:20px;right:20px;width:44px;height:44px;border-radius:50%;background:var(--primary);color:#fff;border:none;font-size:20px;cursor:pointer;z-index:200;box-shadow:0 2px 12px rgba(26,86,219,.3)}
+.sb-hamburger{width:34px;height:34px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--primary);cursor:pointer;font-size:17px;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.sb-hamburger:hover{border-color:var(--primary);background:var(--primary-light)}
+.sb-hamburger:active{transform:scale(.93)}
 
 /* Step list */
 .step-list{counter-reset:step;list-style:none;padding:0}
@@ -908,6 +911,7 @@ body.sb-collapsed .status-bar{left:0}
 <!-- ===== Main Content ===== -->
 <main class="main">
   <header class="header">
+    <button class="sb-hamburger" onclick="openSidebar()" title="打开左侧导航菜单" aria-label="打开菜单">☰</button>
     <div class="breadcrumb" id="breadcrumb"></div>
     <div class="visit-count">👥 本站访问 <span id="busuanzi_value_site_pv">…</span> 次<span class="vc-uv"> · 访客 <span id="busuanzi_value_site_uv">…</span> 人</span></div>
     <div class="header-contact" title="欢迎找我交流">
@@ -3827,6 +3831,14 @@ function initSidebarUI() {
     clearTimeout(rzResizeTimer);
     rzResizeTimer = setTimeout(computeSidebarMinWidth, 200);
   });
+}
+
+function openSidebar() {
+  const sb = document.getElementById('sidebar');
+  if (!sb) return;
+  if (window.innerWidth <= 768) { sb.classList.add('open'); return; }
+  document.body.classList.remove('sb-collapsed');
+  sbState.collapsed = false; sbPersist();
 }
 
 function toggleSidebar() {
