@@ -23,7 +23,7 @@
 body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-height:1.6;display:flex;min-height:100vh;overflow:hidden;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;text-rendering:optimizeLegibility;letter-spacing:.01em}
 
 /* ===== Sidebar (Progress Tracker) ===== */
-.sidebar{width:var(--sidebar-width);height:100vh;position:fixed;left:0;top:0;background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow:hidden}
+.sidebar{width:var(--sidebar-width);height:100vh;position:fixed;left:0;top:0;background:var(--sidebar-bg);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:100;overflow:hidden;container-type:inline-size}
 .sidebar-brand{padding:20px 24px;border-bottom:1px solid var(--border)}
 .brand-logo{display:inline-block;font-size:21px;font-weight:900;letter-spacing:4px;color:var(--primary);margin-bottom:6px;font-style:italic}
 .sidebar-brand h1{font-size:16px;font-weight:700;color:var(--text);line-height:1.4}
@@ -561,10 +561,11 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
 
 /* ===== 侧边栏常用工具与网站 ===== */
 .link-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 12px 12px;align-items:stretch}
+@container (max-width: 245px){ .link-grid{grid-template-columns:1fr} }
 .link-item{display:flex;align-items:center;gap:6px;padding:6px 9px;border:1px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--text-secondary);text-decoration:none;background:var(--bg);transition:all .15s;min-height:32px}
 .link-item:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);transform:translateX(2px)}
 .link-item .li-icon{font-size:13px;flex-shrink:0}
-.link-item .li-name{font-weight:600;white-space:normal;word-break:break-word;overflow-wrap:anywhere;line-height:1.4;display:block;width:100%}
+.link-item .li-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:block;width:100%;font-size:11px;line-height:1.2}
 [data-theme="dark"] .link-item{background:#0f1b33}
 .sidebar-label.cat{margin-top:4px;padding:8px 24px 2px;font-size:10.5px;color:var(--text-muted);letter-spacing:.5px}
 .sidebar-footer .site-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#1a56db,#7c3aed);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;font-family:var(--font-sans);box-shadow:0 0 0 0 rgba(124,58,237,.5);animation:sitePulse 2s ease-in-out infinite;transition:transform .15s}
@@ -3753,14 +3754,14 @@ function computeSidebarMinWidth() {
     if (right > maxRight) maxRight = right;
   });
   subs.forEach((el, i) => { el.style.display = subStates[i]; });
-  SB_MIN_W = Math.min(560, Math.max(200, Math.ceil(maxRight + 6)));
+  SB_MIN_W = Math.min(560, Math.max(170, Math.ceil(maxRight + 6)));
 }
 
 function initSidebarUI() {
   const root = document.documentElement;
   // 只采纳合理的宽度记忆(180-800px)，防止异常值把侧栏变没
   const _w = parseInt(sbState.width, 10);
-  if (_w >= 180 && _w <= 800) root.style.setProperty('--sidebar-width', _w + 'px');
+  if (_w >= 150 && _w <= 800) root.style.setProperty('--sidebar-width', _w + 'px');
   else if (sbState.width) { sbState.width = null; sbPersist(); }
   // 桌面宽度（>768px）下始终显示侧栏，避免旧的"折叠记忆"让侧栏消失；仅移动端保留折叠
   const desktop = window.innerWidth > 768;
