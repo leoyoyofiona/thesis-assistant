@@ -4052,16 +4052,23 @@ async function apiLike(id) {
   } catch (e) { return null; }
 }
 
+const DM_FALLBACK = [
+  { id: 'sys1', text: '点右上角「💡 弹幕交流」就能发布建议，所有人可见哦', name: '助手提示', likes: 0, sys: true },
+  { id: 'sys2', text: '网络通畅后这里会飘出大家的真实建议与点赞', name: '助手提示', likes: 0, sys: true }
+];
 async function refreshDanmakuPool() {
   try {
-    const list = await fetchJSON(WORKER_URL + '/suggest', 6000);
+    const list = await fetchJSON(WORKER_URL + '/suggest', 5000);
     if (Array.isArray(list) && list.length) {
       danmakuPool = list.slice(0, 12).filter(x => x.text).map(x => ({
         id: x.id || '', text: String(x.text || '').trim(),
         name: (x.name || '').trim(), likes: x.likes || 0
       }));
+      return;
     }
   } catch (e) {}
+  // 后台取不到时用系统示例兜底，保证弹幕效果可见
+  if (!danmakuPool.length || danmakuPool[0].sys) danmakuPool = DM_FALLBACK.slice();
 }
 
 function spawnThumb(el) {
@@ -4104,11 +4111,10 @@ function danmaku(it) {
   el.className = 'danmaku-item';
   el.dataset.id = id;
   const liked = dmLiked.has(id);
-  el.innerHTML =
-    '<span class="dm-main">' + escapeHtml(name ? name + '：' : '') + escapeHtml(text) +
-      '<span class="dm-hint">👍<b class="dm-n">' + likes + '</b></span></span>' +
-    '<span class="dm-act"><button class="dm-like-btn' + (liked ? ' liked' : '') + '" onclick="likeDanmaku(this)">' +
+  const hintHtml = it.sys ? '' : '<span class="dm-hint">👍<b class="dm-n">' + likes + '</b></span>';
+  const actHtml = it.sys ? '' : '<span class="dm-act"><button class="dm-like-btn' + (liked ? ' liked' : '') + '" onclick="likeDanmaku(this)">' +
       (liked ? '👍 已赞' : '👍 点赞') + '</button><span class="dm-like-tip"></span></span>';
+  el.innerHTML = '<span class="dm-main">' + escapeHtml(name ? name + '：' : '') + escapeHtml(text) + hintHtml + '</span>' + actHtml;
   layer.appendChild(el);
   // 双车道
   el.style.top = (dmLane % 2 === 0 ? 0 : 52) + 'px';
