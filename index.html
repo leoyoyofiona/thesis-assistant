@@ -3799,6 +3799,22 @@ function initSidebarUI() {
   const desktop = window.innerWidth > 768;
   if (!desktop && sbState.collapsed) document.body.classList.add('sb-collapsed');
   if (desktop && sbState.collapsed) { sbState.collapsed = false; sbPersist(); }
+  // 桌面：内联样式强制侧栏可见（防 Safari 等对 fixed/transform/宽度变量的渲染差异）
+  if (desktop) {
+    const sb = document.getElementById('sidebar');
+    if (sb) {
+      sb.style.transform = 'none';
+      sb.style.display = 'flex';
+      sb.style.visibility = 'visible';
+      const sw = getComputedStyle(root).getPropertyValue('--sidebar-width').trim() || '280px';
+      sb.style.width = sw;
+      const main = document.querySelector('.main');
+      if (main) main.style.marginLeft = sw;
+      const statusBar = document.getElementById('statusBar');
+      if (statusBar) statusBar.style.left = sw;
+    }
+    document.body.classList.remove('sb-collapsed');
+  }
 
   const rz = document.getElementById('sidebarResizer');
   if (rz) {
