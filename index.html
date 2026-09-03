@@ -560,11 +560,11 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
 @media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 /* ===== 侧边栏常用工具与网站 ===== */
-.link-grid{display:grid;grid-template-columns:1fr;gap:5px;padding:0 12px 12px}
-.link-item{display:flex;align-items:center;gap:6px;padding:6px 10px;border:1px solid var(--border);border-radius:8px;font-size:12px;color:var(--text-secondary);text-decoration:none;background:var(--bg);transition:all .15s}
+.link-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:0 12px 12px}
+.link-item{display:flex;align-items:center;gap:6px;padding:7px 8px;border:1px solid var(--border);border-radius:8px;font-size:11.5px;color:var(--text-secondary);text-decoration:none;background:var(--bg);transition:all .15s}
 .link-item:hover{border-color:var(--primary);color:var(--primary);background:var(--primary-light);transform:translateX(2px)}
 .link-item .li-icon{font-size:13px;flex-shrink:0}
-.link-item .li-name{font-weight:600;white-space:normal;line-height:1.5}
+.link-item .li-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 [data-theme="dark"] .link-item{background:#0f1b33}
 .sidebar-label.cat{margin-top:4px;padding:8px 24px 2px;font-size:10.5px;color:var(--text-muted);letter-spacing:.5px}
 .sidebar-footer .site-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#1a56db,#7c3aed);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;font-family:var(--font-sans);box-shadow:0 0 0 0 rgba(124,58,237,.5);animation:sitePulse 2s ease-in-out infinite;transition:transform .15s}
