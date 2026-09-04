@@ -188,11 +188,16 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 #stage-0 .vd-item{display:flex;gap:6px;font-size:10.5px;line-height:1.5;color:var(--text-secondary);align-items:flex-start}
 #stage-0 .vd-tag{flex-shrink:0;font-size:10px}
 [data-theme="dark"] #stage-0 .hero-declare-row{background:rgba(15,23,42,.4)}
-.replies-board{min-width:0}
+.replies-board{min-width:0;position:relative}
 .rb-title{font-size:11px;font-weight:800;color:var(--primary);margin-bottom:4px}
-.rb-list{display:flex;flex-direction:column;gap:3px;max-height:100px;overflow:auto;scrollbar-width:thin}
+.rb-list{height:74px;overflow:hidden;position:relative}
+.rb-track{display:flex;flex-direction:column;gap:5px;animation:rbScroll 10s linear infinite}
+.rb-list:hover .rb-track{animation-play-state:paused}
+.rb-empty{font-size:10.5px;color:var(--text-muted);line-height:1.6}
+@keyframes rbScroll{0%{transform:translateY(0)}100%{transform:translateY(-50%)}}
 .rb-item{font-size:10.5px;line-height:1.5;color:var(--text-secondary);background:var(--bg);border-left:2px solid var(--primary);border-radius:4px;padding:3px 6px}
-.rb-item b{color:var(--primary)}
+.rb-item .rb-ctx{color:var(--text-muted)}
+.rb-item .rb-reply{color:var(--primary);font-weight:600}
 .rb-item .rb-time{color:var(--text-muted);font-size:9.5px}
 #stage-0 .stage-hero h2{font-size:18px;margin:0 0 2px}
 #stage-0 .stage-hero h2{font-size:19px;margin:2px 0 0}
@@ -4151,8 +4156,10 @@ async function loadRepliesBoard() {
     const list = await fetchJSON(WORKER_URL + '/suggest', 6000);
     if (!Array.isArray(list)) { box.innerHTML = '（暂无回复公告）'; return; }
     const rep = list.filter(x => x.reply && String(x.reply).trim());
-    if (!rep.length) { box.innerHTML = '<div class="rb-item">（暂无回复，建议可到「💡 弹幕交流」查看）</div>'; return; }
-    box.innerHTML = rep.slice(0, 3).map(x => '<div class="rb-item">✅ 建议“' + escapeHtml(String(x.text||'').trim().slice(0,14)) + (String(x.text||'').length>14?'…':'') + '”已处理<span class="rb-time">' + sugMetaTime(x.replyTime) + '</span><br><b>回复：</b>' + escapeHtml(String(x.reply).trim()) + '</div>').join('');
+    if (!rep.length) { box.innerHTML = '<div class="rb-empty">（暂无助手回复，建议可在「💡 弹幕交流」留言）</div>'; return; }
+    const one = x => '<div class="rb-item"><div class="rb-ctx">建议：' + escapeHtml(String(x.text||'').trim().slice(0,16)) + (String(x.text||'').length>16?'…':'') + ' <span class="rb-time">' + sugMetaTime(x.replyTime) + '</span></div><div class="rb-reply">回复：' + escapeHtml(String(x.reply).trim()) + '</div></div>';
+    const items = rep.slice(0, 6).map(one).join('');
+    box.innerHTML = '<div class="rb-track">' + items + items + '</div>';
   } catch (e) { box.innerHTML = '（回复加载失败）'; }
 }
 
