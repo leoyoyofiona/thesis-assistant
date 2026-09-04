@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
 <title>毕业论文小助手（个人整理·非官方） — 浙江师范大学行知学院商学院</title>
 <style>
 /* ===== Reset & Variables ===== */
@@ -1868,7 +1869,7 @@ body.sb-collapsed .status-bar{left:0}
 
           <div class="tab-content-area" id="write-lit">
             <div class="alert alert-danger">
-              <strong>送审高频红线：</strong>文献综述不能做成“流水账”！要<strong>按主题分类</strong>、<strong>对比评述</strong>、<strong>指出研究空白</strong>。送审专家最反感“A（2020）认为……B（2021）提出……C（2022）指出……”这样机械罗列。
+              <strong>送审常见问题：</strong>文献综述容易写成“流水账”。正确做法是<strong>按主题分类</strong>、<strong>对比评述</strong>、<strong>指出研究空白</strong>；应避免“A（2020）认为……B（2021）提出……C（2022）指出……”式的机械罗列。
             </div>
             <div class="alert alert-danger">
               <strong>理论与分析两张皮：</strong>文献综述中提到的理论，必须在后续分析中<strong>真正使用</strong>——用于解剖研究对象，而不是摆在那里当装饰。
@@ -1885,7 +1886,7 @@ body.sb-collapsed .status-bar{left:0}
 
           <div class="tab-content-area" id="write-conclusion">
             <div class="alert alert-danger">
-              <strong>送审致命缺陷：</strong>缺少独立的“结论”章节。很多学生最后一章写“对策建议”就结束了，缺少对全文结论的集中提炼！结论应包含四要素：<strong>①主要发现 ②理论贡献 ③实践启示 ④研究局限与展望</strong>。
+              <strong>送审常见问题：</strong>缺少独立的“结论”章节——不少学生最后一章写完“对策建议”就结束了，缺少对全文结论的集中提炼。建议结论单独成章并包含四要素：<strong>①主要发现 ②理论贡献 ③实践启示 ④研究局限与展望</strong>。
             </div>
             <div class="hl-box">结语不是各章小结的简单重复，应提炼出<strong>整体性</strong>的结论，回应引言中提出的问题。</div>
           </div>
@@ -3127,6 +3128,7 @@ function stripNumPrefix(title) {
 }
 function numberCards() {
   document.querySelectorAll('section.stage').forEach(stage => {
+    if (stage.id === 'stage-0') return; // 首页卡片不参与自动编号
     let i = 0;
     stage.querySelectorAll(':scope > .stage-body > .card').forEach(card => {
       const h3 = card.querySelector('h3');
