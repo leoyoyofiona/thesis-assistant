@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>毕业论文小助手 — 浙江师范大学行知学院商学院</title>
+<title>毕业论文小助手（个人整理·非官方） — 浙江师范大学行知学院商学院</title>
 <style>
 /* ===== Reset & Variables ===== */
 :root {
@@ -61,7 +61,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .search-btn{margin-left:8px;display:flex;align-items:center;gap:7px;padding:7px 14px;border:1px solid var(--border);border-radius:20px;font-size:12.5px;color:var(--text-muted);cursor:pointer;transition:all .2s;background:var(--bg);font-family:var(--font-sans)}
 .search-btn:hover{border-color:var(--primary);color:var(--primary);box-shadow:0 0 0 3px rgba(26,86,219,.08)}
 .search-btn kbd{display:inline-block;padding:1px 5px;background:var(--border-light);border-radius:3px;font-size:11px;font-family:var(--font-sans);border:1px solid var(--border)}
-.search-hint{margin-left:auto;display:flex;align-items:center;gap:6px;padding:4px 12px;background:linear-gradient(135deg,#fff7ed,#fff1f2);border:1.5px solid #f59e0b;border-radius:20px;font-size:11px;font-weight:600;color:#d97706;white-space:nowrap;animation:pulseHint 2.5s ease-in-out infinite}
+.search-hint{margin-left:auto;display:flex;align-items:center;gap:6px;padding:4px 12px;background:var(--primary-light);border:1px solid var(--border);border-radius:20px;font-size:11px;font-weight:600;color:var(--text-secondary);white-space:nowrap}
 .search-hint svg{flex-shrink:0}
 @keyframes pulseHint{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.35)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
 .content-scroll{flex:1;overflow-y:auto;padding:0}
@@ -91,6 +91,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .stage.active{display:block}
 .stage-hero{background:linear-gradient(135deg,#f0f4ff 0%,#e8f0fe 100%);padding:36px 40px;border-bottom:1px solid var(--border)}
 .stage-hero h2{font-size:26px;font-weight:700;color:var(--text);margin-bottom:6px;letter-spacing:-.01em}
+.stage-hero .official-note{font-size:10.5px;color:var(--text-muted);line-height:1.6;margin:8px 0 0;max-width:980px}
 .stage-hero p{font-size:14px;color:var(--text-secondary);max-width:650px}
 .stage-hero .stage-meta{display:flex;gap:20px;margin-top:14px;font-size:12px;color:var(--text-muted)}
 .stage-meta span{display:flex;align-items:center;gap:4px}
@@ -166,7 +167,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .tl-strip::-webkit-scrollbar{height:6px}
 .tl-card{min-width:176px;flex-shrink:0;background:#fff;border:1px solid var(--border);border-left:4px solid var(--border);border-radius:var(--radius);padding:14px 16px;scroll-snap-align:start;cursor:pointer;transition:all .15s;box-shadow:var(--shadow)}
 .tl-card:hover{border-color:var(--primary);transform:translateY(-2px)}
-.tl-card.done{border-left-color:var(--success)}
+.tl-card.done{border-left-color:#94a3b8}
 .tl-card.current{border-left-color:var(--warning);background:#fff7ed}
 .tl-card.upcoming{border-left-color:var(--border)}
 .tl-card .tl-card-no{font-size:10px;color:var(--text-muted);margin-bottom:6px;letter-spacing:.5px}
@@ -174,12 +175,13 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .tl-card .tl-card-date{font-size:11px;color:var(--text-secondary);margin-bottom:6px}
 .tl-card .tl-card-status{font-size:11px;font-weight:600}
 .tl-card .tl-card-status.current{color:#d97706}
-.tl-card .tl-card-status.done{color:var(--success)}
+.tl-card .tl-card-status.done{color:#64748b}
 .tl-card .tl-card-status.upcoming{color:var(--text-muted)}
 .tl-hint{font-size:12px;color:var(--text-muted);margin-top:2px}
 
 /* ===== Home dashboard (kanban 等大网格，一屏可见) ===== */
 #stage-0 .stage-hero{padding:4px 40px 2px}
+#stage-0 .stage-hero .official-note{margin:6px 0 0}
 #stage-0 .stage-nav{display:none}
 #stage-0 .stage-hero .stage-meta{display:none}
 #stage-0 .hero-sub{display:none}
@@ -199,7 +201,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .rb-item{font-size:10.5px;line-height:1.5;color:var(--text-secondary);background:var(--bg);border-left:2px solid var(--primary);border-radius:4px;padding:3px 6px}
 .rb-item .rb-ctx{color:var(--text-muted)}
 .rb-item .rb-reply{color:var(--primary);font-weight:600}
-.rb-item .rb-time{color:var(--text-muted);font-size:9.5px}
+.rb-item .rb-time{color:var(--text-muted);font-size:10px}
 #stage-0 .stage-hero h2{font-size:18px;margin:0 0 2px}
 #stage-0 .stage-hero h2{font-size:19px;margin:2px 0 0}
 #stage-0 .hero-sub{margin-top:10px;margin-bottom:0}
@@ -213,7 +215,7 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 #stage-0 .stage-hero{flex:0 0 auto}
 #stage-0 .stage-body{flex:1 1 auto;min-height:0;max-width:none}
 #stage-0 .stage-body>.card{overflow:auto;scrollbar-width:thin}
-#stage-0 .stage-body{max-width:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));grid-auto-rows:1fr;gap:16px;padding:10px 40px 14px;align-items:stretchalign-items:stretch}
+#stage-0 .stage-body{max-width:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));grid-auto-rows:1fr;gap:16px;padding:10px 40px 14px;align-items:stretch}
 #stage-0 .stage-body .card{margin-bottom:0;padding:16px 20px 18px;display:flex;flex-direction:column;min-width:0}
 #stage-0 .stage-body .card h3{font-size:16px;margin-bottom:8px}
 /* 今天该做什么 */
@@ -231,13 +233,13 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 .tl-mini-node{text-align:center;cursor:pointer;padding:4px 0;border-radius:6px;transition:all .15s}
 .tl-mini-node:hover{background:var(--primary-light)}
 .tl-mini-dot{width:20px;height:20px;border-radius:50%;margin:0 auto 3px;border:2px solid var(--border);background:#fff;color:var(--text-muted);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center}
-.tl-mini-node.done .tl-mini-dot{background:var(--success);border-color:var(--success);color:#fff}
+.tl-mini-node.done .tl-mini-dot{background:#cbd5e1;border-color:#94a3b8;color:#334155}
 .tl-mini-node.current .tl-mini-dot{background:var(--warning);border-color:var(--warning);color:#fff;animation:pulseDot 1.8s ease-in-out infinite}
-.tl-mini-name{font-size:9px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.tl-mini-node.done .tl-mini-name{color:var(--success)}
+.tl-mini-name{font-size:10px;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-mini-node.done .tl-mini-name{color:#64748b}
 .tl-mini-node.current .tl-mini-name{color:#92400e;font-weight:600}
 .tl-mini-legend{margin-top:8px;font-size:11px;color:var(--text-muted);display:flex;gap:12px}
-.tl-mini-legend .lg-done{color:var(--success)}
+.tl-mini-legend .lg-done{color:#64748b}
 .tl-mini-legend .lg-current{color:#d97706}
 .tl-mini-hint{font-size:11px;color:var(--text-muted);margin-top:6px}
 /* 6 大阶段速览 */
@@ -267,19 +269,19 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 /* ===== Today badge ===== */
 .today-badge{display:inline-flex;align-items:center;gap:6px;margin-top:4px;padding:5px 12px;background:linear-gradient(135deg,#fff7ed,#fff1f2);border:1.5px solid #f59e0b;border-radius:20px;font-size:13px;font-weight:700;color:#92400e;max-width:100%}
 .today-badge .pulse-dot{width:8px;height:8px;border-radius:50%;background:#f59e0b;animation:pulseDot 1.6s ease-in-out infinite;flex-shrink:0}
-@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.5)}50%{box-shadow:0 0 0 6px rgba(245,158,11,0)}}
+@keyframes pulseDot{0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,.35)}50%{box-shadow:0 0 0 5px rgba(245,158,11,0)}}
 
 /* ===== Timeline ===== */
 .timeline{display:flex;gap:0;overflow-x:auto;padding:18px 8px 8px;position:relative}
 .timeline::before{content:'';position:absolute;left:24px;right:24px;top:45px;height:3px;background:var(--border);border-radius:2px}
 .tl-node{flex:1;min-width:118px;text-align:center;position:relative;z-index:1;cursor:pointer}
 .tl-node .tl-dot{width:22px;height:22px;border-radius:50%;margin:0 auto 8px;border:3px solid #fff;box-shadow:0 0 0 2px var(--border);background:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--text-muted);transition:all .2s}
-.tl-node.done .tl-dot{background:var(--success);box-shadow:0 0 0 2px var(--success);color:#fff}
+.tl-node.done .tl-dot{background:#cbd5e1;box-shadow:0 0 0 2px #94a3b8;color:#334155}
 .tl-node.current .tl-dot{background:var(--warning);box-shadow:0 0 0 2px var(--warning);color:#fff;animation:pulseDot 1.8s ease-in-out infinite}
 .tl-node.upcoming .tl-dot{background:#fff}
 .tl-node .tl-name{font-size:12px;font-weight:600;color:var(--text)}
 .tl-node .tl-date{font-size:10px;color:var(--text-muted);margin-top:2px}
-.tl-node.done .tl-name{color:var(--success)}
+.tl-node.done .tl-name{color:#64748b}
 .tl-node.current .tl-name{color:#92400e}
 table .row-current{background:#fff7ed}
 
@@ -333,7 +335,7 @@ code{background:var(--border-light);padding:2px 6px;border-radius:3px;font-size:
 ::-webkit-scrollbar-thumb:hover{background:var(--text-muted)}
 
 /* ===== Header contact & theme toggle ===== */
-.header-contact{font-size:12px;font-weight:700;color:#92400e;background:linear-gradient(135deg,#fff7ed,#ffe8cc);border:2px solid #f59e0b;border-radius:12px;padding:4px 16px;display:flex;flex-direction:column;justify-content:center;gap:0;line-height:1.5;flex-shrink:1;min-width:0;letter-spacing:.2px;box-shadow:0 0 0 0 rgba(245,158,11,.55);animation:contactPulse 1.4s ease-in-out infinite}
+.header-contact{font-size:12px;font-weight:600;color:var(--text-secondary);background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:4px 14px;display:flex;flex-direction:column;justify-content:center;gap:0;line-height:1.5;flex-shrink:1;min-width:0;letter-spacing:.1px}
 .header-contact .hc-l1,.header-contact .hc-l2{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
 .theme-btn{width:32px;height:32px;border-radius:50%;border:1px solid var(--border);background:var(--bg);cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
 .theme-btn:hover{border-color:var(--primary);background:var(--primary-light)}
@@ -478,13 +480,13 @@ section.stage .card:nth-child(6n+6){border-top-color:#10b981}
   .sb-expand{display:none!important}
 }
 
-/* ===== v6: 联系闪烁 / 排版统一 / 活泼升级 ===== */
-.header-contact{animation:contactPulse 1.4s ease-in-out infinite;border-color:#f59e0b}
+/* ===== v6: 页头辅助信息（静态、无闪烁） ===== */
+[data-theme="dark"] .header-contact{color:#a9b8cf}
 @keyframes contactPulse{
   0%,100%{box-shadow:0 0 0 0 var(--pulse-c,rgba(245,158,11,.55))}
   50%{box-shadow:0 0 0 10px rgba(245,158,11,0);background:var(--pulse-bg,linear-gradient(135deg,#fef3c7,#ffedd5))}
 }
-[data-theme="dark"] .header-contact{--pulse-bg:linear-gradient(135deg,#3a2a10,#3a1d24);background:linear-gradient(135deg,#3a2a10,#3a1d24);color:#fbbf24;border-color:#a16207}
+
 @media(max-width:1820px){.search-hint{display:none}.suggest-btn{margin-left:auto}}
 @media(max-width:1650px){.breadcrumb{display:none}}
 @media(max-width:1600px){.header-contact{font-size:12.5px;padding:5px 12px;letter-spacing:0}}
@@ -592,9 +594,9 @@ body,body *{transition:background-color .3s ease,color .3s ease,border-color .3s
 .link-item .li-name{font-weight:500;white-space:normal;word-break:break-word;overflow-wrap:anywhere;display:block;width:100%;line-height:1.3}
 [data-theme="dark"] .link-item{background:transparent}
 .sidebar-label.cat{margin-top:4px;padding:8px 24px 2px;font-size:10.5px;color:var(--text-muted);letter-spacing:.5px}
-.sidebar-footer .site-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#1a56db,#7c3aed);color:#fff;font-size:14px;font-weight:700;text-decoration:none;cursor:pointer;font-family:var(--font-sans);box-shadow:0 0 0 0 rgba(124,58,237,.5);animation:sitePulse 2s ease-in-out infinite;transition:transform .15s}
-.sidebar-footer .site-btn:hover{transform:translateY(-1px);filter:brightness(1.1)}
-@keyframes sitePulse{0%,100%{box-shadow:0 0 0 0 rgba(124,58,237,.45)}50%{box-shadow:0 0 0 10px rgba(124,58,237,0)}}
+.sidebar-footer .site-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 0;border:none;border-radius:10px;background:linear-gradient(135deg,#1a56db,#2f4bb8);color:#fff;font-size:13px;font-weight:600;text-decoration:none;cursor:pointer;font-family:var(--font-sans);transition:filter .15s}
+.sidebar-footer .site-btn:hover{filter:brightness(1.1)}
+.sidebar-note{font-size:10.5px;color:var(--text-muted);line-height:1.5;text-align:center;margin-bottom:8px;padding:0 10px}
 
 /* ===== v8: 全局阅读体验升级（字号加大·排版对齐·防孤字） ===== */
 section.stage .stage-body{font-size:15px}
@@ -653,7 +655,7 @@ section.stage .stage-body{font-size:15px}
 .gate-quote{font-size:16px}
 .gate-card h2{font-size:20px}
 
-/* ===== 页头访问统计（不蒜子） ===== */
+/* ===== 页头访问统计（已改静态说明文字） ===== */
 .visit-count{display:inline-flex;align-items:center;gap:4px;margin-left:8px;flex-shrink:0;font-size:11px;font-weight:600;color:var(--text-secondary);background:rgba(255,255,255,.75);border:1px solid var(--border);border-radius:14px;padding:3px 10px;white-space:nowrap}
 .visit-count span{color:var(--primary);font-weight:700}
 [data-theme="dark"] .visit-count{background:rgba(15,23,42,.75);color:#a9b8cf}
@@ -689,15 +691,15 @@ section.stage .stage-body{font-size:15px}
 .node-card{background:var(--bg);border:1px solid var(--border);border-top:4px solid var(--border);border-radius:10px;padding:12px 14px;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;gap:5px}
 .node-card:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
 .node-card.current{border-top-color:var(--warning);background:#fff7ed}
-.node-card.done{border-top-color:var(--success)}
+.node-card.done{border-top-color:#94a3b8}
 .node-card.upcoming{border-top-color:var(--border)}
 .node-card .nc-head{display:flex;align-items:center;justify-content:space-between}
 .node-card .nc-num{width:24px;height:24px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
 .node-card.current .nc-num{background:var(--warning)}
-.node-card.done .nc-num{background:var(--success)}
+.node-card.done .nc-num{background:#94a3b8}
 .node-card .nc-status{font-size:11px;font-weight:700}
 .node-card .nc-status.current{color:#d97706}
-.node-card .nc-status.done{color:var(--success)}
+.node-card .nc-status.done{color:#64748b}
 .node-card .nc-status.upcoming{color:var(--text-muted)}
 .node-card .nc-name{font-size:14px;font-weight:700;color:var(--text)}
 .node-card .nc-date{font-size:12px;color:var(--text-secondary)}
@@ -824,6 +826,9 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 .music-below.show,.music-wrap:hover .music-below{display:flex}
 .music-title{display:none;max-width:240px;padding:6px 12px;border-radius:999px;background:var(--card-bg);border:1px solid var(--border);box-shadow:var(--shadow-lg);font-size:13px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .music-title.show{display:inline-block}
+.music-credit{font-size:10px;color:var(--text-muted);background:var(--card-bg);border:1px solid var(--border-light);border-radius:999px;padding:3px 8px;white-space:nowrap}
+.sug-ok{display:inline-block;margin-left:6px;padding:0 8px;border-radius:10px;border:1px solid #bbf7d0;background:#f0fdf4;color:#15803d;font-size:11px;cursor:pointer;font-family:var(--font-sans)}
+.sug-ok:hover{background:#dcfce7}
 .music-btn{width:42px;height:42px;border-radius:50%;border:none;background:linear-gradient(135deg,#10b981,#0ea5e9);color:#fff;font-size:19px;cursor:pointer;font-family:var(--font-sans);box-shadow:0 3px 12px rgba(16,185,129,.4);transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .music-btn:hover{transform:translateY(-1px) scale(1.05)}
 .music-btn.playing{animation:musicPulse 1.6s ease-in-out infinite}
@@ -882,6 +887,7 @@ body.sb-collapsed .status-bar{left:0}
       <div class="gate-logo">LEODENG</div>
       <h2>毕业论文小助手</h2>
       <p class="gate-sub">浙江师范大学行知学院商学院</p>
+      <p style="font-size:11px;color:var(--text-muted);margin:2px 0 8px;">（个人整理的毕业指导参考，非学院官方发布，未经学院审核）</p>
       <input type="password" class="gate-input" id="gatePassInput" placeholder="请输入访问密码" autocomplete="off" onkeydown="if(event.key==='Enter')gateCheckPass()">
       <div>
         <button class="gate-btn" onclick="gateCheckPass()">进 入</button>
@@ -891,25 +897,26 @@ body.sb-collapsed .status-bar{left:0}
 
     <div class="gate-step" id="gateNotice" style="display:none">
       <h2>📋 免责声明</h2>
-      <p class="gate-text">本网站仅为方便大家参考，将学院毕业论文工作的相关要求进行了整理。一切关于毕业论文的标准和要求，<strong>以学院教务部门、商学院教务及专业官方毕业要求文件为准</strong>。</p>
+      <p class="gate-text">本网站为个人整理的毕业指导参考，<strong>非浙江师范大学行知学院官方发布，未经学院审核</strong>。页面内容为学院毕业论文工作相关要求的整理与归纳，一切关于毕业论文的标准和要求，<strong>以学院教务部门、商学院教务及专业官方毕业要求文件为准</strong>；如有出入，请以官方文件为准。</p>
+      <p class="gate-text" style="margin-top:6px;">学业或情绪上遇到困难时，随时可以联系指导教师、辅导员，或预约学校心理健康教育中心（免费、保密）。</p>
       <button class="gate-btn" onclick="gateShow('gateQ1')">我知晓</button>
     </div>
 
     <div class="gate-step" id="gateQ1" style="display:none">
       <h2>💪 同学你好！</h2>
-      <p class="gate-quote">最后一关有我陪你一起攻克，小case！有信心不？</p>
+      <p class="gate-quote">毕业前最后一程，这里把流程、模板和时间节点都整理好了，按部就班走就好。遇到困难，随时可以找导师或辅导员聊聊。</p>
       <div>
-        <button class="gate-btn" onclick="gateShow('gateQ2')">有</button>
-        <button class="gate-btn ghost" onclick="gateShow('gateNotice')">有，但是...</button>
+        <button class="gate-btn" onclick="gateShow('gateQ2')">好的，开始吧</button>
+        <button class="gate-btn ghost" onclick="gateEnter()">我进度有点落后，先看「今天该做什么」</button>
       </div>
     </div>
 
     <div class="gate-step" id="gateQ2" style="display:none">
-      <h2>🤝 和我们约定一下</h2>
-      <p class="gate-quote">我一定会多看文献，我一定会抓紧时间，我一定会及时交流，我一定会自己写。</p>
+      <h2>✍️ 学术诚信提醒</h2>
+      <p class="gate-quote">写作请独立完成：多看文献、抓紧时间、及时与导师交流、自己动手写。若卡住了，及时找导师沟通比硬扛更有效。</p>
       <div>
-        <button class="gate-btn" onclick="gateEnter()">同意</button>
-        <button class="gate-btn ghost" onclick="gateShow('gateQ1')">不同意</button>
+        <button class="gate-btn" onclick="gateEnter()">我会做到</button>
+        <button class="gate-btn ghost" onclick="gateEnter()">先看看助手内容</button>
       </div>
     </div>
   </div>
@@ -945,7 +952,8 @@ body.sb-collapsed .status-bar{left:0}
     <!-- Built dynamically -->
   </nav>
   <div class="sidebar-footer">
-    <a class="site-btn" href="https://dengzhimin-site.onrender.com" target="_blank" rel="noopener" onclick="openSite('https://dengzhimin-site.onrender.com','LEODENG 个人小站');return false;" title="LEODENG 个人小站">🌟 强烈推荐我的个人小站</a>
+    <div class="sidebar-note">本助手为个人整理的毕业指导参考，非学院官方平台</div>
+    <a class="site-btn" href="https://dengzhimin-site.onrender.com" target="_blank" rel="noopener" onclick="openSite('https://dengzhimin-site.onrender.com','LEODENG 个人小站');return false;" title="LEODENG 个人小站（与学院无关）">📖 站长个人小站</a>
   </div>
   <div class="sidebar-resizer" id="sidebarResizer" title="← 拖动可调整宽度 →"></div>
 </aside>
@@ -955,14 +963,14 @@ body.sb-collapsed .status-bar{left:0}
   <header class="header">
     <button class="sb-hamburger" onclick="openSidebar()" title="打开左侧导航菜单" aria-label="打开菜单">☰</button>
     <div class="breadcrumb" id="breadcrumb"></div>
-    <div class="visit-count">👥 累计访问 246 人 · 累计浏览 346 次<span class="vc-uv"> · 今日浏览 23 次</span></div>
-    <div class="header-contact" title="欢迎找我交流">
-      <span class="hc-l1">💬 欢迎找我交流 · E-mail:23774201@qq.com</span>
-      <span class="hc-l2">VX:leoyoyofiona<span class="ct-hint">（暗号：我喜欢的运动是什么？）</span></span>
+    <div class="visit-count" title="本页为个人整理的毕业指导参考，非学院官方平台">📘 个人整理 · 非官方</div>
+    <div class="header-contact" title="纠错与建议（站长个人，非学院官方）">
+      <span class="hc-l1">📬 纠错 / 建议：23774201@qq.com</span>
+      <span class="hc-l2">微信：leoyoyofiona<span class="ct-hint">（站长个人，非学院官方）</span></span>
     </div>
     <div class="search-hint">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
-      有困难，请检索
+      遇到不懂的，先在这里搜一搜
     </div>
     <button class="search-btn" onclick="openSearch()">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -975,6 +983,7 @@ body.sb-collapsed .status-bar{left:0}
       <div class="music-below" id="musicBelow">
         <span class="music-title" id="musicTitle"></span>
         <div class="music-popup">
+          <span class="music-credit">轻音乐（免版税/CC 授权）</span>
           <button class="mp-btn" onclick="musicPrev()" title="上一曲">⏮</button>
           <button class="mp-btn" id="mpPlayPause" onclick="musicPlayPause()" title="播放/暂停">▶</button>
           <button class="mp-btn" onclick="musicNext()" title="下一曲">⏭</button>
@@ -1000,8 +1009,8 @@ body.sb-collapsed .status-bar{left:0}
         </div>
         <div class="hero-declare-row">
           <div class="version-declare">
-          <div class="vd-item"><span class="vd-tag">📌 免责声明</span><span class="vd-body">本助手为学院毕业论文工作相关要求的<b>整理与参考</b>（当前版本 V2.1，持续更新维护）；一切毕业论文的标准与要求，<b>以学院教务部门、商学院教务及专业官方毕业要求文件为准</b>。</span></div>
-          <div class="vd-item"><span class="vd-tag">© 版权与追责声明</span><span class="vd-body">本工具由 <b>LEODENG</b> 整理制作，仅供浙江师范大学行知学院商学院师生学习参考使用，未经允许请勿商用转载；内容如有错漏，欢迎联系指正（E-mail:23774201@qq.com · VX:leoyoyofiona）。</span></div>
+          <div class="vd-item"><span class="vd-tag">📌 免责声明</span><span class="vd-body">本助手为个人整理的学院毕业论文工作相关要求的<b>整理与参考</b>（当前版本 V2.1，持续更新维护），<b>非学院官方发布，未经学院审核</b>；一切毕业论文的标准与要求，<b>以学院教务部门、商学院教务及专业官方毕业要求文件为准</b>。</span></div>
+          <div class="vd-item"><span class="vd-tag">© 版权说明</span><span class="vd-body">本工具由 <b>LEODENG</b> 整理制作，仅供浙江师范大学行知学院商学院师生学习参考使用，未经允许请勿商用转载；页面如引用学院或第三方文件内容，相关版权归原发布方所有；内容如有错漏，欢迎联系指正（E-mail:23774201@qq.com）。</span></div>
           </div>
           <div class="replies-board">
             <div class="rb-title">🎯 建议回复栏</div>
@@ -1043,9 +1052,9 @@ body.sb-collapsed .status-bar{left:0}
         </div>
 
         <div class="card">
-          <h3>🔍 有困难，请检索</h3>
+          <h3>🔍 遇到不懂的，先在这里搜一搜</h3>
           <button class="dash-search-btn" onclick="openSearch()">🔍 搜索全部内容 <kbd>Ctrl+K</kbd></button>
-          <p class="dash-search-tip">任何疑问（三线表怎么做、参考文献格式、匿名抽检稿…）都能搜到答案，并直接定位到对应内容卡片。</p>
+          <p class="dash-search-tip">任何疑问（三线表怎么做、参考文献格式、匿名抽检稿…）都能搜到答案并直接定位到对应卡片；搜不到时，问导师或辅导员是最快的方式。</p>
         </div>
 
       </div>
@@ -1075,7 +1084,7 @@ body.sb-collapsed .status-bar{left:0}
           <h3>1. 选题基本要求</h3>
           <ul>
             <li><strong>一人一题</strong>，不可与他人雷同。选题由指导教师和学生共同商定。</li>
-            <li>选题须与<strong>电子商务/国际贸易专业方向</strong>紧密契合，具有理论或实践意义。</li>
+            <li>选题须与<strong>电子商务、国际经济与贸易专业方向</strong>紧密契合，具有理论或实践意义。</li>
             <li>题目表述应<strong>准确、规范、简洁</strong>，一般不超过 20 字。</li>
             <li>选题难度适中，能在规定时间内完成，不得过大或过小。</li>
             <li>题目一经确定，原则上不得更改。确需更改须经指导教师和学院批准。</li>
@@ -1086,7 +1095,7 @@ body.sb-collapsed .status-bar{left:0}
         <div class="card">
           <h3>2. 电商/国贸专业选题方向推荐（2026 热门扩充版）</h3>
           <div class="alert alert-info" style="margin-bottom:14px;">
-            <strong>选题原则：</strong>优先选<strong>当下最流行、最前沿、最急需、最有研究价值、也最适合本科生</strong>完成的方向——数据好获取（问卷/公开数据）、方法可落地（SPSS/案例）、文献充足。下列为参考题目，可组合、可细化（如"以××平台/××企业为例"）。
+            <strong>选题原则：</strong>优先选<strong>当下最流行、最前沿、最急需、最有研究价值、也最适合本科生</strong>完成的方向——数据好获取（问卷/公开数据）、方法可落地（SPSS/案例）、文献充足。下列为参考题目，可组合、可细化（如“以××平台/××企业为例”）。
           </div>
           <div class="tabs-wrap">
             <button class="tab-btn active" onclick="switchInnerTab(this,'topic-ecommerce')">电子商务方向</button>
@@ -1109,15 +1118,15 @@ body.sb-collapsed .status-bar{left:0}
             <ul>
               <li><span class="t-title">即时零售（30分钟达）消费者使用意愿研究——以××平台为例</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
               <li><span class="t-title">社区团购履约效率与用户留存关系研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星+平台资料</span></li>
-              <li><span class="t-title">农村电商物流"最后一公里"问题与对策研究</span><span class="tb tb-w" title="研究写作难度（2/5）">★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+访谈</span></li>
+              <li><span class="t-title">农村电商物流“最后一公里”问题与对策研究</span><span class="tb tb-w" title="研究写作难度（2/5）">★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">公开资料+访谈</span></li>
               <li><span class="t-title">农村电商直播助农模式的成效与优化研究</span><span class="tb tb-w" title="研究写作难度（2/5）">★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">公开报道+问卷</span></li>
               <li><span class="t-title">下沉市场（县域）电商消费特征与营销策略研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(县域)</span></li>
               <li><span class="t-title">银发经济背景下老年群体电商消费行为研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(线下)</span></li>
             </ul>
             <h4>⚖️ 平台与信任（合规/治理）</h4>
             <ul>
-              <li><span class="t-title">电商平台"仅退款"政策对商家经营绩效的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">商家访谈+平台规则</span></li>
-              <li><span class="t-title">"大数据杀熟"与个性化定价对消费者信任的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(感知)</span></li>
+              <li><span class="t-title">电商平台“仅退款”政策对商家经营绩效的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">商家访谈+平台规则</span></li>
+              <li><span class="t-title">“大数据杀熟”与个性化定价对消费者信任的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(感知)</span></li>
               <li><span class="t-title">消费者数据隐私保护与个性化推荐的平衡研究</span><span class="tb tb-w" title="研究写作难度（4/5）">★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
               <li><span class="t-title">电商平台服务质量与顾客忠诚度关系研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
               <li><span class="t-title">电商价格战、补贴大战对消费者与商家的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">公开报道+问卷</span></li>
@@ -1150,9 +1159,9 @@ body.sb-collapsed .status-bar{left:0}
               <li><span class="t-title">跨境直播（双语主播/中国主播出海）营销模式与成效研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+公开数据</span></li>
               <li><span class="t-title">第三方跨境支付（PingPong/连连/万里汇）对中小外贸企业出海的便利化研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">企业访谈+费率公开资料</span></li>
               <li><span class="t-title">跨境电商绿色物流与可持续包装对海外消费者好感度的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li><span class="t-title">"义乌模式"小商品跨境电商数字化升级路径研究——以××商户为例</span><span class="tb tb-w" title="研究写作难度（2/5）">★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">实地访谈+问卷(本地可做)</span></li>
+              <li><span class="t-title">“义乌模式”小商品跨境电商数字化升级路径研究——以××商户为例</span><span class="tb tb-w" title="研究写作难度（2/5）">★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">实地访谈+问卷(本地可做)</span></li>
               <li><span class="t-title">跨境电商综试区政策对本地企业出海带动效应研究——以金华（或义乌）为例</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">地方政策+企业访谈</span></li>
-              <li><span class="t-title">"一件代发/无货源"模式在跨境电商中的可持续性风险研究</span><span class="tb tb-w" title="研究写作难度（2/5）">★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">卖家访谈+案例</span></li>
+              <li><span class="t-title">“一件代发/无货源”模式在跨境电商中的可持续性风险研究</span><span class="tb tb-w" title="研究写作难度（2/5）">★★☆☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">卖家访谈+案例</span></li>
             </ul>
 </div>
           <div class="tab-content-area" id="topic-trade">
@@ -1225,7 +1234,7 @@ body.sb-collapsed .status-bar{left:0}
             <ul>
               <li><span class="t-title">AIGC工具（DeepSeek/ChatGPT等）辅助电商运营的效率与效果研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星(企业/学生)</span></li>
               <li><span class="t-title">大模型智能客服机器人对消费者服务体验的影响研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
-              <li><span class="t-title">AI个性化推荐与消费者"信息茧房"效应研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
+              <li><span class="t-title">AI个性化推荐与消费者“信息茧房”效应研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（2/5）">★★☆☆☆</span><span class="tb tb-s" title="数据收集来源">问卷星</span></li>
               <li><span class="t-title">AI智能选品/定价对跨境电商经营绩效的影响研究</span><span class="tb tb-w" title="研究写作难度（4/5）">★★★★☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">问卷+案例</span></li>
               <li><span class="t-title">数字员工（RPA/AI代理）在电商企业中的应用与效果研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">案例+访谈</span></li>
               <li><span class="t-title">AI生成内容广告的合规风险与消费者信任研究</span><span class="tb tb-w" title="研究写作难度（3/5）">★★★☆☆</span><span class="tb tb-d" title="数据收集难度（3/5）">★★★☆☆</span><span class="tb tb-s" title="数据收集来源">法规+案例</span></li>
@@ -1244,7 +1253,7 @@ body.sb-collapsed .status-bar{left:0}
           <h3>3. 任务书写作规范</h3>
           <div class="alert alert-info">
             <strong>任务书是什么？</strong>
-            任务书是指导教师向学生下达的正式文件，明确论文的<strong>选题背景、研究内容、基本要求、主要参考文献、进度安排</strong>等。它是论文工作的"施工蓝图"。
+            任务书是指导教师向学生下达的正式文件，明确论文的<strong>选题背景、研究内容、基本要求、主要参考文献、进度安排</strong>等。它是论文工作的“施工蓝图”。
           </div>
           <h4>任务书包含要素：</h4>
           <table>
@@ -1253,7 +1262,7 @@ body.sb-collapsed .status-bar{left:0}
               <tr><td class="label">选题背景与意义</td><td>200-300字，说明选题的现实背景、理论/实践意义</td></tr>
               <tr><td class="label">研究内容</td><td>列出论文要解决的核心问题，3-5个要点</td></tr>
               <tr><td class="label">基本要求</td><td>包括正文字数≥10,000字、参考文献≥10篇（含≥2篇外文）、独立完成等</td></tr>
-              <tr><td class="label">主要参考文献</td><td>列出8-10篇核心参考文献，按GB/T 7714格式</td></tr>
+              <tr><td class="label">主要参考文献</td><td>任务书正文建议列 8—10 篇核心文献（最终论文参考文献≥10篇，含≥2篇外文），按GB/T 7714格式</td></tr>
               <tr><td class="label">进度安排</td><td>按学校进程表填写各阶段起止时间</td></tr>
               <tr><td class="label">指导教师信息</td><td>填写指导教师姓名、职称</td></tr>
             </tbody>
@@ -1264,7 +1273,7 @@ body.sb-collapsed .status-bar{left:0}
         <div class="card">
           <h3>4. 任务书范文参考</h3>
           <div class="demo-box">
-            <div class="demo-label">📄 任务书"研究内容"部分示例</div>
+            <div class="demo-label">📄 任务书“研究内容”部分示例（题目为演示示例，请按你的实际选题替换）</div>
             <p><strong>论文题目：</strong>直播电商中KOL特征对消费者购买意愿的影响研究</p>
             <p><strong>研究内容：</strong></p>
             <p>（1）梳理直播电商与消费者购买意愿的相关文献，构建理论模型；</p>
@@ -1287,7 +1296,7 @@ body.sb-collapsed .status-bar{left:0}
             <li>审核通过后，进入「过程管理」→「任务书」环节</li>
           </ol>
           <div class="alert alert-warning">
-            <strong>注意：</strong>课题申报须在 <strong>2026年9月8日前</strong> 完成。任务书须在 <strong>2026年9月21日前</strong> 提交并审核通过。逾期系统将关闭！
+            <strong>注意：</strong>课题申报应在 <strong>2026年9月8日前</strong> 完成，任务书应在 <strong>2026年9月21日前</strong> 提交并审核通过（以学院当届通知为准）；逾期后系统将无法在线补交，如已错过请第一时间联系指导教师或教务办咨询补救方式。
           </div>
         </div>
 
@@ -1295,7 +1304,7 @@ body.sb-collapsed .status-bar{left:0}
         <div class="card">
           <h3>6. 选题阶段常见错误（送审反馈）</h3>
           <div class="alert alert-danger">
-            <strong>选题过大</strong>：如"中国电子商务发展研究"——范围太广，无法深入。应聚焦到具体行业/平台/人群。
+            <strong>选题过大</strong>：如“中国电子商务发展研究”——范围太广，无法深入。应聚焦到具体行业/平台/人群。
           </div>
           <div class="alert alert-danger">
             <strong>选题无新意</strong>：选题应在已有研究基础上有所推进，不能是教材知识点的简单复述。
@@ -1340,7 +1349,7 @@ body.sb-collapsed .status-bar{left:0}
             </tbody>
           </table>
           <div class="alert alert-info" style="margin-top:12px;">
-            <strong>字数要求：</strong>开题报告正文<strong>不少于3,000字</strong>，其中文献综述是最重要、占比最大的部分，须充分展开。
+            <strong>字数要求：</strong>开题报告正文<strong>不少于3,000字</strong>（学院底线）；按下方模板写作时建议控制在 <strong>4,000—5,500 字</strong>。文献综述是最重要、占比最大的部分，须充分展开。
           </div>
         </div>
 
@@ -1354,7 +1363,7 @@ body.sb-collapsed .status-bar{left:0}
             <p>（一）选题背景</p>
             <p>（二）研究意义（理论意义 + 实践意义）</p>
             <p><strong>二、国内外研究现状</strong></p>
-            <p>（一）国外研究现状（按主题梳理，≥5篇外文文献）</p>
+            <p>（一）国外研究现状（按主题梳理；示例按“国外≥5篇外文”组织，实际以满足学院底线为准）</p>
             <p>（二）国内研究现状（按主题梳理，≥5篇中文文献）</p>
             <p>（三）研究述评（指出现有研究的不足）</p>
             <p><strong>三、研究内容与方法</strong></p>
@@ -1369,11 +1378,11 @@ body.sb-collapsed .status-bar{left:0}
 
         <!-- 开题报告模板（可视化） -->
         <div class="card">
-          <h3>2.5 开题报告模板（可直接参照填写）</h3>
+          <h3>3. 开题报告模板（可直接参照填写）</h3>
           <div class="alert alert-info" style="margin-bottom:14px;">
             <strong>使用方法：</strong>下列模板为完整结构框架，学生按自己题目替换××即可。建议打印后在纸质版上勾画，再填入电子稿。
           </div>
-          <button class="btn-download" onclick="downloadWord('kt')">📥 下载开题报告 Word 模板</button>
+          <button class="btn-download" onclick="downloadWord('kt')">📥 下载开题报告 Word 模板（写作参考，封面格式以学院官方模板为准）</button>
           <div class="demo-box" style="line-height:2.2;">
             <div class="demo-label">📄 开题报告标准模板（按学校格式）</div>
             <p style="font-weight:700;text-align:center;font-size:15px;margin-bottom:10px;">浙江师范大学行知学院</p>
@@ -1409,7 +1418,7 @@ body.sb-collapsed .status-bar{left:0}
         </div>
 
         <div class="card">
-          <h3>3. 文献检索技巧全指南</h3>
+          <h3>4. 文献检索技巧全指南</h3>
           <div class="alert alert-info" style="margin-bottom:14px;">
             <strong>检索顺序：</strong>先中文（知网）→ 再英文（WoS/Google Scholar）→ 追踪参考文献 → 追踪引用文献。由近及远，由中及外。
           </div>
@@ -1418,11 +1427,11 @@ body.sb-collapsed .status-bar{left:0}
           <table style="margin-bottom:16px;">
             <thead><tr><th>检索方式</th><th>操作步骤</th><th>适用场景</th></tr></thead>
             <tbody>
-              <tr><td class="label">主题检索</td><td>在"主题"栏输入2-3个关键词，如"直播电商 + 消费者购买意愿"</td><td>初步了解研究领域，找方向</td></tr>
-              <tr><td class="label">篇关摘</td><td>在"篇关摘"栏输入，同时搜索题目、关键词、摘要</td><td>比主题检索更精准，推荐首选</td></tr>
+              <tr><td class="label">主题检索</td><td>在“主题”栏输入2-3个关键词，如“直播电商 + 消费者购买意愿”</td><td>初步了解研究领域，找方向</td></tr>
+              <tr><td class="label">篇关摘</td><td>在“篇关摘”栏输入，同时搜索题目、关键词、摘要</td><td>比主题检索更精准，推荐首选</td></tr>
               <tr><td class="label">作者检索</td><td>输入领域权威学者姓名，查看其全部论文</td><td>追踪核心学者的研究脉络</td></tr>
               <tr><td class="label">参考文献回溯</td><td>打开一篇高质量论文，逐个查看其参考文献</td><td>找到该领域的奠基性文献</td></tr>
-              <tr><td class="label">被引文献追踪</td><td>查看高质量论文"被引次数"，点进去看谁引用了它</td><td>找到最新进展（引文滚雪球法）</td></tr>
+              <tr><td class="label">被引文献追踪</td><td>查看高质量论文“被引次数”，点进去看谁引用了它</td><td>找到最新进展（引文滚雪球法）</td></tr>
             </tbody>
           </table>
 
@@ -1430,20 +1439,20 @@ body.sb-collapsed .status-bar{left:0}
           <table style="margin-bottom:16px;">
             <thead><tr><th>数据库</th><th>网址</th><th>检索技巧</th></tr></thead>
             <tbody>
-              <tr><td class="label">Web of Science</td><td><code>webofscience.com</code></td><td>用"Topic"栏输入关键词；用"Refine Results"按年份/学科过滤；查看"Cited References"和"Times Cited"</td></tr>
-              <tr><td class="label">Google Scholar</td><td><code>scholar.google.com</code></td><td>支持自然语言检索；点击"被引用次数"追踪后续研究；设置"提醒"自动推送新论文</td></tr>
-              <tr><td class="label">ScienceDirect</td><td><code>sciencedirect.com</code></td><td>Elsevier旗下，电商/国贸高质量期刊多；高级检索支持"Abstract/Title/Keywords"组合</td></tr>
+              <tr><td class="label">Web of Science</td><td><code>webofscience.com</code></td><td>用“Topic”栏输入关键词；用“Refine Results”按年份/学科过滤；查看“Cited References”和“Times Cited”</td></tr>
+              <tr><td class="label">Google Scholar</td><td><code>scholar.google.com</code></td><td>支持自然语言检索；点击“被引用次数”追踪后续研究；设置“提醒”自动推送新论文</td></tr>
+              <tr><td class="label">ScienceDirect</td><td><code>sciencedirect.com</code></td><td>Elsevier旗下，电商/国贸高质量期刊多；高级检索支持“Abstract/Title/Keywords”组合</td></tr>
               <tr><td class="label">ResearchGate</td><td><code>researchgate.net</code></td><td>可直接向作者索要全文；关注领域专家，获取最新工作论文</td></tr>
-              <tr><td class="label">必应学术</td><td><code>cn.bing.com/academic</code></td><td>Google 学术的大陆替代；中英文关键词均可检索，结果附引用格式</td></tr>
+              <tr><td class="label">百度学术</td><td><code>xueshu.baidu.com</code></td><td>国内可用的中英文学术检索入口；中英文关键词均可检索，结果附引用格式（微软学术/必应学术已于2021年停用）</td></tr>
             </tbody>
           </table>
 
           <h4>③ 关键词检索技巧（提高查全率与查准率）</h4>
           <ul style="margin-bottom:14px;">
-            <li><strong>同义词扩展：</strong>检索"消费者购买意愿"时，同时用"消费意愿""购买意向""消费行为"等扩展词</li>
-            <li><strong>英文关键词：</strong>每个中文关键词找出2-3个英文对应词，如"直播电商"→"live streaming commerce / live shopping"</li>
-            <li><strong>截词符*：</strong>在Web of Science中，"market*"可匹配marketing/marketplace/markets</li>
-            <li><strong>布尔逻辑：</strong>AND（同时出现）、OR（任一出现）、NOT（排除），如"直播电商 AND 购买意愿 NOT 游戏"</li>
+            <li><strong>同义词扩展：</strong>检索“消费者购买意愿”时，同时用“消费意愿”“购买意向”“消费行为”等扩展词</li>
+            <li><strong>英文关键词：</strong>每个中文关键词找出2-3个英文对应词，如“直播电商”→“live streaming commerce / live shopping”</li>
+            <li><strong>截词符*：</strong>在Web of Science中，“market*”可匹配marketing/marketplace/markets</li>
+            <li><strong>布尔逻辑：</strong>AND（同时出现）、OR（任一出现）、NOT（排除），如“直播电商 AND 购买意愿 NOT 游戏”</li>
             <li><strong>时间过滤：</strong>优先看近5年文献（2019-2026），经典文献不受限</li>
           </ul>
 
@@ -1451,10 +1460,10 @@ body.sb-collapsed .status-bar{left:0}
           <table>
             <thead><tr><th>步骤</th><th>操作方法</th></tr></thead>
             <tbody>
-              <tr><td class="label">1. 校内访问</td><td>在校内IP范围内，知网/WoS可直接下载全文；校外须通过学校VPN或图书馆"校外访问"入口</td></tr>
-              <tr><td class="label">2. 找不到全文？</td><td>复制论文DOI到 <code>sci-hub.se</code> 或 <code>researchgate.net</code> 向作者索要；也可请导师帮助</td></tr>
-              <tr><td class="label">3. 文献分类</td><td>在知网"文献管理"中建文件夹：按主题分类（如"消费者行为""电商平台"）；或用量化软件EndNote/Zotero自动管理</td></tr>
-              <tr><td class="label">4. 命名规范</td><td>下载的PDF统一命名为"年份_第一作者_期刊_标题关键词.pdf"，方便日后查找</td></tr>
+              <tr><td class="label">1. 校内访问</td><td>在校内IP范围内，知网/WoS可直接下载全文；校外须通过学校VPN或图书馆“校外访问”入口</td></tr>
+              <tr><td class="label">2. 找不到全文？</td><td>优先使用学校图书馆「校外访问/文献传递」入口（CALIS、读秀、百链），或查看期刊官网是否提供开放获取（OA）版本；也可通过 ResearchGate 联系作者索取；请勿通过 Sci-Hub 等非授权站点获取文献</td></tr>
+              <tr><td class="label">3. 文献分类</td><td>在知网“文献管理”中建文件夹：按主题分类（如“消费者行为”“电商平台”）；或用量化软件EndNote/Zotero自动管理</td></tr>
+              <tr><td class="label">4. 命名规范</td><td>下载的PDF统一命名为“年份_第一作者_期刊_标题关键词.pdf”，方便日后查找</td></tr>
             </tbody>
           </table>
 
@@ -1468,12 +1477,12 @@ body.sb-collapsed .status-bar{left:0}
             </tbody>
           </table>
           <div class="alert alert-warning" style="margin-top:10px;">
-            <strong>提醒：</strong>Google 学术在大陆访问不稳定，查英文文献可先用<strong>必应学术</strong>或校内图书馆数据库（ScienceDirect / Springer / Emerald 等）；AI 仅用于检索、总结、润色，正文与数据必须自己完成（AIGC 检测 ≤30%）。
+            <strong>提醒：</strong>Google 学术在大陆访问不稳定，查英文文献可先用<strong>百度学术</strong>或校内图书馆数据库（ScienceDirect / Springer / Emerald 等）；AI 仅用于检索定位、术语解释与格式问答，文献综述的归纳评述、正文写作与数据分析须由本人完成（AIGC 检测以学院当届政策为准）。
           </div>
         </div>
 
         <div class="card">
-          <h3>4. 文献阅读步骤与重点</h3>
+          <h3>5. 文献阅读步骤与重点</h3>
           <div class="alert alert-warning" style="margin-bottom:14px;">
             <strong>切忌：</strong>从头到尾逐字精读每篇论文——这是最低效的做法！应分层次阅读，20篇文献中只需精读3-5篇高质量文献。
           </div>
@@ -1490,14 +1499,14 @@ body.sb-collapsed .status-bar{left:0}
           <ul>
             <li>用Excel或Notion建文献阅读表，列：作者/年份/期刊/研究问题/主要结论/研究方法/对我的启发</li>
             <li>重点记录：该文献用了什么理论？变量如何定义？数据从哪里来？——这些是你写文献综述和方法章节的直接参考</li>
-            <li>记录文献的不足之处，这是你写"研究述评"和"创新点"的核心素材</li>
+            <li>记录文献的不足之处，这是你写“研究述评”和“创新点”的核心素材</li>
           </ul>
         </div>
 
         <div class="card">
-          <h3>5. 文献综述写作指南</h3>
+          <h3>6. 文献综述写作指南</h3>
           <div class="alert alert-danger">
-            <strong>送审高频问题：</strong>文献综述不是文献的"流水账"！不能"×××（2020）研究了A。×××（2021）研究了B"这样简单罗列。必须<strong>按主题分类、对比分析、指出不足</strong>。
+            <strong>送审高频问题：</strong>文献综述不是文献的“流水账”！不能“×××（2020）研究了A。×××（2021）研究了B”这样简单罗列。必须<strong>按主题分类、对比分析、指出不足</strong>。
           </div>
           <h4>正确的文献综述写法：</h4>
           <ul>
@@ -1505,12 +1514,12 @@ body.sb-collapsed .status-bar{left:0}
             <li><strong>对比评述</strong>：指出不同研究之间的异同、争议和共识</li>
             <li><strong>指出空白</strong>：明确说明已有研究忽略了什么问题，你的研究如何填补</li>
             <li><strong>引用新文献</strong>：避免过度引用10年以上的老文献，优先引用近5年文献</li>
-            <li><strong>外文占比</strong>：外文文献不少于总文献的30%</li>
+            <li><strong>外文占比</strong>：满足“≥10篇中含≥2篇外文”的底线；建议外文占比不低于30%（按学院要求）</li>
           </ul>
         </div>
 
         <div class="card">
-          <h3>4. 技术路线图绘制指南</h3>
+          <h3>7. 技术路线图绘制指南</h3>
           <div class="alert alert-info">
             <strong>工具推荐：</strong>使用 Word 自带的 SmartArt 或 Visio、ProcessOn、draw.io 绘制。不可使用截图，必须原创。
           </div>
@@ -1521,20 +1530,20 @@ body.sb-collapsed .status-bar{left:0}
         </div>
 
         <div class="card">
-          <h3>5. 开题答辩准备</h3>
+          <h3>8. 开题答辩准备</h3>
           <ul>
             <li><strong>答辩时间</strong>：2026年10月14日—18日</li>
             <li><strong>答辩形式</strong>：PPT汇报（5-8分钟），重点讲选题意义、研究内容、研究方法</li>
-            <li><strong>常见问题：</strong>"你为什么选这个题？""研究方法可行吗？""创新点在哪里？"</li>
+            <li><strong>常见问题：</strong>“你为什么选这个题？”“研究方法可行吗？”“创新点在哪里？”</li>
             <li><strong>准备要点：</strong>熟读自己的开题报告，想清楚每个研究决策的理由</li>
           </ul>
           <div class="alert alert-warning">
-            <strong>注意：</strong>开题报告须在答辩前通过指导教师审核并在维普系统提交。未参加开题答辩或答辩不通过者，不得进入后续环节。
+            <strong>注意：</strong>开题报告须在答辩前通过指导教师审核并在维普系统提交；未参加开题答辩或答辩不通过者，按学院规定处理（通常不得进入后续环节，请尽快与指导教师沟通补正安排）。
           </div>
         </div>
 
         <div class="card">
-          <h3>6. 维普系统操作：开题报告提交</h3>
+          <h3>9. 维普系统操作：开题报告提交</h3>
           <ol class="step-list">
             <li>登录维普系统 → 过程管理</li>
             <li>进入「开题报告」环节，在线填写或上传开题报告文档</li>
@@ -1545,7 +1554,7 @@ body.sb-collapsed .status-bar{left:0}
         </div>
         <!-- ===== 开题报告模板（基于历届优秀开题+外审要求提炼） ===== -->
           <div class="card" style="grid-column:1/3;">
-            <h3>开题报告模板（写作填空版 · 历届提炼）</h3>
+            <h3>10. 开题报告模板（写作填空版 · 历届提炼）</h3>
             <div class="alert alert-info" style="margin-bottom:12px;">
               <strong>模板说明：</strong>本模板综合历届优秀开题报告与送审（外审）高频意见提炼而成，覆盖学校九段式格式。所有涉及学校、老师、学生、企业、品牌、产品、数据等敏感信息均以 <strong>XXX</strong> 代替。直接复制到 Word 按「（）」内提示逐段替换 XXX 即可，正文控制在 <strong>4000—5500 字</strong>。
             </div>
@@ -1633,10 +1642,10 @@ body.sb-collapsed .status-bar{left:0}
             <details>
               <summary style="font-weight:700;cursor:pointer;margin:4px 0 8px;color:var(--primary);">七、主要参考文献（≥10篇，含≥2篇外文）</summary>
               <div class="demo-box" style="line-height:2;">
-                <p><strong>规范</strong>：GB/T 7714—2015 格式，期刊须含 [J]，按引用顺序或作者排序编号；正文出现上标 [1] 且文末一一对应；近5年文献占比≥60%。</p>
-                <p>中文期刊示例：<span style="color:#64748b;">[1] XXX，XXX，XXX. XXX研究[J]. 经济管理，2023，45(3)：100—115.</span></p>
-                <p>英文期刊示例：<span style="color:#64748b;">[2] XXX A，XXX B. XXX of XXX[J]. Journal of XXX, 2022, 10(2): 200—220.</span></p>
-                <p style="color:#e11d48;">⚠ 清理多余链接、DOI；删除 Word 域代码（REF _Ref…）；作者/标题格式统一；避免文献老旧堆砌。</p>
+                <p><strong>规范</strong>：GB/T 7714—2015 格式，期刊须含 [J]，按引用顺序或作者排序编号；正文出现上标 [1] 且文末一一对应；近5年文献占比≥60%。（注：新版 GB/T 7714—2025 已发布并将于 2026-07-01 实施，请以学院当年采用的版本与示例为准。）</p>
+                <p>中文期刊示例（半角标点）：<span style="color:#64748b;">[1] XXX,XXX,XXX.XXX研究[J].经济管理,2023,45(3):100-115.</span></p>
+                <p>英文期刊示例：<span style="color:#64748b;">[2] XXX A,XXX B.XXX of XXX[J].Journal of XXX,2022,10(2):200-220.</span></p>
+                <p style="color:#e11d48;">⚠ 参考文献采用半角标点；注意清理 Word 域代码（REF _Ref…）与多余链接；作者/标题格式统一；避免文献老旧堆砌（DOI 是否保留以学院模板为准，若保留请确保其超链接格式不串行）。</p>
               </div>
             </details>
   
@@ -1707,7 +1716,7 @@ body.sb-collapsed .status-bar{left:0}
           <div class="alert alert-info" style="margin-bottom:14px;">
             <strong>使用方法：</strong>下列模板为完整论文的排版格式示范。学生可新建Word文档，按此格式设置页面、字体、标题样式，再填入自己的内容。
           </div>
-          <button class="btn-download" onclick="downloadWord('main')">📥 下载论文正文 Word 模板</button>
+          <button class="btn-download" onclick="downloadWord('main')">📥 下载论文正文 Word 模板（写作参考，封面格式以学院官方模板为准）</button>
           <div class="demo-box" style="line-height:2.2;font-size:13px;">
             <div class="demo-label">📄 论文正文排版模板（页面格式：A4，上3cm/下2.5cm/左3cm/右2.5cm）</div>
             <p style="text-align:center;font-size:16px;font-weight:700;">浙江师范大学行知学院</p>
@@ -1721,7 +1730,7 @@ body.sb-collapsed .status-bar{left:0}
             <p style="text-indent:2em;">（中文摘要：300字以内，小四号宋体，1.5倍行距，首行缩进2字符；须含研究背景、目的、方法、主要结论）</p>
             <p style="text-align:center;font-weight:700;margin-top:10px;">关键词：直播电商；KOL特征；购买意愿；××</p>
             <p style="text-align:center;font-weight:700;margin-top:14px;">Abstract</p>
-            <p style="text-indent:2em;">(英文摘要：与中文摘要对应，Times New Roman 12pt，首行不缩进……）</p>
+            <p style="text-indent:2em;">（英文摘要：与中文摘要对应，Times New Roman 12pt，首行不缩进……）</p>
             <p style="text-align:center;font-weight:700;margin-top:10px;">Keywords: live streaming commerce; KOL characteristics; purchase intention; ××</p>
             <hr style="border:none;border-top:1px solid #ccc;margin:16px 0;">
             <p style="text-align:center;font-weight:700;">目录</p>
@@ -1731,7 +1740,7 @@ body.sb-collapsed .status-bar{left:0}
             <p style="font-size:12px;">&nbsp;&nbsp;（一）研究背景与意义..........................1</p>
             <p style="font-size:12px;">&nbsp;&nbsp;（二）研究问题.................................</p>
             <p style="font-size:12px;">二、文献综述与理论基础..........................×</p>
-            <p style="font-size:11px;color:#64748b;">（以下正文每章须从奇数页开始，章节号用"一、（一）1.（1）"格式）</p>
+            <p style="font-size:11px;color:#64748b;">（以下正文每章须从奇数页开始，章节号用“一、（一）1.（1）”格式）</p>
             <hr style="border:none;border-top:1px solid #ccc;margin:16px 0;">
             <p style="font-size:16px;font-weight:700;text-align:center;">一、引言</p>
             <p style="font-size:14px;font-weight:700;">（一）研究背景与意义</p>
@@ -1742,7 +1751,7 @@ body.sb-collapsed .status-bar{left:0}
             <p>2. ××××</p>
             <p>3. ××××</p>
             <p style="font-size:12px;color:#64748b;">（表格格式示范 — 三线表：顶线1.5pt，表头线0.75pt，底线1.5pt，无竖线）</p>
-            <p style="text-align:center;font-size:12px;font-weight:700;">表3-1 样本人口学特征统计（N=312）</p>
+            <p style="text-align:center;font-size:12px;font-weight:700;">表3-1 样本人口学特征统计（N=312）<span style="color:#e11d48;">（示例数据，写作时替换为你的真实样本）</span></p>
             <table style="width:100%;font-size:11px;border-collapse:collapse;border-top:1.5pt solid #000;border-bottom:1.5pt solid #000;">
               <tr style="border-bottom:0.75pt solid #000;"><th style="padding:4px;">变量</th><th>类别</th><th>频数</th><th>百分比（%）</th></tr>
               <tr><td>性别</td><td>男/女</td><td>××/××</td><td>××/××</td></tr>
@@ -1825,7 +1834,7 @@ body.sb-collapsed .status-bar{left:0}
 
         <!-- 各章节写作指引 -->
         <div class="card">
-          <h3>3. 各章节写作指引</h3>
+          <h3>4. 各章节写作指引</h3>
           <div class="tabs-wrap">
             <button class="tab-btn active" onclick="switchInnerTab(this,'write-abstract')">摘要</button>
             <button class="tab-btn" onclick="switchInnerTab(this,'write-intro')">引言</button>
@@ -1841,11 +1850,11 @@ body.sb-collapsed .status-bar{left:0}
               <strong>要求：</strong>≤300字，不加注释和评论，独立短文。须包含<strong>研究背景、目的、方法、主要结论</strong>。要有<strong>英文翻译</strong>。
             </div>
             <div class="alert alert-danger">
-              <strong>送审常见缺陷：</strong>摘要缺少研究方法、缺少具体结论（只写"进行了分析"不写"发现了什么"）、缺少创新点。必须四要素齐全。
+              <strong>送审常见缺陷：</strong>摘要缺少研究方法、缺少具体结论（只写“进行了分析”不写“发现了什么”）、缺少创新点。必须四要素齐全。
             </div>
             <div class="demo-box">
-              <div class="demo-label">✅ 正确示例片段</div>
-              <p>本文以SOR理论为框架，基于对286名消费者的问卷调查数据，运用结构方程模型实证分析了直播电商中KOL特征对消费者购买意愿的影响……研究发现：KOL的专业性和信任度对购买意愿有显著正向影响，感知价值起部分中介作用。</p>
+              <div class="demo-label">✅ 正确示例片段（内容为示意，仅演示写法，严禁照抄）</div>
+              <p>本文以SOR理论为框架，基于对 ××× 名消费者的问卷调查数据，运用结构方程模型实证分析了直播电商中KOL特征对消费者购买意愿的影响……研究发现：KOL的专业性和信任度对购买意愿有显著正向影响，感知价值起部分中介作用。（注：示例样本量、方法与结论请按你的实际研究填写）</p>
             </div>
             <div class="demo-box">
               <div class="demo-label">❌ 错误示例片段（缺少研究方法+结论）</div>
@@ -1856,18 +1865,18 @@ body.sb-collapsed .status-bar{left:0}
           <div class="tab-content-area" id="write-intro">
             <div class="hl-box"><strong>结构：</strong>大背景 → 具体问题 → 研究缺口 → 本文要做什么 → 论文结构预览</div>
             <div class="alert alert-info">
-              <strong>引言不是"罗列背景"！</strong>引言的核心逻辑是"漏斗式"：从大背景逐步收敛到你的具体研究问题。
+              <strong>引言不是“罗列背景”！</strong>引言的核心逻辑是“漏斗式”：从大背景逐步收敛到你的具体研究问题。
             </div>
           </div>
 
           <div class="tab-content-area" id="write-lit">
             <div class="alert alert-danger">
-              <strong>送审高频红线：</strong>文献综述不能做成"流水账"！要<strong>按主题分类</strong>、<strong>对比评述</strong>、<strong>指出研究空白</strong>。送审专家最反感"A（2020）认为……B（2021）提出……C（2022）指出……"这样机械罗列。
+              <strong>送审高频红线：</strong>文献综述不能做成“流水账”！要<strong>按主题分类</strong>、<strong>对比评述</strong>、<strong>指出研究空白</strong>。送审专家最反感“A（2020）认为……B（2021）提出……C（2022）指出……”这样机械罗列。
             </div>
             <div class="alert alert-danger">
               <strong>理论与分析两张皮：</strong>文献综述中提到的理论，必须在后续分析中<strong>真正使用</strong>——用于解剖研究对象，而不是摆在那里当装饰。
             </div>
-            <div class="hl-box"><strong>正确做法：</strong>按主题归类文献 → 对比不同研究的发现/争议 → 明确说出"已有研究忽略了X，本文将从Y角度切入"</div>
+            <div class="hl-box"><strong>正确做法：</strong>按主题归类文献 → 对比不同研究的发现/争议 → 明确说出“已有研究忽略了X，本文将从Y角度切入”</div>
           </div>
 
           <div class="tab-content-area" id="write-body">
@@ -1879,7 +1888,7 @@ body.sb-collapsed .status-bar{left:0}
 
           <div class="tab-content-area" id="write-conclusion">
             <div class="alert alert-danger">
-              <strong>送审致命缺陷：</strong>缺少独立的"结论"章节。很多学生最后一章写"对策建议"就结束了，缺少对全文结论的集中提炼！结论应包含四要素：<strong>①主要发现 ②理论贡献 ③实践启示 ④研究局限与展望</strong>。
+              <strong>送审致命缺陷：</strong>缺少独立的“结论”章节。很多学生最后一章写“对策建议”就结束了，缺少对全文结论的集中提炼！结论应包含四要素：<strong>①主要发现 ②理论贡献 ③实践启示 ④研究局限与展望</strong>。
             </div>
             <div class="hl-box">结语不是各章小结的简单重复，应提炼出<strong>整体性</strong>的结论，回应引言中提出的问题。</div>
           </div>
@@ -1893,7 +1902,7 @@ body.sb-collapsed .status-bar{left:0}
 
         <!-- 图表规范 -->
         <div class="card">
-          <h3>4. 图表与公式规范</h3>
+          <h3>5. 图表与公式规范</h3>
           <div class="tabs-wrap">
             <button class="tab-btn active" onclick="switchInnerTab(this,'fig-table')">三线表</button>
             <button class="tab-btn" onclick="switchInnerTab(this,'fig-illustration')">插图</button>
@@ -1904,7 +1913,7 @@ body.sb-collapsed .status-bar{left:0}
             <div class="alert alert-info">
               <strong>三线表制作（Word）：</strong>1.插入表格 → 表格属性 → 边框和底纹<br>
               2.三线磅值：顶线 <strong>1.5磅</strong>（粗）· 栏目线 <strong>0.75磅</strong>（细）· 底线 <strong>1.5磅</strong>（粗）<br>
-              3.取消所有左右竖线和内部横线。表格允许下页接写，接写时表头重复，右上方标注"续表×-×"。
+              3.取消所有左右竖线和内部横线。表格允许下页接写，接写时表头重复，右上方标注“续表×-×”。
             </div>
             <div class="tbl-demo">
               <div class="tbl-caption">表1-1 ××××××</div>
@@ -1919,7 +1928,7 @@ body.sb-collapsed .status-bar{left:0}
               <div class="tbl-src">数据来源：根据问卷调研结果整理</div>
             </div>
             <div class="alert alert-danger" style="margin-top:12px;">
-              <strong>送审高频问题：</strong>图表须注明<strong>具体数据来源</strong>（不能笼统写"数据来源：自行整理"）。表格行间距须统一、美观。
+              <strong>送审高频问题：</strong>图表须注明<strong>具体数据来源</strong>（不能笼统写“数据来源：自行整理”）。表格行间距须统一、美观。
             </div>
           </div>
 
@@ -1928,7 +1937,7 @@ body.sb-collapsed .status-bar{left:0}
               <strong>严禁截图！</strong>所有插图必须用计算机<strong>重新独立绘制</strong>（Word图形/Excel图表/Visio/draw.io等），绝不可直接截取网页、手机或软件截图。
             </div>
             <div class="alert alert-warning">
-              <strong>送审警告：</strong>单年数据不能推导趋势！插图须注明<strong>数据来源</strong>，且来源描述须具体（比如"数据来源：国家统计局网站（2020-2025年）"而非笼统写"数据来源：统计局"）。
+              <strong>送审警告：</strong>单年数据不能推导趋势！插图须注明<strong>数据来源</strong>，且来源描述须具体（比如“数据来源：国家统计局网站（2020-2025年）”而非笼统写“数据来源：统计局”）。
             </div>
             <div class="hl-box"><strong>插图规范：</strong>图序+图名置于图正下方，居中。图中文字须清晰可辨，字号不宜过小。</div>
           </div>
@@ -1940,9 +1949,9 @@ body.sb-collapsed .status-bar{left:0}
 
         <!-- 参考文献 -->
         <div class="card">
-          <h3>5. 参考文献格式规范</h3>
+          <h3>6. 参考文献格式规范</h3>
           <div class="alert alert-info">
-            <strong>标准：GB/T 7714-2015。</strong>在正文引用处以<strong>上标[1][2][3]</strong>标记，文末参考文献按<strong>引用顺序</strong>排列。≥10篇，含≥2篇外文。
+            <strong>标准：GB/T 7714-2015</strong>（新版 GB/T 7714—2025 将于 2026-07-01 实施，以学院当年执行为准）。在正文引用处以<strong>上标[1][2][3]</strong>标记，文末参考文献按<strong>引用顺序</strong>排列。≥10篇，含≥2篇外文。
           </div>
           <div class="alert alert-danger">
             <strong>送审三大雷区：</strong><br>
@@ -1963,7 +1972,7 @@ body.sb-collapsed .status-bar{left:0}
 
         <!-- 学术插图工具 -->
         <div class="card">
-          <h3>6. 学术插图工具指南</h3>
+          <h3>7. 学术插图工具指南</h3>
           <div class="alert alert-info" style="margin-bottom:14px;">
             <strong>基本要求：</strong>所有插图必须<strong>重新绘制</strong>，不可用截图。图序+图名置于图下方，五号宋体居中。数据来源须具体注明。
           </div>
@@ -1987,22 +1996,22 @@ body.sb-collapsed .status-bar{left:0}
             <li>插入Word：插入 → 图片 → 调整大小 → 添加图序和图名</li>
           </ol>
           <div class="alert alert-warning" style="margin-top:12px;">
-            <strong>注意：</strong>从Excel复制到Word时，须用"粘贴为图片"而非嵌入对象，否则换电脑后图表可能显示异常。
+            <strong>注意：</strong>从Excel复制到Word时，须用“粘贴为图片”而非嵌入对象，否则换电脑后图表可能显示异常。
           </div>
         </div>
 
         <!-- 访谈与问卷设计 -->
         <div class="card">
-          <h3>7. 访谈与问卷设计指南</h3>
+          <h3>8. 访谈与问卷设计指南</h3>
 
           <h4>一、访谈步骤与注意事项</h4>
           <table style="margin-bottom:14px;">
             <thead><tr><th>步骤</th><th>操作方法</th><th>注意事项</th></tr></thead>
             <tbody>
-              <tr><td class="label">① 设计访谈提纲</td><td>围绕研究问题设计5-8个开放式问题；从简单到复杂排列</td><td>避免引导性问题（如"你认为A是不是很好？"→ 改为"你对A有什么看法？"）</td></tr>
+              <tr><td class="label">① 设计访谈提纲</td><td>围绕研究问题设计5-8个开放式问题；从简单到复杂排列</td><td>避免引导性问题（如“你认为A是不是很好？”→ 改为“你对A有什么看法？”）</td></tr>
               <tr><td class="label">② 选择访谈对象</td><td>按研究目的选取（如研究直播电商→ 访谈主播/消费者/平台运营者）</td><td>样本须有代表性；每类对象访谈3-5人</td></tr>
               <tr><td class="label">③ 预约与准备</td><td>提前预约时间；准备录音设备（须征得同意）；准备访谈提纲打印版</td><td>告知受访者访谈目的、保密承诺</td></tr>
-              <tr><td class="label">④ 实施访谈</td><td>从破冰问题开始；鼓励受访者多说（"能具体说说吗？"）；及时追问</td><td>控制时长在30-60分钟；注意非语言信息（表情/语气）</td></tr>
+              <tr><td class="label">④ 实施访谈</td><td>从破冰问题开始；鼓励受访者多说（“能具体说说吗？”）；及时追问</td><td>控制时长在30-60分钟；注意非语言信息（表情/语气）</td></tr>
               <tr><td class="label">⑤ 整理访谈记录</td><td>24小时内整理录音 → 转录为文字 → 提炼关键观点 → 编码归类</td><td>转录须准确，不可断章取义；引语须注明受访者编号</td></tr>
             </tbody>
           </table>
@@ -2015,7 +2024,7 @@ body.sb-collapsed .status-bar{left:0}
               <tr><td class="label">查找成熟量表</td><td>优先使用已发表文献中的成熟量表（须注明出处），而非自己编造题目</td></tr>
               <tr><td class="label">设计问卷结构</td><td>①引言（说明研究目的+保密承诺）→ ②筛选题（判断是否符合受访条件）→ ③主体题（测量变量）→ ④人口学题（性别/年龄/学历等）</td></tr>
               <tr><td class="label">题目数量控制</td><td>总题目控制在30-50题，填写时间5-10分钟；题目过多会导致弃答率升高</td></tr>
-              <tr><td class="label">预测试</td><td>正式发放前，先找5-10人填写并反馈，检查题目是否清晰、有无歧义</td></tr>
+              <tr><td class="label">① 题目预测试（走查）</td><td>正式发放前，先找 5—10 人试填并反馈，检查题目措辞是否有歧义（此环节不作信度分析）</td></tr>
             </tbody>
           </table>
 
@@ -2023,9 +2032,9 @@ body.sb-collapsed .status-bar{left:0}
           <table style="margin-bottom:14px;">
             <thead><tr><th>平台</th><th>适用场景</th><th>发放方式</th><th>注意事项</th></tr></thead>
             <tbody>
-              <tr><td class="label">问卷星</td><td>最常用，适合中国样本</td><td>生成链接/二维码 → 微信/朋友圈/群转发</td><td>可设置"每台设备只能答一次"；支持数据导出Excel</td></tr>
+              <tr><td class="label">问卷星</td><td>最常用，适合中国样本</td><td>生成链接/二维码 → 微信/朋友圈/群转发</td><td>可设置“每台设备只能答一次”；支持数据导出Excel</td></tr>
               <tr><td class="label">腾讯问卷</td><td>与问卷星类似，界面更简洁</td><td>同上</td><td>与微信生态结合更好</td></tr>
-              <tr><td class="label">Credamo（见数）</td><td>需要高质量样本时（付费）</td><td>平台匹配合格受访者</td><td>可设置筛选条件（年龄/消费习惯等），但须预算</td></tr>
+              <tr><td class="label">Credamo（见数）</td><td>需要高质量样本时（付费）</td><td>平台匹配合格受访者</td><td>可设置筛选条件（年龄/消费习惯等），但需付费（按样本量计费）</td></tr>
               <tr><td class="label">线下发放</td><td>研究特定场景（如校园/商场）</td><td>打印纸质问卷，现场发放</td><td>回复率高，但样本代表性可能受限</td></tr>
             </tbody>
           </table>
@@ -2041,13 +2050,13 @@ body.sb-collapsed .status-bar{left:0}
             </tbody>
           </table>
           <div class="alert alert-info" style="margin-top:10px;">
-            <strong>实用建议：</strong>正式发放前先预调研30-50份，检验问卷信度（Cronbach's α ≥ 0.7 为可接受）。预调研数据可用于正式分析，不必丢弃。
+            <strong>实用建议：</strong>正式发放前先做小样本预调研（30—50份），用其检验信度（Cronbach's α ≥ 0.7 为可接受）；预调研数据在信效度达标的前提下可并入正式分析，不必丢弃。
           </div>
         </div>
 
         <!-- SPSS数据分析指南 -->
         <div class="card">
-          <h3>8. SPSS数据分析步骤指南</h3>
+          <h3>9. SPSS数据分析步骤指南</h3>
           <div class="alert alert-info" style="margin-bottom:14px;">
             <strong>分析流程：</strong>数据录入 → 数据清洗 → 信效度检验 → 描述性统计 → 人口学特征 → 相关性分析 → 差异性分析 → 回归分析/假设检验 → 结果解读与论文呈现。
           </div>
@@ -2055,7 +2064,7 @@ body.sb-collapsed .status-bar{left:0}
           <h4>① 数据录入与清洗</h4>
           <ol class="step-list" style="margin-bottom:14px;">
             <li>将问卷数据录入Excel，每行=1份问卷，每列=1个变量</li>
-            <li>检查缺失值（空白格）→ 用"均值填补"或"删除该样本"处理</li>
+            <li>检查缺失值（空白格）→ 用“均值填补”或“删除该样本”处理</li>
             <li>检查异常值（如年龄=150）→ 核对原始问卷，确认是录入错误则修正</li>
             <li>将Excel数据另存为 <code>.xlsx</code> → 在SPSS中打开（文件 → 打开 → 数据）</li>
           </ol>
@@ -2064,8 +2073,8 @@ body.sb-collapsed .status-bar{left:0}
           <table style="margin-bottom:14px;">
             <thead><tr><th>检验</th><th>SPSS操作路径</th><th>判断标准</th><th>论文中如何报告</th></tr></thead>
             <tbody>
-              <tr><td class="label">信度（可靠性）</td><td>分析 → 度量 → 可靠性分析 → 放入所有题目 → 确定</td><td>Cronbach's α ≥ 0.7 为可接受；≥ 0.8 为良好；≥ 0.9 为优秀</td><td>须报告α值，如"本研究的α值为0.87，表明量表具有良好信度"</td></tr>
-              <tr><td class="label">效度（结构效度）</td><td>分析 → 降维 → 因子分析 → 放入所有题目 → 抽取：基于特征根＞1；旋转：最大方差法</td><td>KMO ≥ 0.7 为可接受；Bartlett球体检验p＜0.05；因子载荷＞0.5</td><td>报告KMO值和因子分析结果；删除跨载荷＞0.4的题目</td></tr>
+              <tr><td class="label">信度（可靠性）</td><td>分析 → 度量 → 可靠性分析 → 放入所有题目 → 确定</td><td>Cronbach's α ≥ 0.7 为可接受；≥ 0.8 为良好；≥ 0.9 为优秀</td><td>须报告α值，如“本研究的α值为0.87，表明量表具有良好信度”</td></tr>
+              <tr><td class="label">效度（结构效度）</td><td>分析 → 降维 → 因子分析 → 放入所有题目 → 抽取：基于特征根＞1；旋转：最大方差法</td><td>KMO ≥ 0.7 为可接受；Bartlett球形检验 p＜0.05；因子载荷＞0.5</td><td>报告KMO值和因子分析结果；删除跨载荷＞0.4的题目</td></tr>
             </tbody>
           </table>
 
@@ -2073,8 +2082,8 @@ body.sb-collapsed .status-bar{left:0}
           <table style="margin-bottom:14px;">
             <thead><tr><th>操作路径</th><th>输出结果</th><th>论文中如何呈现</th></tr></thead>
             <tbody>
-              <tr><td class="label">分析 → 描述统计 → 频率</td><td>各题目的均值、标准差、频数、百分比</td><td>用三线表呈现主要变量的描述性统计（均值/标准差），如"表4-1 描述性统计结果"</td></tr>
-              <tr><td class="label">分析 → 描述统计 → 描述</td><td>全样本均值、标准差、极值</td><td>在文本中简述，如"样本的年龄均值为22.3岁（SD=1.8）"</td></tr>
+              <tr><td class="label">分析 → 描述统计 → 频率</td><td>各题目的均值、标准差、频数、百分比</td><td>用三线表呈现主要变量的描述性统计（均值/标准差），如“表4-1 描述性统计结果”</td></tr>
+              <tr><td class="label">分析 → 描述统计 → 描述</td><td>全样本均值、标准差、极值</td><td>在文本中简述，如“样本的年龄均值为22.3岁（SD=1.8）”</td></tr>
             </tbody>
           </table>
 
@@ -2082,7 +2091,7 @@ body.sb-collapsed .status-bar{left:0}
           <table style="margin-bottom:14px;">
             <thead><tr><th>操作</th><th>论文呈现方式</th><th>示例</th></tr></thead>
             <tbody>
-              <tr><td class="label">用"频率"分析性别/年龄/学历等</td><td>用三线表呈现（表3-1 样本人口学特征）</td><td>须报告频数和百分比，如"男性占42%（n=131），女性占58%（n=181）"</td></tr>
+              <tr><td class="label">用“频率”分析性别/年龄/学历等</td><td>用三线表呈现（表3-1 样本人口学特征）</td><td>须报告频数和百分比，如“男性占42%（n=131），女性占58%（n=181）”（示例数字，写作时用真实结果替换）</td></tr>
             </tbody>
           </table>
 
@@ -2090,7 +2099,7 @@ body.sb-collapsed .status-bar{left:0}
           <table style="margin-bottom:14px;">
             <thead><tr><th>操作路径</th><th>判断标准</th><th>论文呈现</th></tr></thead>
             <tbody>
-              <tr><td class="label">分析 → 相关 → 双变量 → 放入所有连续变量 → Pearson</td><td>相关系数r：0.1-0.3（弱），0.3-0.5（中），＞0.5（强）；p＜0.05为显著</td><td>用相关矩阵表呈现（表4-2 变量相关性分析）；在文中解读显著相关性，如"KOL专业性与消费者购买意愿呈显著正相关（r=0.42, p＜0.01）"</td></tr>
+              <tr><td class="label">分析 → 相关 → 双变量 → 放入所有连续变量 → Pearson</td><td>相关系数r的强弱划分不同教材口径不一，本文采用常见口径：0.1-0.3（弱）、0.3-0.5（中）、＞0.5（强），写作时请与导师确认口径并全文一致；p＜0.05为显著</td><td>用相关矩阵表呈现（表4-2 变量相关性分析）；在文中解读显著相关性，如“KOL专业性与消费者购买意愿呈显著正相关（r=0.42, p＜0.01）”</td></tr>
             </tbody>
           </table>
           <div class="alert alert-warning" style="margin-bottom:14px;">
@@ -2110,23 +2119,23 @@ body.sb-collapsed .status-bar{left:0}
           <table style="margin-bottom:14px;">
             <thead><tr><th>操作路径</th><th>输出关注</th><th>论文呈现</th></tr></thead>
             <tbody>
-              <tr><td class="label">分析 → 回归 → 线性 → 因变量放入DV，自变量放入IV</td><td>Model Summary（R²：解释力度）<br>ANOVA（F值：模型显著性）<br>Coefficients（β值：影响方向/大小；p值：假设是否支持）</td><td>用回归结果表呈现（表4-3 回归分析结果）；解读：如"假设H1得到支持：KOL专业性对购买意愿有显著正向影响（β=0.32, p＜0.01）"</td></tr>
+              <tr><td class="label">分析 → 回归 → 线性 → 因变量放入DV，自变量放入IV</td><td>Model Summary（R²：解释力度）<br>ANOVA（F值：模型显著性）<br>Coefficients（β值：影响方向/大小；p值：假设是否支持）</td><td>用回归结果表呈现（表4-3 回归分析结果）；解读：如“假设H1得到支持：KOL专业性对购买意愿有显著正向影响（β=0.32, p＜0.01）”</td></tr>
             </tbody>
           </table>
 
           <h4>分析结果的论文写作模板</h4>
           <div class="demo-box">
-            <div class="demo-label">📝 数据分析结果写作模板</div>
-            <p><strong>信度检验：</strong>本研究使用的量表Cronbach's α值为0.87，组合信度（CR）为0.91，均大于0.7的建议值，表明量表具有良好信度。</p>
-            <p><strong>相关性分析：</strong>如表4-2所示，KOL专业性与消费者购买意愿呈显著正相关（r=0.42, p＜0.01），假设H1得到初步支持。</p>
-            <p><strong>回归分析：</strong>如表4-3所示，在控制性别和年龄后，KOL专业性对购买意愿的正向影响依然显著（β=0.32, p＜0.01），假设H1得到支持。R²值为0.28，说明模型解释了28%的变异。</p>
+            <div class="demo-label">📝 数据分析结果写作模板（示例数字均为虚构占位，请替换为你的真实结果，严禁照抄）</div>
+            <p><strong>信度检验：</strong>本研究使用的量表Cronbach's α值为 ×.××，均大于 0.7 的建议值，表明量表具有良好信度。<span style="color:#e11d48;">（注：组合信度 CR 仅在使用 AMOS/Mplus 等结构方程分析时才报告，纯 SPSS 流程无需写 CR。）</span></p>
+            <p><strong>相关性分析：</strong>如表4-2所示，KOL专业性与消费者购买意愿呈显著正相关（r=0.××, p＜0.××），假设H1得到初步支持。</p>
+            <p><strong>回归分析：</strong>如表4-3所示，在控制性别和年龄后，KOL专业性对购买意愿的正向影响依然显著（β=0.××, p＜0.××），假设H1得到支持。R²值为0.××，说明模型解释了 ××% 的变异。</p>
             <p><strong>讨论：</strong>本研究发现……与××（2022）的研究结论一致。可能的原因是……。然而，××变量未通过显著性检验，可能的原因是……</p>
           </div>
         </div>
 
         <!-- ===== 毕业论文终稿模板（基于历届优秀终稿+外审意见提炼） ===== -->
           <div class="card" style="grid-column:1/3;">
-            <h3>毕业论文终稿模板（写作填空版 · 历届提炼）</h3>
+            <h3>10. 毕业论文终稿模板（写作填空版 · 历届提炼）</h3>
             <div class="alert alert-info" style="margin-bottom:12px;">
               <strong>模板说明：</strong>本模板综合历届优秀终稿与送审（外审）高频意见提炼，正文字数建议 <strong>10000—15000 字</strong>。所有涉及学校、老师、学生、企业、品牌、产品、数据、资金等信息均以 <strong>XXX</strong> 代替。将括号〔〕提示替换为你的实际内容即可。写作时始终对照文末「外审避坑清单」自查。
             </div>
@@ -2143,7 +2152,7 @@ body.sb-collapsed .status-bar{left:0}
                   <tr><td style="border:1px solid #ccc;padding:4px;">四、存在的问题及成因</td><td style="border:1px solid #ccc;padding:4px;">按理论维度诊断问题，深挖成因，与现状呼应</td><td style="border:1px solid #ccc;padding:4px;">2500</td></tr>
                   <tr><td style="border:1px solid #ccc;padding:4px;">五、优化对策建议</td><td style="border:1px solid #ccc;padding:4px;">与问题一一对应，具体可落地</td><td style="border:1px solid #ccc;padding:4px;">2500</td></tr>
                   <tr><td style="border:1px solid #ccc;padding:4px;">六、结论与展望</td><td style="border:1px solid #ccc;padding:4px;">主要发现 + 实践启示 + 局限与展望（<strong>必须独立成章</strong>）</td><td style="border:1px solid #ccc;padding:4px;">800</td></tr>
-                  <tr><td style="border:1px solid #ccc;padding:4px;">参考文献/致谢/附录</td><td style="border:1px solid #ccc;padding:4px;">≥15篇含外文；致谢200-400字；附录问卷等</td><td style="border:1px solid #ccc;padding:4px;">—</td></tr>
+                  <tr><td style="border:1px solid #ccc;padding:4px;">参考文献/致谢/附录</td><td style="border:1px solid #ccc;padding:4px;">≥10篇（含≥2篇外文）；建议按学院要求达到相应篇数；致谢200-400字；附录问卷等</td><td style="border:1px solid #ccc;padding:4px;">—</td></tr>
                 </table>
                 <p style="font-size:12px;color:#e11d48;">★ 实证类（问卷/计量）结构为：一、绪论 → 二、文献综述与理论基础 → 三、研究设计（变量、假设、量表、问卷）→ 四、数据分析与假设检验（信效度→描述→相关→回归）→ 五、结论与建议。外审强调：<strong>摘要、前言要素完整；必须有独立总结章节</strong>。</p>
               </div>
@@ -2174,7 +2183,7 @@ body.sb-collapsed .status-bar{left:0}
               <summary style="font-weight:700;cursor:pointer;margin:4px 0 8px;color:var(--primary);">二、相关概念与理论基础（约2000字）</summary>
               <div class="demo-box" style="line-height:2;">
                 <p><strong>（一）核心概念界定</strong>：给所研究概念下定义并注明出处，说明本文口径。<span style="color:#64748b;">〔例：本文所指XXX，参考XXX（2022）界定为……。〕</span></p>
-                <p><strong>（二）理论基础</strong>：介绍你选定的1—2个理论（如4P/4C/4I/SICAS/AISAS/SERVQUAL/人货场/TPB，按论文类型选），讲清其内涵与维度，并说明「为何用该理论分析本题」——建立理论与后文分析维度的对应。<span style="color:#e11d48;">历届通病是「理论两张皮」：开头介绍完就丢弃，后文分析不再提理论。正确做法：后文每节分析都回扣理论维度（如用4I的"趣味/利益/互动/个性"分别做现状-问题-对策的骨架）。</span></p>
+                <p><strong>（二）理论基础</strong>：介绍你选定的1—2个理论（如4P/4C/4I/SICAS/AISAS/SERVQUAL/人货场/TPB，按论文类型选），讲清其内涵与维度，并说明「为何用该理论分析本题」——建立理论与后文分析维度的对应。<span style="color:#e11d48;">历届通病是「理论两张皮」：开头介绍完就丢弃，后文分析不再提理论。正确做法：后文每节分析都回扣理论维度（如用4I的“趣味/利益/互动/个性”分别做现状-问题-对策的骨架）。</span></p>
                 <p><strong>（三）文献综述（评述式）</strong>：按主题分块，中外对举，每条「学者（年份）+方法+结论」；文末必须写评述：<span style="color:#64748b;">现有研究主要集中于……，但对……（本文对象/情境）研究较少，本文拟……（补缺口）。</span></p>
                 <p style="color:#e11d48;">⚠ 外审高频批评：理论与正文分析脱节、综述只罗列不评述、无文献引用标注。写作时确保后文每个分析维度都能在本章理论里找到依据。</p>
               </div>
@@ -2262,7 +2271,7 @@ body.sb-collapsed .status-bar{left:0}
         <h2>阶段四：中期检查</h2>
         <p>自查论文进度，提交中期检查表，确保按计划推进。</p>
         <div class="stage-meta">
-          <span>📅 2026年11月3日 — 11月7日</span>
+          <span>📅 2026年11月3日—11月7日</span>
           <span>📋 任务：中期检查表</span>
         </div>
       </div>
@@ -2289,7 +2298,7 @@ body.sb-collapsed .status-bar{left:0}
             </tbody>
           </table>
           <div class="alert alert-warning" style="margin-top:12px;">
-            <strong>注意：</strong>中期检查是阶段性审核，不及时提交将影响后续答辩资格。请务必在 <strong>11月7日前</strong> 完成。
+            <strong>注意：</strong>中期检查是阶段性审核（以学院当届通知为准），请尽量在 <strong>11月7日前</strong> 完成；确有困难请及时联系指导教师说明情况。
           </div>
         </div>
 
@@ -2345,7 +2354,7 @@ body.sb-collapsed .status-bar{left:0}
               <tr><td class="label">查重检测</td><td>提交答辩稿后</td><td>复制比≤25%方可申请答辩（答辩稿免费检测2次）</td></tr>
               <tr><td class="label">答辩申请</td><td>12月7日—13日</td><td>维普系统 → 过程管理 → 答辩申请</td></tr>
               <tr><td class="label">正式答辩</td><td>12月14日—19日</td><td>PPT汇报 + 评委提问</td></tr>
-              <tr><td class="label">答辩记录</td><td>答辩后</td><td>指导教师录入答辩记录和成绩</td></tr>
+              <tr><td class="label">答辩记录</td><td>答辩后</td><td>答辩记录与成绩由学院按流程录入（通常为答辩组/教学秘书，具体以学院通知为准）</td></tr>
             </tbody>
           </table>
         </div>
@@ -2356,7 +2365,7 @@ body.sb-collapsed .status-bar{left:0}
             <li>论文各部分齐全：封面、目录、中英文摘要、正文、参考文献、致谢</li>
             <li>格式完全符合写作手册要求</li>
             <li>复制比≤25%</li>
-            <li>AIGC检测值≤30%（参考指标）</li>
+            <li>AIGC检测值≤30%（以学院当届检测政策为准，参考值）</li>
             <li>答辩稿须与检测版本<strong>完全一致</strong></li>
           </ul>
         </div>
@@ -2369,7 +2378,7 @@ body.sb-collapsed .status-bar{left:0}
             <li>准备纸质版论文供评委翻阅</li>
             <li>对评委提问先肯定再回答，态度诚恳</li>
             <li>不熟悉的问题坦诚承认，说明后续如何改进</li>
-            <li>常见问题："创新点是什么？""数据如何收集？""结论的依据是什么？"</li>
+            <li>常见问题：“创新点是什么？”“数据如何收集？”“结论的依据是什么？”</li>
           </ul>
         </div>
 
@@ -2408,15 +2417,15 @@ body.sb-collapsed .status-bar{left:0}
           <table>
             <thead><tr><th>问题类型</th><th>常见问题</th><th>回答技巧</th></tr></thead>
             <tbody>
-              <tr><td class="label">选题类</td><td>"你为什么选这个题？"<br>"这个题有什么意义？"</td><td>从现实背景切入（如行业数据/政策变化），说明研究缺口，再点出本研究的价值。回答时间控制在1分钟内。</td></tr>
-              <tr><td class="label">方法类</td><td>"样本量为什么只有N=××？"<br>"为什么用问卷法而不是访谈法？"</td><td>说明样本量符合统计分析要求（回归分析≥100）；方法选择须与研究问题匹配，解释清楚。</td></tr>
-              <tr><td class="label">结论类</td><td>"你的主要发现是什么？"<br>"创新点在哪里？"</td><td>用1-2句话概括核心发现；创新点须具体（如"首次将××理论应用于××场景"），不可空泛说"有创新"。</td></tr>
-              <tr><td class="label">质疑类</td><td>"你的结论和××（2022）的研究矛盾，怎么解释？"</td><td>先肯定评委提到的文献，再说明本研究的不同之处（样本不同/时间不同/情境不同），展现批判性思维。</td></tr>
-              <tr><td class="label">格式类</td><td>"你的参考文献为什么有这么多老文献？"</td><td>说明哪些是奠基性文献（必须引用），哪些是近期文献（体现研究前沿），展示文献掌握的全面性。</td></tr>
+              <tr><td class="label">选题类</td><td>“你为什么选这个题？”<br>“这个题有什么意义？”</td><td>从现实背景切入（如行业数据/政策变化），说明研究缺口，再点出本研究的价值。回答时间控制在1分钟内。</td></tr>
+              <tr><td class="label">方法类</td><td>“样本量为什么只有N=××？”<br>“为什么用问卷法而不是访谈法？”</td><td>说明样本量符合统计分析要求（回归分析≥100）；方法选择须与研究问题匹配，解释清楚。</td></tr>
+              <tr><td class="label">结论类</td><td>“你的主要发现是什么？”<br>“创新点在哪里？”</td><td>用1-2句话概括核心发现；创新点须具体（如“首次将××理论应用于××场景”），不可空泛说“有创新”。</td></tr>
+              <tr><td class="label">质疑类</td><td>“你的结论和××（2022）的研究矛盾，怎么解释？”</td><td>先肯定评委提到的文献，再说明本研究的不同之处（样本不同/时间不同/情境不同），展现批判性思维。</td></tr>
+              <tr><td class="label">格式类</td><td>“你的参考文献为什么有这么多老文献？”</td><td>说明哪些是奠基性文献（必须引用），哪些是近期文献（体现研究前沿），展示文献掌握的全面性。</td></tr>
             </tbody>
           </table>
           <div class="alert alert-warning" style="margin-top:12px;">
-            <strong>回答三原则：</strong>① 先肯定再回答（"您提的这个问题很好，谢谢。我认为……"）；② 不知道的问题坦诚承认（"这个问题我目前研究还不够深入，后续我会……"）；③ 回答要扣题，不扯远。
+            <strong>回答三原则：</strong>① 先肯定再回答（“您提的这个问题很好，谢谢。我认为……”）；② 不知道的问题坦诚承认（“这个问题我目前研究还不够深入，后续我会……”）；③ 回答要扣题，不扯远。
           </div>
         </div>
 
@@ -2440,7 +2449,7 @@ body.sb-collapsed .status-bar{left:0}
           <ul>
             <li><strong>字号：</strong>标题≥28pt，正文≥20pt，图内文字≥16pt（后排也能看清）</li>
             <li><strong>配色：</strong>深色背景+浅色字 或 白色背景+深色字；避免大红大绿；推荐蓝色系或灰色系</li>
-            <li><strong>动画：</strong>少用或不用动画；切换效果用"淡入"即可，不用花哨特效</li>
+            <li><strong>动画：</strong>少用或不用动画；切换效果用“淡入”即可，不用花哨特效</li>
             <li><strong>每页文字：</strong>不超过30字；用关键词和图表，不用大段文字</li>
             <li><strong>备份：</strong>PPT存U盘+发微信文件传输助手+存云端，三份备份防丢失</li>
           </ul>
@@ -2451,8 +2460,8 @@ body.sb-collapsed .status-bar{left:0}
           <h3>8. 答辩表达与心理调节技巧</h3>
           <h4>汇报表达技巧</h4>
           <ul style="margin-bottom:14px;">
-            <li><strong>语速控制：</strong>比平时说话慢0.5倍，确保评委听清；重点内容（如主要发现）适当停顿强调</li>
-            <li><strong>目光接触：</strong>汇报时看评委，而不是看PPT或稿子；用"扫视"方式看每位评委1-2秒</li>
+            <li><strong>语速控制：</strong>比平时说话稍慢（约放慢三成），确保评委听清；重点内容（如主要发现）适当停顿强调</li>
+            <li><strong>目光接触：</strong>汇报时看评委，而不是看PPT或稿子；用“扫视”方式看每位评委1-2秒</li>
             <li><strong>手势辅助：</strong>用激光笔指向PPT上的关键点，配合手势说明；不用手挠头/摸脸/抖腿</li>
             <li><strong>时间控制：</strong>提前演练，确保在规定时间内完成；时间到即停，不拖沓</li>
           </ul>
@@ -2461,14 +2470,14 @@ body.sb-collapsed .status-bar{left:0}
             <thead><tr><th>紧张表现</th><th>应对方法</th></tr></thead>
             <tbody>
               <tr><td class="label">心跳加速、手抖</td><td>答辩前5分钟做深呼吸（吸气4秒→屏息4秒→呼气6秒），重复3次</td></tr>
-              <tr><td class="label">脑子空白</td><td>提前准备"破冰句"（如"各位老师好，我的论文题目是……"），开场背熟，进入状态后就放松了</td></tr>
-              <tr><td class="label">怕被问倒</td><td>提前预测10个可能会被问的问题，准备好回答要点；不知道的问题坦诚说"后续研究"，评委不会为难你</td></tr>
-              <tr><td class="label">过度追求完美</td><td>答辩是"展示"而非"考试"；评委更关注你的研究思路，不期待完美无缺</td></tr>
+              <tr><td class="label">脑子空白</td><td>提前准备“破冰句”（如“各位老师好，我的论文题目是……”），开场背熟，进入状态后就放松了</td></tr>
+              <tr><td class="label">怕被问倒</td><td>提前预测10个可能会被问的问题，准备好回答要点；不知道的问题坦诚说“后续研究”，评委不会为难你</td></tr>
+              <tr><td class="label">过度追求完美</td><td>答辩是“展示”而非“考试”；评委更关注你的研究思路，不期待完美无缺</td></tr>
             </tbody>
           </table>
           <div class="demo-box" style="margin-top:14px;">
             <div class="demo-label">🗣️ 答辩汇报标准开场白模板</div>
-            <p>"各位老师好！我是电子商务专业的学生×××，我的毕业论文题目是《××××××》。本研究聚焦××问题，采用××方法，主要发现有三点：第一……第二……第三……。接下来我从研究背景、研究方法、主要发现、结论与建议四个方面进行汇报，请各位老师批评指正。"</p>
+            <p>“各位老师好！我是电子商务专业的学生×××，我的毕业论文题目是《××××××》。本研究聚焦××问题，采用××方法，主要发现有三点：第一……第二……第三……。接下来我从研究背景、研究方法、主要发现、结论与建议四个方面进行汇报，请各位老师批评指正。”</p>
           </div>
         </div>
 
@@ -2489,7 +2498,7 @@ body.sb-collapsed .status-bar{left:0}
         <div class="stage-meta">
           <span>📅 2026年12月22日 — 2027年4月10日</span>
           <span>📋 任务：最终稿 + 匿名抽检稿 + 终稿查重</span>
-          <span>⚠️ 4月10日截止，逾期延迟领证</span>
+          <span>⚠️ 4月10日为最终截止（以学院当届通知为准）</span>
         </div>
       </div>
       <div class="stage-body">
@@ -2504,14 +2513,14 @@ body.sb-collapsed .status-bar{left:0}
             <li><strong>截止时间：2026年12月29日</strong></li>
           </ul>
           <div class="alert alert-danger">
-            <strong>最终截止日：2027年4月10日。</strong>逾期未提交全部材料者，延迟领取毕业证和学位证。
+            <strong>最终截止日：2027年4月10日</strong>（以学院当届通知为准）。逾期未提交全部材料者，将按学校学籍管理与学位授予相关规定处理（通常顺延至下一批次），如有特殊困难请尽早联系指导教师或教务办。
           </div>
         </div>
 
         <div class="card">
           <h3>2. 匿名抽检稿处理指南</h3>
           <div class="alert alert-danger">
-            <strong>抽检稿必须匿名！</strong>抽检稿送校外专家盲审，须<strong>彻底去除</strong>以下身份信息：
+            <strong>匿名送审说明：</strong>按教育部《本科毕业论文（设计）抽检办法（试行）》（教督〔2020〕5号），国家抽检在学位授予后按比例进行；学院层面的送审安排以学院当届通知为准。如学院要求提交匿名送审稿，请按以下清单<strong>彻底去除</strong>身份信息：
           </div>
           <div class="hl-box">
             <strong>须去除的内容（10项核对清单）：</strong>
@@ -2519,25 +2528,25 @@ body.sb-collapsed .status-bar{left:0}
           <ul class="checklist" id="anonymCheck">
             <li><span class="check">✓</span>封面：去除学生姓名、学号</li>
             <li><span class="check">✓</span>封面：去除指导教师姓名</li>
-            <li><span class="check">✓</span>封面：去除学校名称（含"浙江师范大学行知学院"）</li>
+            <li><span class="check">✓</span>封面：去除学校名称（含“浙江师范大学行知学院”）</li>
             <li><span class="check">✓</span>封面：去除学院、专业信息</li>
             <li><span class="check">✓</span>页眉：去除可能含姓名/学校的页眉</li>
             <li><span class="check">✓</span>致谢：去除指导教师姓名、学校名称</li>
             <li><span class="check">✓</span>正文中引用自己已发表的论文时，需匿名处理</li>
-            <li><span class="check">✓</span>用<strong>序号代替</strong>姓名：如"学生A""教师B"</li>
+            <li><span class="check">✓</span>用<strong>序号代替</strong>姓名：如“学生A”“教师B”</li>
             <li><span class="check">✓</span>文件属性：右键→属性→详细信息→删除作者信息</li>
             <li><span class="check">✓</span>上传路径：维普系统 → 过程管理 → 抽检稿</li>
           </ul>
           <h4 style="margin-top:16px;">5 步操作流程</h4>
           <ol class="step-list">
-            <li>在最终稿上<strong>另存一份副本</strong>，改名"匿名抽检稿"</li>
+            <li>在最终稿上<strong>另存一份副本</strong>，改名“匿名抽检稿”</li>
             <li>按上方 10 项清单<strong>逐项删除</strong>身份信息（姓名/学号/校名/导师名/学院专业）</li>
             <li>全文<strong>搜索</strong>自己的姓名、学号、学校名、邮箱等关键词，确保无遗漏</li>
             <li>右键文件 → 属性 → 详细信息 → <strong>删除作者信息</strong>；另存为新文件</li>
             <li>上传：维普系统 → 过程管理 → <strong>抽检稿</strong></li>
           </ol>
           <div class="alert alert-warning" style="margin-top:12px;">
-            <strong>提醒：</strong>抽检稿送校外专家盲审，任何残留的个人信息都会导致匿名失败。请务必在日程里提前处理，不要拖到截止前。</div>
+            <strong>提醒：</strong>匿名稿若残留个人信息将导致送审匿名失效，请务必提前安排处理、不要拖到截止前；如不确定是否处理干净，可请同学或导师帮忙检查一遍。</div>
         </div>
 
         <div class="card">
@@ -2545,25 +2554,25 @@ body.sb-collapsed .status-bar{left:0}
           <table>
             <thead><tr><th>检测项</th><th>标准</th><th>说明</th></tr></thead>
             <tbody>
-              <tr><td class="label">总文字复制比</td><td style="color:var(--danger);font-weight:700;">≤ 25%</td><td>硬性红线，超过不通过</td></tr>
-              <tr><td class="label">AIGC检测</td><td style="color:var(--warning);font-weight:600;">≤ 30%</td><td>参考指标，指导教师评定参考</td></tr>
+              <tr><td class="label">总文字复制比</td><td style="color:var(--danger);font-weight:700;">≤25%</td><td>学院当届要求（见学院正式通知，请核对后执行）</td></tr>
+              <tr><td class="label">AIGC检测</td><td style="color:var(--warning);font-weight:600;">≤30%</td><td>以学院当届检测政策为准（参考值，供指导教师评定参考）</td></tr>
               <tr><td class="label">检测系统</td><td>维普大学生版</td><td>vpcs.cqvip.com</td></tr>
-              <tr><td class="label">免费次数</td><td>答辩2次 + 终稿1次</td><td>共3次，超出需自费</td></tr>
+              <tr><td class="label">免费次数</td><td>答辩2次 + 终稿1次</td><td>共3次（以维普系统当次实际显示及学院通知为准），超出可能需自费</td></tr>
             </tbody>
           </table>
           <div class="alert alert-danger">
-            <strong>学术红线：</strong>坚决杜绝抄袭、剽窃、数据造假。一经查实，取消成绩并按学校规定处理。
+            <strong>学术红线：</strong>坚决杜绝抄袭、剽窃、数据造假。一经查实，将按学校学术不端处理规定与学位授予相关规定处理（学校若认定构成学术不端，可能取消成绩、不予授予学位等，具体以学校正式规定为准）。
           </div>
-          <h4 style="margin-top:16px;">降重策略（5个有效方法）：</h4>
+          <h4 style="margin-top:16px;">如何写好文献综述、降低无谓重复（规范做法）：</h4>
           <ul>
-            <li><strong>改写重组</strong>：读原文 → 用自己的话重新表达 → 调整语序和句式</li>
-            <li><strong>同义替换</strong>：关键词用近义词替换，改变表达方式</li>
-            <li><strong>扩展论述</strong>：对引用观点补充自己的分析和评论</li>
-            <li><strong>图表转化</strong>：将他人文字描述转为自制的图表</li>
-            <li><strong>多源整合</strong>：综合多个文献的观点，形成自己的论述</li>
+            <li><strong>先理解再写</strong>：先读透文献，合上原文用自己的话完整表达观点，再核对引用是否准确</li>
+            <li><strong>规范引用</strong>：直接引用须加引号并标注出处；转述他人观点须在句中注明来源（如“×××（2022）指出……”），切忌改写后不标出处</li>
+            <li><strong>补充自己的分析</strong>：对引用观点补充评论、比较不同研究，形成自己的论述主线，而非堆砌他人句子</li>
+            <li><strong>自制图表须注明来源</strong>：转述或改编他人数据、图表时，在图题下标注“改编自×××（2022）”或注明数据出处，严禁将他人的图表/文字成果改绘后当作自己原创</li>
+            <li><strong>多源整合</strong>：综合多个文献的观点并注明各自来源，避免大段引用单一文献</li>
           </ul>
           <div class="alert alert-warning">
-            <strong>AIGC规避提醒：</strong>不要整段复制AI生成内容。AI可辅助<strong>提供思路、整理框架、润色表达</strong>，但核心分析和结论须自行撰写。
+            <strong>AI 使用规范提醒：</strong>不要整段复制AI生成内容。AI可辅助<strong>提供思路、整理框架、润色表达</strong>，但文献综述的归纳评述、数据分析与正文撰写须由本人完成。若学院要求申报 AI 使用情况或对 AI 辅助内容进行标注，请按要求如实申报；隐瞒不报一经查出，按学术不端处理。
           </div>
         </div>
 
@@ -2578,7 +2587,7 @@ body.sb-collapsed .status-bar{left:0}
           </ol>
           <div style="background:#fef2f2;padding:16px;border-radius:var(--radius);border:1px solid #fecaca;margin-top:12px;">
             <strong style="color:#991b1b;">⏰ 最终截止日：2027年4月10日。</strong><br>
-            <span style="font-size:13px;color:#991b1b;">逾期未完成全部材料提交者，将延迟领取毕业证和学位证。请务必在此日期前完成所有上传和审核。</span>
+            <span style="font-size:13px;color:#b45309;">请务必在此日期前完成所有上传和审核；如确有困难，请第一时间联系指导教师或教务办，不要独自硬扛。</span>
           </div>
         </div>
 
@@ -2607,7 +2616,7 @@ body.sb-collapsed .status-bar{left:0}
           <ul>
             <li>替代申请须在<strong>7月10日前</strong>提交材料至综合办 2-435</li>
             <li>仅替代正文部分，封面/摘要/目录/参考文献/致谢等仍需按论文规范完成</li>
-            <li>替代论文同样需要<strong>参加开题答辩和结题答辩</strong></li>
+            <li>替代论文同样需要<strong>参加开题答辩和毕业论文答辩</strong></li>
             <li>同样需要<strong>接受查重检测</strong>（≤25%）</li>
             <li>提交入口：维普系统 → 过程管理 → 开题报告（替代论文初稿）</li>
           </ul>
@@ -2637,7 +2646,7 @@ body.sb-collapsed .status-bar{left:0}
         <div class="card">
           <h3>可视化流程图</h3>
           <div class="timeline" id="tlFlow"></div>
-          <div class="hl-box" style="margin-top:14px;"><strong>图例：</strong>绿色 = 已完成；琥珀色 = 当前节点（脉冲闪烁）；灰色 = 未开始。点击任意节点可跳转到下方对应明细行。</div>
+          <div class="hl-box" style="margin-top:14px;"><strong>图例：</strong>绿色 = 已到截止日期（请自查是否已提交审核）；琥珀色 = 当前节点（脉冲闪烁）；灰色 = 未开始。点击任意节点可跳转到下方对应明细行。</div>
         </div>
 
         <div class="card">
@@ -2654,7 +2663,7 @@ body.sb-collapsed .status-bar{left:0}
               <tr><td class="label">目前应处于哪个进度？</td><td>看本页顶部琥珀色徽标与流程图中的琥珀色节点，即当前所处节点。</td></tr>
               <tr><td class="label">需要填写哪些要求？</td><td>进入对应阶段页面（阶段一～六），按卡片内容逐项完成并打勾。</td></tr>
               <tr><td class="label">如何确定日期？</td><td>以本页节点日期为准；系统时间超过节点截止日即视为逾期，须尽快补交。</td></tr>
-              <tr><td class="label">需要上传什么稿件？</td><td>看明细表"上传位置"列；全部上传入口均在维普系统「过程管理」菜单。</td></tr>
+              <tr><td class="label">需要上传什么稿件？</td><td>看明细表“上传位置”列；全部上传入口均在维普系统「过程管理」菜单。</td></tr>
             </tbody>
           </table>
         </div>
@@ -2662,7 +2671,7 @@ body.sb-collapsed .status-bar{left:0}
         <div class="card">
           <h3>逾期风险提示</h3>
           <div class="alert alert-danger">
-            <strong>硬性截止：2027年4月10日。</strong>逾期未提交全部材料者，延迟领取毕业证和学位证。
+            <strong>硬性截止：2027年4月10日</strong>（以学院当届通知为准）。逾期未提交全部材料者，将按学校学籍管理与学位授予相关规定处理；如有困难请尽早联系指导教师/教务办。
           </div>
           <div class="alert alert-warning">
             <strong>易被忽视：</strong>① 匿名抽检稿须在最终稿后提前处理（见阶段六）；② 指导日志全程记录，不要最后补；③ 答辩稿必须与检测版本完全一致。
@@ -2693,7 +2702,7 @@ body.sb-collapsed .status-bar{left:0}
         <div class="card">
           <h3>15 个子流程操作手册</h3>
           <div class="alert alert-info">
-            <strong>通用规则：</strong>登录后所有操作都在左侧「过程管理」菜单下；每个环节提交后都要等指导教师审核，审核不通过须按意见修改后重新提交；系统到截止时间自动关闭，逾期无法补交。
+            <strong>通用规则：</strong>登录后所有操作都在左侧「过程管理」菜单下；每个环节提交后都要等指导教师审核，审核不通过须按意见修改后重新提交；系统到截止时间后无法在线补交，如已错过请第一时间联系指导教师或教务办咨询补救方式。
           </div>
 
           <div class="vip-grid">
@@ -2719,7 +2728,7 @@ body.sb-collapsed .status-bar{left:0}
           <div class="vip-card"><div class="vc-head"><span class="vc-no">3</span><span class="vc-title">任务书</span></div>
               <ol class="step-list">
                 <li>过程管理 → 「任务书」→ 按页面要求在线填写或上传</li>
-                <li>内容须含：选题背景与意义、研究内容、基本要求、主要参考文献（8-10篇）、进度安排</li>
+                <li>内容须含：选题背景与意义、研究内容、基本要求、主要参考文献（任务书填8—10篇，最终论文≥10篇含外文）、进度安排</li>
                 <li>提交 → 等待指导教师审核通过</li>
               </ol>
               <div class="hl-box"><strong>要求：</strong>2026年9月21日前提交并审核通过；具体写法见阶段一「任务书写作规范」。</div>
@@ -2777,7 +2786,7 @@ body.sb-collapsed .status-bar{left:0}
                 <li>过程管理 → 「答辩申请」→ 填写申请信息 → 提交</li>
                 <li>关注学院通知，确认答辩时间与地点</li>
               </ol>
-              <div class="hl-box"><strong>要求：</strong>2026年12月7-13日；逾期系统关闭。</div>
+              <div class="hl-box"><strong>要求：</strong>2026年12月7—13日（以学院当届通知为准）；逾期后系统无法在线补交，请尽早提交，错过请及时联系教务办。</div>
             </div>
 
           <div class="vip-card"><div class="vc-head"><span class="vc-no">10</span><span class="vc-title">答辩记录与成绩查看</span></div>
@@ -2813,7 +2822,7 @@ body.sb-collapsed .status-bar{left:0}
                 <li>逐一核对各环节状态：申报课题/任务书/开题/中期/答辩稿/答辩申请/最终稿/抽检稿/指导日志是否全部「已审核」</li>
                 <li>成绩查询：按学院通知路径查看最终成绩与评分构成</li>
               </ol>
-              <div class="hl-box"><strong>要求：</strong>全部材料在2027年4月10日前审核通过，否则延迟领取毕业证、学位证。</div>
+              <div class="hl-box"><strong>要求：</strong>全部材料应在2027年4月10日前审核通过（以学院当届通知为准）；确有困难请尽早联系指导教师或教务办。</div>
             </div>
 
           <div class="vip-card"><div class="vc-head"><span class="vc-no">14</span><span class="vc-title">常见问题与报错处理</span></div>
@@ -2840,7 +2849,7 @@ body.sb-collapsed .status-bar{left:0}
                   <tr><td class="label">答辩申请</td><td>2026-12-07 ~ 12-13</td></tr>
                   <tr><td class="label">正式答辩</td><td>2026-12-14 ~ 12-19</td></tr>
                   <tr><td class="label">最终稿提交</td><td>2026-12-29 前</td></tr>
-                  <tr><td class="label">全部材料最终截止</td><td><strong>2027-04-10</strong>（逾期延迟领证）</td></tr>
+                  <tr><td class="label">全部材料最终截止</td><td><strong>2027-04-10</strong>（以学院当届通知为准，逾期按学校规定处理）</td></tr>
                 </tbody>
               </table>
             </div>
@@ -2861,7 +2870,7 @@ body.sb-collapsed .status-bar{left:0}
     <section class="stage" id="stage-9">
       <div class="stage-hero">
         <h2>送审意见应对</h2>
-        <p>历年论文送审专家意见归纳，按 4 大类组织。老师或专家提出修改意见时，来这里找对应的解决办法。</p>
+        <p>历年论文送审专家意见归纳，按意见类型组织（研究设计、内容深度、格式规范）。老师或专家提出修改意见时，来这里找对应的解决办法。</p>
         <div class="stage-meta">
           <span>📋 研究设计与论证 · 内容深度与创新 · 格式文字规范</span>
           <span>✅ 附送审前自查清单</span>
@@ -2873,7 +2882,7 @@ body.sb-collapsed .status-bar{left:0}
           <h3>研究设计与论证类（送审高频意见）</h3>
             <div class="fb-item">
               <div class="fb-q">意见：选题过大、范围太宽，无法深入。</div>
-              <div class="fb-a"><strong>诊断：</strong>题目未聚焦到具体行业/平台/人群。<br><strong>对策：</strong>把研究范围收敛到具体对象（如"以××平台为例"），题目表述准确、一般不超过20字。</div>
+              <div class="fb-a"><strong>诊断：</strong>题目未聚焦到具体行业/平台/人群。<br><strong>对策：</strong>把研究范围收敛到具体对象（如“以××平台为例”），题目表述准确、一般不超过20字。</div>
               <button class="goto-btn" onclick="gotoCard(1,'选题基本要求')">→ 查看：选题基本要求</button>
             </div>
             <div class="fb-item">
@@ -2893,12 +2902,12 @@ body.sb-collapsed .status-bar{left:0}
             </div>
             <div class="fb-item">
               <div class="fb-q">意见：把相关关系说成因果关系。</div>
-              <div class="fb-a"><strong>诊断：</strong>仅做了相关分析就直接断言"A导致B"。<br><strong>对策：</strong>相关≠因果；因果推断需回归分析/中介检验等更严格的方法支撑。</div>
+              <div class="fb-a"><strong>诊断：</strong>仅做了相关分析就直接断言“A导致B”。<br><strong>对策：</strong>相关≠因果；因果推断需回归分析/中介检验等更严格的方法支撑。</div>
               <button class="goto-btn" onclick="gotoCard(3,'SPSS数据分析步骤指南')">→ 查看：相关性 vs 回归</button>
             </div>
             <div class="fb-item">
               <div class="fb-q">意见：技术路线不清晰或与正文不符。</div>
-              <div class="fb-a"><strong>诊断：</strong>路线图与研究方法、章节安排对不上。<br><strong>对策：</strong>路线图按"选题→文献→模型→问卷→分析→结论"重绘，与正文章节一一对应。</div>
+              <div class="fb-a"><strong>诊断：</strong>路线图与研究方法、章节安排对不上。<br><strong>对策：</strong>路线图按“选题→文献→模型→问卷→分析→结论”重绘，与正文章节一一对应。</div>
               <button class="goto-btn" onclick="gotoCard(2,'技术路线图绘制指南')">→ 查看：技术路线图绘制</button>
             </div>
           </div>
@@ -2906,12 +2915,12 @@ body.sb-collapsed .status-bar{left:0}
         <div class="card">
           <h3>内容深度与创新类（送审高频意见）</h3>
             <div class="fb-item">
-              <div class="fb-q">意见：文献综述是"流水账"。</div>
-              <div class="fb-a"><strong>诊断：</strong>按作者逐条罗列（"×××（2020）认为…×××（2021）提出…"）。<br><strong>对策：</strong>按主题分类归纳，对不同研究做对比评述，明确指出现有研究空白。</div>
+              <div class="fb-q">意见：文献综述是“流水账”。</div>
+              <div class="fb-a"><strong>诊断：</strong>按作者逐条罗列（“×××（2020）认为…×××（2021）提出…”）。<br><strong>对策：</strong>按主题分类归纳，对不同研究做对比评述，明确指出现有研究空白。</div>
               <button class="goto-btn" onclick="gotoCard(2,'文献综述写作指南')">→ 查看：文献综述写法</button>
             </div>
             <div class="fb-item">
-              <div class="fb-q">意见：理论与分析"两张皮"。</div>
+              <div class="fb-q">意见：理论与分析“两张皮”。</div>
               <div class="fb-a"><strong>诊断：</strong>综述里引用的理论，后文分析中完全没用。<br><strong>对策：</strong>综述中提到的每个理论都必须在分析部分真正用于解剖研究对象。</div>
               <button class="goto-btn" onclick="gotoCard(3,'各章节写作指引')">→ 查看：文献综述要点</button>
             </div>
@@ -2921,13 +2930,13 @@ body.sb-collapsed .status-bar{left:0}
               <button class="goto-btn" onclick="gotoCard(3,'SPSS数据分析步骤指南')">→ 查看：结果写作模板</button>
             </div>
             <div class="fb-item">
-              <div class="fb-q">意见：缺少独立的"结论"章节。</div>
+              <div class="fb-q">意见：缺少独立的“结论”章节。</div>
               <div class="fb-a"><strong>诊断：</strong>最后一章只有对策建议，没有全文结论提炼。<br><strong>对策：</strong>结论须含四要素：主要发现、理论贡献、实践启示、研究局限与展望；回应引言提出的问题。</div>
               <button class="goto-btn" onclick="gotoCard(3,'各章节写作指引')">→ 查看：结论写作要点</button>
             </div>
             <div class="fb-item">
               <div class="fb-q">意见：创新点空泛、没有说服力。</div>
-              <div class="fb-a"><strong>诊断：</strong>只说"有创新"却说不清创新在哪里。<br><strong>对策：</strong>创新点要具体：如"首次将××理论应用于××场景""补充了××变量的作用机制"。</div>
+              <div class="fb-a"><strong>诊断：</strong>只说“有创新”却说不清创新在哪里。<br><strong>对策：</strong>创新点要具体：如“首次将××理论应用于××场景”“补充了××变量的作用机制”。</div>
               <button class="goto-btn" onclick="gotoCard(2,'开题报告七要素')">→ 查看：创新点写法</button>
             </div>
           </div>
@@ -2936,7 +2945,7 @@ body.sb-collapsed .status-bar{left:0}
           <h3>格式文字规范类（送审高频意见）</h3>
             <div class="fb-item">
               <div class="fb-q">意见：表格不是三线表（有竖线、线型粗细错误）。</div>
-              <div class="fb-a"><strong>诊断：</strong>直接用Word默认表格。<br><strong>对策：</strong>顶线1.5磅、栏目线0.75磅、底线1.5磅，取消竖线；续表标注"续表×-×"。</div>
+              <div class="fb-a"><strong>诊断：</strong>直接用Word默认表格。<br><strong>对策：</strong>顶线1.5磅、栏目线0.75磅、底线1.5磅，取消竖线；续表标注“续表×-×”。</div>
               <button class="goto-btn" onclick="gotoCard(3,'图表与公式规范')">→ 查看：三线表规范</button>
             </div>
             <div class="fb-item">
@@ -2946,7 +2955,7 @@ body.sb-collapsed .status-bar{left:0}
             </div>
             <div class="fb-item">
               <div class="fb-q">意见：数据来源标注不具体。</div>
-              <div class="fb-a"><strong>诊断：</strong>笼统写"数据来源：自行整理"。<br><strong>对策：</strong>注明具体来源与年份，如"数据来源：国家统计局网站（2020-2025年）"。</div>
+              <div class="fb-a"><strong>诊断：</strong>笼统写“数据来源：自行整理”。<br><strong>对策：</strong>注明具体来源与年份，如“数据来源：国家统计局网站（2020-2025年）”。</div>
               <button class="goto-btn" onclick="gotoCard(3,'图表与公式规范')">→ 查看：来源标注示例</button>
             </div>
             <div class="fb-item">
@@ -2982,7 +2991,7 @@ body.sb-collapsed .status-bar{left:0}
               <li><span class="check">✓</span>结论章节四要素齐全，回应引言问题</li>
               <li><span class="check">✓</span>问题与对策一一对应，无内容交叉重复</li>
               <li><span class="check">✓</span>全文通读无错别字，标点规范（正文全角、参考文献半角）</li>
-              <li><span class="check">✓</span>复制比≤25%、AIGC≤30%（如适用）</li>
+              <li><span class="check">✓</span>复制比≤25%、AIGC≤30%（以学院当届检测政策为准）</li>
               <li><span class="check">✓</span>匿名抽检稿已按要求处理（如被抽中）</li>
             </ul>
           </div>
@@ -3012,18 +3021,19 @@ body.sb-collapsed .status-bar{left:0}
 <!-- ===== 建议墙弹窗（公开，所有人可见） ===== -->
 <div class="suggest-overlay" id="suggestOverlay">
   <div class="suggest-card">
-    <div class="suggest-head"><span>💡 弹幕交流 · 所有人可见</span><span style="display:flex;align-items:center;gap:8px;"><button class="sug-admin-btn" id="sugAdminBtn" onclick="suggestAdminToggle()" title="管理员入口（需站密码）">⚙️ 管理</button><button class="suggest-close" onclick="toggleSuggest()">✕</button></span></div>
+    <div class="suggest-head"><span>💡 弹幕交流（内容经管理员确认后公开）</span><span style="display:flex;align-items:center;gap:8px;"><button class="sug-admin-btn" id="sugAdminBtn" onclick="suggestAdminToggle()" title="管理员入口">⚙️ 管理</button><button class="suggest-close" onclick="toggleSuggest()">✕</button></span></div>
     <div class="suggest-admin-box" id="suggestAdminBox" style="display:none;">
       <div style="display:flex;gap:8px;">
-        <input id="suggestAdminPwd" type="password" placeholder="输入站密码进入管理" maxlength="30">
+        <input id="suggestAdminPwd" type="password" placeholder="输入管理口令进入" maxlength="60" autocomplete="off">
         <button class="suggest-submit" style="padding:6px 16px;font-size:13px;" onclick="suggestAdminLogin()">进入管理</button>
       </div>
       <p class="suggest-admin-msg" id="suggestAdminMsg"></p>
     </div>
-    <p class="suggest-text">众人拾柴火焰高。写下你的建议，大家都能看到，一起让这个助手越来越好，帮助下一届学弟学妹完成毕业论文。</p>
+    <p class="suggest-text">众人拾柴火焰高。写下你的建议，帮助下一届同学更好地完成毕业论文。<br><span style="font-size:12px;color:var(--text-muted);">📋 留言须知：请勿发布人身攻击、谣言、广告、代写交易等不当内容；你的昵称与留言将公开显示（提交后经管理员确认再展示），请勿填写姓名、学号等个人信息。</span></p>
+    <label style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text-muted);margin:-4px 0 8px;cursor:pointer;"><input type="checkbox" id="dmToggle" onchange="setDmEnabled(this.checked)" checked> 允许首页飘屏显示（取消勾选可静心阅读）</label>
     <div class="suggest-list" id="suggestList"><div class="suggest-empty">📭 还没有建议，来发第一条吧～</div></div>
-    <input class="suggest-name" id="suggestName" maxlength="20" placeholder="昵称（选填，匿名也可以）">
-    <textarea id="suggestInput" placeholder="写下你的建议（功能、内容、使用体验…）" maxlength="2000"></textarea>
+    <input class="suggest-name" id="suggestName" maxlength="20" placeholder="昵称（选填，建议用化名）">
+    <textarea id="suggestInput" placeholder="写下你的建议（功能、内容、使用体验…）" maxlength="1000"></textarea>
     <div class="suggest-actions">
       <button class="suggest-submit" onclick="submitSuggest()">📨 发布建议</button>
       <span class="suggest-msg" id="suggestMsg"></span>
@@ -3044,7 +3054,7 @@ body.sb-collapsed .status-bar{left:0}
 <div class="status-bar" id="statusBar">
   <span id="sbClock">📅 --</span>
   <span class="sb-sep">|</span>
-  <span id="sbWeather">🌤 加载天气…</span>
+  <span id="sbWeather" title="仅用于显示您所在城市天气，不保存个人信息">🌤 加载天气…</span>
   <span class="sb-sep">|</span>
   <span id="sbCountdown">⏳ 计算倒计时…</span>
 </div>
@@ -3074,7 +3084,7 @@ const stages = [
   { id: 1, title: '选题与任务书', date: '2026年7月6日 — 9月21日', desc: '选题申报 + 任务书填写' },
   { id: 2, title: '开题报告', date: '2026年9月22日 — 10月18日', desc: '开题报告 ≥3,000字 + 开题答辩' },
   { id: 3, title: '论文撰写', date: '2026年9月 — 11月中旬', desc: '正文写作，≥10,000字' },
-  { id: 4, title: '中期检查', date: '2026年11月3日 — 7日', desc: '中期检查表提交' },
+  { id: 4, title: '中期检查', date: '2026年11月3日—11月7日', desc: '中期检查表提交' },
   { id: 5, title: '答辩准备', date: '2026年11月17日 — 12月19日', desc: '答辩稿 → 答辩申请 → 正式答辩' },
   { id: 6, title: '最终提交', date: '2026年12月22日 — 2027年4月10日', desc: '最终稿 + 匿名抽检稿 + 查重' }
 ];
@@ -3229,6 +3239,15 @@ function navigateStage(id) {
   if (target) {
     target.classList.add('active');
     document.getElementById('contentScroll').scrollTop = 0;
+    // 每屏显示“非官方/以学院文件为准”提示，防截图断章
+    let note = target.querySelector('.official-note');
+    if (!note) {
+      note = document.createElement('p');
+      note.className = 'official-note';
+      note.textContent = '本页内容为个人整理的参考信息，非学院官方发布；具体要求与日期以学院教务、商学院教务及官方文件为准。';
+      const hero = target.querySelector('.stage-hero');
+      if (hero) hero.appendChild(note); else target.prepend(note);
+    }
   }
 
   // Update sidebar
@@ -3476,7 +3495,7 @@ function renderTimeline() {
   if (grid) {
     grid.innerHTML = TIMELINE.map(node => {
       const st = nodeStatus(node, today);
-      const stTxt = st === 'current' ? '● 当前' : (st === 'done' ? '✓ 已完成' : '○ 未开始');
+      const stTxt = st === 'current' ? '● 当前' : (st === 'done' ? '◆ 已到截止日（请自查提交）' : '○ 未开始');
       const range = node.from === node.to ? fmtDateCN(node.from) : `${fmtDateCN(node.from)} — ${fmtDateCN(node.to)}`;
       return `<div class="node-card ${st}" id="tl-node-${node.n}" onclick="flashNode(${node.n})" title="节点${node.n} ${node.name}（${range}）：${node.todo}">
         <div class="nc-head"><span class="nc-num">${node.n}</span><span class="nc-status ${st}">${stTxt}</span></div>
@@ -3494,7 +3513,7 @@ function renderTimeline() {
   } else if (next) {
     badgeText = `间歇期：下一节点「${next.name}」`;
   } else {
-    badgeText = '全部节点已完成，请核对全部材料';
+    badgeText = '全部节点时间已结束，请逐项核对材料是否提交并审核通过';
   }
   const tb = document.getElementById('tlBadge'); if (tb) tb.textContent = badgeText;
   const htb = document.getElementById('homeTodayText'); if (htb) htb.textContent = badgeText;
@@ -3505,7 +3524,7 @@ function renderTimeline() {
       const remain = daysUntil(cur.to, today);
       ht.innerHTML = `<div class="dash-today">
         <div class="dash-today-main"><span class="dash-today-label">当前节点</span><strong>${cur.n}. ${cur.name}</strong></div>
-        <div class="dash-today-sub">${remain <= 0 ? '⏰ 今天截止！' : '距截止还有 ' + remain + ' 天'} · ${cur.upload}</div>
+        <div class="dash-today-sub">${remain <= 0 ? '⏰ 今天为截止日（以学院通知为准）' : '距截止还有 ' + remain + ' 天'} · ${cur.upload}</div>
         <div class="dash-today-todo">${cur.todo}</div>
       </div>` + (next ? `<div class="dash-next">下一步：${next.name}（${fmtDateCN(next.from)} 开始）</div>` : '');
     } else if (next) {
@@ -3515,7 +3534,7 @@ function renderTimeline() {
         <div class="dash-today-todo">${next.todo}</div>
       </div>`;
     } else {
-      ht.innerHTML = '<div class="dash-today"><div class="dash-today-main"><span class="dash-today-label">完成</span><strong>🎉 全部节点已完成</strong></div><div class="dash-today-todo">请核对全部材料均已审核通过。</div></div>';
+      ht.innerHTML = '<div class="dash-today"><div class="dash-today-main"><span class="dash-today-label">提醒</span><strong>🗓 全部节点时间已结束</strong></div><div class="dash-today-todo">请逐项核对各环节材料是否已提交并通过审核；如有遗漏请尽快联系指导教师或教务办。</div></div>';
     }
   }
 
@@ -3539,7 +3558,7 @@ function renderTimeline() {
         <div class="tl-mini-name">${node.name}</div>
       </div>`;
     }).join('') + `</div>
-    <div class="tl-mini-legend"><span class="lg-done">● 已完成</span><span class="lg-current">● 当前</span><span class="lg-up">○ 未开始</span></div>`;
+    <div class="tl-mini-legend"><span class="lg-done">● 已到截止日（请自查提交状态）</span><span class="lg-current">● 当前</span><span class="lg-up">○ 未开始</span></div>`;
   }
 
   const hs = document.getElementById('homeStages');
@@ -3695,18 +3714,28 @@ function gateShow(id) {
   const el = document.getElementById(id);
   if (el) el.style.display = 'block';
 }
-function gateCheckPass() {
+async function sha256Hex(s) {
+  try {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(s || '')));
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  } catch (e) { return ''; }
+}
+async function gateCheckPass() {
   const v = document.getElementById('gatePassInput').value.trim();
-  if (v === 'xzleo2026') {
-    document.getElementById('gatePassErr').textContent = '';
+  const err = document.getElementById('gatePassErr');
+  if (!v) { if (err) err.textContent = '请输入访问密码'; return; }
+  const h = await sha256Hex(v);
+  // 门禁口令仅以 SHA-256 哈希存储于页面，源码不含明文（防误入用途）
+  if (h === 'f026a14e5a4744539684bd56a69b7d3d79a317bdb3c52f18b78bda119fb4acd0') {
+    if (err) err.textContent = '';
     gateShow('gateNotice');
-  } else {
-    document.getElementById('gatePassErr').textContent = '密码不正确，请重新输入';
-  }
+  } else if (err) { err.textContent = '密码不正确，请重新输入'; }
 }
 function gateEnter() {
   document.getElementById('gateOverlay').style.display = 'none';
   try { sessionStorage.setItem('thesis-gate-pass', '1'); } catch (e) {}
+  const dt = document.getElementById('dmToggle');
+  if (dt) dt.checked = dmEnabled;
 }
 function initGate() {
   let passed = false;
@@ -3929,50 +3958,66 @@ function escapeHtml(s) {
 }
 
 let suggestAdmin = false;
+let adminPwd = ''; // 仅保存在当前会话内存，绝不写入页面源码/本地存储
 function suggestAdminToggle() {
   const box = document.getElementById('suggestAdminBox');
   if (!box) return;
+  if (suggestAdmin) { suggestAdmin = false; adminPwd = ''; loadSuggestions(); }
   box.style.display = box.style.display === 'none' ? 'block' : 'none';
   const p = document.getElementById('suggestAdminPwd');
   if (p) { p.value = ''; p.focus(); }
   const m = document.getElementById('suggestAdminMsg');
   if (m) m.textContent = '';
 }
-function suggestAdminLogin() {
+async function suggestAdminLogin() {
   const pwd = (document.getElementById('suggestAdminPwd') || {}).value || '';
   const m = document.getElementById('suggestAdminMsg');
-  if (pwd.trim() === 'xz123') {
-    suggestAdmin = true;
-    const box = document.getElementById('suggestAdminBox');
-    if (box) box.style.display = 'none';
-    loadSuggestions();
-  } else if (m) { m.textContent = '密码错误'; }
+  if (!pwd) { if (m) m.textContent = '请输入管理口令'; return; }
+  try {
+    const r = await fetch(WORKER_URL + '/suggest/admin-list', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: pwd }) });
+    const d = await r.json();
+    if (d && d.ok) {
+      suggestAdmin = true;
+      adminPwd = pwd;
+      const box = document.getElementById('suggestAdminBox');
+      if (box) box.style.display = 'none';
+      loadSuggestions();
+    } else if (m) { m.textContent = '口令不正确或管理功能未启用'; }
+  } catch (e) { if (m) m.textContent = '网络异常，请稍后再试'; }
+}
+async function suggestApprove(id) {
+  if (!suggestAdmin || !adminPwd) return;
+  try {
+    const r = await fetch(WORKER_URL + '/suggest/approve', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: adminPwd, id }) });
+    const d = await r.json();
+    if (d.ok) loadSuggestions();
+  } catch (e) {}
 }
 async function suggestDelete(id) {
-  if (!suggestAdmin) return;
+  if (!suggestAdmin || !adminPwd) return;
   try {
-    const r = await fetch(WORKER_URL + '/suggest/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xz123', id }) });
+    const r = await fetch(WORKER_URL + '/suggest/delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: adminPwd, id }) });
     const d = await r.json();
     if (d.ok) loadSuggestions();
   } catch (e) {}
 }
 async function suggestReply(id) {
-  if (!suggestAdmin) return;
+  if (!suggestAdmin || !adminPwd) return;
   const inp = document.getElementById('rp_' + id);
   if (!inp) return;
   const reply = inp.value.trim();
   try {
-    const r = await fetch(WORKER_URL + '/suggest/reply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xz123', id: id, reply: reply }) });
+    const r = await fetch(WORKER_URL + '/suggest/reply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: adminPwd, id: id, reply: reply }) });
     const d = await r.json();
     if (d.ok) loadSuggestions();
   } catch (e) {}
 }
 
 async function suggestClear() {
-  if (!suggestAdmin) return;
+  if (!suggestAdmin || !adminPwd) return;
   if (!confirm('确定清空全部建议吗？此操作不可恢复。')) return;
   try {
-    const r = await fetch(WORKER_URL + '/suggest/clear', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xz123' }) });
+    const r = await fetch(WORKER_URL + '/suggest/clear', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: adminPwd }) });
     const d = await r.json();
     if (d.ok) loadSuggestions();
   } catch (e) {}
@@ -3989,12 +4034,15 @@ function renderSuggestions(list) {
     const name = (x.name || '').trim() ? `<span class="sug-name">${escapeHtml(x.name)}</span>` : '<span class="sug-name">匿名同学</span>';
     const txt = String(x.text || '').trim();
     const id = x.id || '';
+    const pending = x.status === 'pending';
     const liked = dmLiked.has(id);
     const del = suggestAdmin ? `<button class="sug-del" onclick="suggestDelete('${escapeHtml(id)}')">删除</button>` : '';
-    const like = `<button class="sug-like${liked ? ' liked' : ''}" onclick="likeFromPanel(this,${JSON.stringify(id)})">${liked ? '👍 ' : '👍 '}<b>${x.likes || 0}</b></button>`;
+    const approve = suggestAdmin && pending ? `<button class="sug-ok" onclick="suggestApprove('${escapeHtml(id)}')">✅ 通过并公开</button>` : '';
+    const pendTag = pending && suggestAdmin ? '<span class="sug-tag" style="color:var(--warning);">待审核</span>' : '';
+    const likeBtn = pending ? '<button class="sug-like" disabled title="待审核通过后可点赞">👍 <b>0</b></button>' : `<button class="sug-like${liked ? ' liked' : ''}" onclick="likeFromPanel(this,${JSON.stringify(id)})">👍 <b>${x.likes || 0}</b></button>`;
     const rp = (x.reply && String(x.reply).trim()) ? `<div class="sug-reply">🎯 助手回复<span class="sug-tag">${sugMetaTime(x.replyTime)}</span><br>${escapeHtml(String(x.reply).trim())}</div>` : '';
-    const rpBox = suggestAdmin ? `<div class="sug-reply-admin"><input id="rp_${escapeHtml(id)}" maxlength="300" placeholder="输入回复（公开显示）…" value="${escapeHtml((x.reply||'').trim())}"><button onclick="suggestReply('${escapeHtml(id)}')">回复</button></div>` : '';
-    return `<div class="suggest-item"><div class="sug-meta">${name}<span class="sug-tag">${sugMetaTime(x.t)}</span>${del}</div><div>${escapeHtml(txt)}</div><div>${like}</div>${rp}${rpBox}</div>`;
+    const rpBox = suggestAdmin ? `<div class="sug-reply-admin"><input id="rp_${escapeHtml(id)}" maxlength="300" placeholder="输入回复（回复即通过审核并公开）…" value="${escapeHtml((x.reply||'').trim())}"><button onclick="suggestReply('${escapeHtml(id)}')">回复</button></div>` : '';
+    return `<div class="suggest-item"><div class="sug-meta">${name}${pendTag}<span class="sug-tag">${sugMetaTime(x.t)}</span>${del}${approve}</div><div>${escapeHtml(txt)}</div><div>${likeBtn}</div>${rp}${rpBox}</div>`;
   }).join('');
   const clearRow = suggestAdmin ? '<div class="sug-clear-row"><button class="sug-clear-btn" onclick="suggestClear()">🗑 清空全部</button></div>' : '';
   box.innerHTML = clearRow + items;
@@ -4017,7 +4065,14 @@ async function loadSuggestions() {
   const ae = document.activeElement;
   if (ae && (ae.id || '').indexOf('rp_') === 0) return;
   try {
-    const list = await fetchJSON(WORKER_URL + '/suggest', 8000);
+    let list;
+    if (suggestAdmin && adminPwd) {
+      const r = await fetch(WORKER_URL + '/suggest/admin-list', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: adminPwd }) });
+      const d = await r.json();
+      list = (d && d.ok) ? d.list : null;
+    } else {
+      list = await fetchJSON(WORKER_URL + '/suggest', 8000);
+    }
     if (Array.isArray(list)) renderSuggestions(list);
   } catch (e) {}
 }
@@ -4038,10 +4093,10 @@ async function submitSuggest() {
     const r = await fetch(WORKER_URL + '/suggest', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, text }) });
     const d = await r.json();
     if (d.ok) {
-      msg.textContent = '✅ 已发布，感谢你的建议！'; msg.style.color = 'var(--success)';
+      msg.textContent = d.pending ? '✅ 已收到，管理员确认后会公开显示。感谢你的建议！' : '✅ 已发布，感谢你的建议！';
+      msg.style.color = 'var(--success)';
       inp.value = '';
       loadSuggestions();
-      danmaku({ id: (d && d.id) || '', text: text, name: name || '', likes: 0 });
     } else { msg.textContent = d.msg || '提交失败，请稍后再试'; msg.style.color = 'var(--danger)'; }
   } catch (e) { msg.textContent = '提交失败（网络问题）'; msg.style.color = 'var(--danger)'; }
   btn.disabled = false; btn.textContent = '📨 发布建议';
@@ -4062,8 +4117,8 @@ async function apiLike(id) {
 }
 
 const DM_FALLBACK = [
-  { id: 'sys1', text: '点右上角「💡 弹幕交流」就能发布建议，所有人可见哦', name: '助手提示', likes: 0, sys: true },
-  { id: 'sys2', text: '网络通畅后这里会飘出大家的真实建议与点赞', name: '助手提示', likes: 0, sys: true }
+  { id: 'sys1', text: '点右上角「💡 弹幕交流」写下建议，经管理员确认后会公开哦', name: '助手提示', likes: 0, sys: true },
+  { id: 'sys2', text: '网络通畅后这里会飘出同学们经确认后公开的建议', name: '助手提示', likes: 0, sys: true }
 ];
 async function refreshDanmakuPool() {
   try {
@@ -4116,9 +4171,12 @@ async function likeDanmaku(hint) {
   dmMsg(item, '+1', 'up');
 }
 
+let dmEnabled = true;
+try { dmEnabled = localStorage.getItem('dmEnabled') !== '0'; } catch (e) {}
+function setDmEnabled(v) { dmEnabled = !!v; try { localStorage.setItem('dmEnabled', dmEnabled ? '1' : '0'); } catch (e) {} const l = document.getElementById('danmakuLayer'); if (l && !dmEnabled) l.innerHTML = ''; }
 function danmaku(it) {
   const layer = document.getElementById('danmakuLayer');
-  if (!it || !layer) return;
+  if (!it || !layer || !dmEnabled) return;
   const text = String(it.text || '').trim();
   if (!text) return;
   const name = String(it.name || '').trim();
@@ -4324,7 +4382,7 @@ function initCountdown() {
       const diff = Math.ceil((t.getTime() - now.getTime()) / 86400000);
       if (diff > 0) list.push(dl.name + ' 剩' + diff + '天');
       else if (diff === 0) list.push(dl.name + ' 今天');
-      else if (diff > -3) list.push(dl.name + ' 已过' + (-diff) + '天');
+      else if (diff > -3) list.push(dl.name + ' 节点已结束（请自查提交）');
     }
     el.textContent = '⏳ ' + (list.length ? list.join('  ') : '暂无节点');
   };
