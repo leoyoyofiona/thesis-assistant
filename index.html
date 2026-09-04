@@ -1003,7 +1003,7 @@ body.sb-collapsed .status-bar{left:0}
           <div class="vd-item"><span class="vd-tag">© 版权与追责声明</span><span class="vd-body">本工具由 <b>LEODENG</b> 整理制作，仅供浙江师范大学行知学院商学院师生学习参考使用，未经允许请勿商用转载；内容如有错漏，欢迎联系指正（E-mail:23774201@qq.com · VX:leoyoyofiona）。</span></div>
           </div>
           <div class="replies-board">
-            <div class="rb-title">🎯 助手回复公告</div>
+            <div class="rb-title">🎯 建议回复栏</div>
             <div class="rb-list" id="homeReplies">正在加载回复…</div>
           </div>
         </div>
@@ -4160,7 +4160,7 @@ async function loadRepliesBoard() {
     if (!Array.isArray(list)) { box.innerHTML = '（暂无回复公告）'; return; }
     const rep = list.filter(x => x.reply && String(x.reply).trim());
     if (!rep.length) { box.innerHTML = '<div class="rb-empty">（暂无助手回复，建议可在「💡 弹幕交流」留言）</div>'; return; }
-    const one = x => '<div class="rb-item"><div class="rb-ctx">建议：' + escapeHtml(String(x.text||'').trim().slice(0,16)) + (String(x.text||'').length>16?'…':'') + ' <span class="rb-time">' + sugMetaTime(x.replyTime) + '</span></div><div class="rb-reply">回复：' + escapeHtml(String(x.reply).trim()) + '</div></div>';
+    const one = x => '<div class="rb-item"><div class="rb-ctx">建议：' + escapeHtml(String(x.text||'').trim().slice(0,16)) + (String(x.text||'').length>16?'…':'') + '</div><div class="rb-reply">回复：' + escapeHtml(String(x.reply).trim()) + ' <span class="rb-time">（' + sugMetaTime(x.replyTime) + '）</span></div></div>';
     const items = rep.slice(0, 6).map(one).join('');
     box.innerHTML = '<div class="rb-track">' + items + items + '</div>';
   } catch (e) { box.innerHTML = '（回复加载失败）'; }
