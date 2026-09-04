@@ -964,7 +964,7 @@ body.sb-collapsed .status-bar{left:0}
   <header class="header">
     <button class="sb-hamburger" onclick="openSidebar()" title="打开左侧导航菜单" aria-label="打开菜单">☰</button>
     <div class="breadcrumb" id="breadcrumb"></div>
-    <div class="visit-count" title="本页为个人整理的毕业指导参考，非学院官方平台">📘 个人整理 · 非官方</div>
+    <div class="visit-count" id="visitCount" title="本页为个人整理的毕业指导参考，非学院官方平台；统计数据实时取自后台">👥 正在统计…</div>
     <div class="header-contact" title="纠错与建议（站长个人，非学院官方）">
       <span class="hc-l1">📬 纠错 / 建议：23774201@qq.com</span>
       <span class="hc-l2">微信：leoyoyofiona<span class="ct-hint">（站长个人，非学院官方）</span></span>
@@ -3915,8 +3915,23 @@ async function fetchJSON(url, timeoutMs = 15000) {
   } finally { clearTimeout(t); }
 }
 
-function loadCounter() {
-  // 访问统计已改为静态展示，不再依赖外部接口
+async function loadCounter() {
+  // 访问统计：PV/UV 由 Cloudflare Worker 的 KV 实时计数（PV 每次+1；UV 按本机访客ID去重）
+  const el = document.getElementById('visitCount');
+  try {
+    let vid = '';
+    try { vid = localStorage.getItem('ta-vid') || ''; } catch (e) {}
+    if (!vid) {
+      vid = 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 10);
+      try { localStorage.setItem('ta-vid', vid); } catch (e) {}
+    }
+    const d = await fetchJSON(WORKER_URL + '/?vid=' + encodeURIComponent(vid), 8000);
+    if (el && d && typeof d.pv === 'number' && typeof d.uv === 'number' && typeof d.day === 'number') {
+      el.textContent = '👥 累计访问 ' + d.uv + ' 人 · 累计浏览 ' + d.pv + ' 次 · 今日浏览 ' + d.day + ' 次';
+    } else if (el) { el.textContent = '📘 个人整理 · 非官方'; }
+  } catch (e) {
+    if (el) el.textContent = '📘 个人整理 · 非官方';
+  }
 }
 
 let suggestRefreshTimer = null;

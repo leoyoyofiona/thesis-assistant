@@ -192,19 +192,26 @@ export default {
       }
     }
 
-    // ===== 访问计数（通用计数器，页面已改为静态展示，保留兼容） =====
+    // ===== 访问计数（PV/今日浏览 只增不减；UV 按客户端访客ID去重） =====
+    const dayKey = (() => { try { return new Date(Date.now() + 8 * 3600e3).toISOString().slice(0, 10); } catch (e) { return 'today'; } })();
     const pv = parseInt((await env.KV.get('pv')) || '0', 10) + 1;
+    const dayPv = parseInt((await env.KV.get('daypv:' + dayKey)) || '0', 10) + 1;
     await env.KV.put('pv', String(pv));
+    await env.KV.put('daypv:' + dayKey, String(dayPv));
 
     let uv = parseInt((await env.KV.get('uv')) || '0', 10);
-    const hasVisited = (request.headers.get('Cookie') || '').includes('vis=1');
-    let extra = {};
-    if (!hasVisited) {
+    let visitorId = '';
+    try {
+      const u = new URL(request.url);
+      visitorId = String(u.searchParams.get('vid') || '').slice(0, 40);
+    } catch (e) {}
+    const seen = visitorId ? (await env.KV.get('uv:' + visitorId)) : null;
+    if (visitorId && !seen) {
       uv += 1;
       await env.KV.put('uv', String(uv));
-      extra = { 'Set-Cookie': 'vis=1; Max-Age=31536000; Path=/; SameSite=None; Secure' };
+      await env.KV.put('uv:' + visitorId, '1', { expirationTtl: 31536000 });
     }
 
-    return json({ pv, uv }, extra);
+    return json({ pv, uv, day: dayPv });
   },
 };
