@@ -848,7 +848,7 @@ body.sb-collapsed .status-bar{left:0}
 
 /* ===== 天气背景动效 ===== */
 .weather-canvas{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.65}
-.lightning-flash{position:fixed;inset:0;pointer-events:none;background:#fff;opacity:0;z-index:1;display:none}
+.lightning-flash{display:none!important}
 .fog-layer{position:fixed;inset:0;pointer-events:none;z-index:1;display:none;background:linear-gradient(180deg,rgba(190,205,220,.16),rgba(215,226,238,.26))}
 .weather-icon{position:fixed;top:calc(var(--header-height) + 14px);right:34px;z-index:1;pointer-events:none;font-size:52px;line-height:1;opacity:.42;user-select:none;animation:wxFloat 6s ease-in-out infinite}
 .weather-icon.sun{animation:wxFloat 6s ease-in-out infinite,sunGlow 4.5s ease-in-out infinite}
@@ -4388,14 +4388,12 @@ function startWeatherEffect(type, code) {
   if (weatherRAF) { cancelAnimationFrame(weatherRAF); weatherRAF = null; }
   const canvas = document.getElementById('weatherCanvas');
   const fog = document.getElementById('fogLayer');
-  const flash = document.getElementById('lightningFlash');
-  if (!canvas || !fog || !flash) return;
+  if (!canvas || !fog) return;
   const ctx = canvas.getContext('2d');
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   fog.style.display = 'none';
-  flash.style.display = 'none';
   if (type === 'none') return;
   if (type === 'fog') { fog.style.display = 'block'; return; }
   const heavy = (code === 65 || code === 63 || code >= 95);
@@ -4410,7 +4408,6 @@ function startWeatherEffect(type, code) {
       sw: Math.random() * Math.PI * 2
     });
   }
-  let lastFlash = 0;
   const frame = () => {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     for (const p of P) {
@@ -4421,17 +4418,7 @@ function startWeatherEffect(type, code) {
       if (type === 'snow') { ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); ctx.fillStyle = 'rgba(255,255,255,.9)'; ctx.fill(); }
       else { ctx.strokeStyle = 'rgba(120,165,220,.6)'; ctx.lineWidth = p.r; ctx.moveTo(p.x, p.y); ctx.lineTo(p.x - p.sp * 0.55, p.y - p.len); ctx.stroke(); }
     }
-    if (type === 'thunder') {
-      const now = Date.now();
-      if (now - lastFlash > 3200 + Math.random() * 4200) {
-        lastFlash = now;
-        flash.style.display = 'block';
-        const seq = [0.55, 0.1, 0.5, 0.1];
-        let i = 0;
-        const step = () => { flash.style.opacity = seq[i++] || '0'; if (i < seq.length) setTimeout(step, 90); else { flash.style.opacity = '0'; flash.style.display = 'none'; } };
-        step();
-      }
-    }
+    // 闪电全屏白闪会让页面每隔几秒闪/抖一下、影响阅读：已移除，雷雨只保留雨滴效果
     weatherRAF = requestAnimationFrame(frame);
   };
   frame();
