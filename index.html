@@ -4012,6 +4012,9 @@ async function likeFromPanel(btn, id) {
 }
 
 async function loadSuggestions() {
+  // 正在回复输入框里打字时，跳过刷新，避免列表重建把未打完的字清掉
+  const ae = document.activeElement;
+  if (ae && (ae.id || '').indexOf('rp_') === 0) return;
   try {
     const list = await fetchJSON(WORKER_URL + '/suggest', 8000);
     if (Array.isArray(list)) renderSuggestions(list);
