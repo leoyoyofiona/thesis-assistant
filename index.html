@@ -183,7 +183,17 @@ body{font-family:var(--font-sans);background:var(--bg);color:var(--text);line-he
 #stage-0 .stage-nav{display:none}
 #stage-0 .stage-hero .stage-meta{display:none}
 #stage-0 .hero-sub{display:none}
-#stage-0 .hero-declare-row{display:none}
+#stage-0 .hero-declare-row{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin:10px 28px 6px;padding:8px 12px;background:rgba(255,255,255,.45);border:1px solid var(--border-light);border-radius:12px;align-items:start}
+#stage-0 .version-declare{display:flex;flex-direction:column;gap:4px;min-width:0}
+#stage-0 .vd-item{display:flex;gap:6px;font-size:10.5px;line-height:1.5;color:var(--text-secondary);align-items:flex-start}
+#stage-0 .vd-tag{flex-shrink:0;font-size:10px}
+[data-theme="dark"] #stage-0 .hero-declare-row{background:rgba(15,23,42,.4)}
+.replies-board{min-width:0}
+.rb-title{font-size:11px;font-weight:800;color:var(--primary);margin-bottom:4px}
+.rb-list{display:flex;flex-direction:column;gap:3px;max-height:100px;overflow:auto;scrollbar-width:thin}
+.rb-item{font-size:10.5px;line-height:1.5;color:var(--text-secondary);background:var(--bg);border-left:2px solid var(--primary);border-radius:4px;padding:3px 6px}
+.rb-item b{color:var(--primary)}
+.rb-item .rb-time{color:var(--text-muted);font-size:9.5px}
 #stage-0 .stage-hero h2{font-size:18px;margin:0 0 2px}
 #stage-0 .stage-hero h2{font-size:19px;margin:2px 0 0}
 #stage-0 .hero-sub{margin-top:10px;margin-bottom:0}
@@ -792,6 +802,11 @@ button,a,input,textarea,select{-webkit-tap-highlight-color:transparent;touch-act
 @keyframes dmgo{0%{transform:translateX(0);opacity:0}3%{opacity:1}90%{opacity:1}100%{transform:translateX(var(--dx,-1200px));opacity:0}}
 
 @keyframes dmBurst{0%{transform:scale(.3);opacity:1}60%{transform:scale(1.5);opacity:1}100%{transform:scale(.9) translateY(-24px);opacity:0}}
+
+.sug-reply{margin-top:5px;font-size:12px;color:var(--primary);background:var(--primary-light);border-radius:6px;padding:4px 8px}
+.sug-reply-admin{display:flex;gap:6px;margin-top:6px}
+.sug-reply-admin input{flex:1;min-width:0;padding:4px 8px;font-size:12px;border:1.5px solid var(--border);border-radius:6px;outline:none;background:var(--card-bg);color:var(--text)}
+.sug-reply-admin button{flex-shrink:0;border:none;border-radius:6px;background:var(--primary);color:#fff;font-size:12px;cursor:pointer;padding:0 12px}
 .sug-like{border:1px solid #fde68a;background:#fffbeb;color:#b45309;border-radius:10px;padding:1px 8px;font-size:11.5px;cursor:pointer;font-family:var(--font-sans);display:inline-flex;align-items:center;gap:3px;margin-top:4px}
 .sug-like:hover{background:#fef3c7}
 .sug-like.liked{background:#fde68a;cursor:default}
@@ -981,6 +996,10 @@ body.sb-collapsed .status-bar{left:0}
           <div class="version-declare">
           <div class="vd-item"><span class="vd-tag">📌 免责声明</span><span class="vd-body">本助手为学院毕业论文工作相关要求的<b>整理与参考</b>（当前版本 V2.1，持续更新维护）；一切毕业论文的标准与要求，<b>以学院教务部门、商学院教务及专业官方毕业要求文件为准</b>。</span></div>
           <div class="vd-item"><span class="vd-tag">© 版权与追责声明</span><span class="vd-body">本工具由 <b>LEODENG</b> 整理制作，仅供浙江师范大学行知学院商学院师生学习参考使用，未经允许请勿商用转载；内容如有错漏，欢迎联系指正（E-mail:23774201@qq.com · VX:leoyoyofiona）。</span></div>
+          <div class="replies-board">
+            <div class="rb-title">🎯 助手回复公告</div>
+            <div class="rb-list" id="homeReplies">正在加载回复…</div>
+          </div>
           </div>
         </div>
       </div>
@@ -3931,6 +3950,18 @@ async function suggestDelete(id) {
     if (d.ok) loadSuggestions();
   } catch (e) {}
 }
+async function suggestReply(id) {
+  if (!suggestAdmin) return;
+  const inp = document.getElementById('rp_' + id);
+  if (!inp) return;
+  const reply = inp.value.trim();
+  try {
+    const r = await fetch(WORKER_URL + '/suggest/reply', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ pwd: 'xz123', id: id, reply: reply }) });
+    const d = await r.json();
+    if (d.ok) loadSuggestions();
+  } catch (e) {}
+}
+
 async function suggestClear() {
   if (!suggestAdmin) return;
   if (!confirm('确定清空全部建议吗？此操作不可恢复。')) return;
@@ -3955,7 +3986,9 @@ function renderSuggestions(list) {
     const liked = dmLiked.has(id);
     const del = suggestAdmin ? `<button class="sug-del" onclick="suggestDelete('${escapeHtml(id)}')">删除</button>` : '';
     const like = `<button class="sug-like${liked ? ' liked' : ''}" onclick="likeFromPanel(this,${JSON.stringify(id)})">${liked ? '👍 ' : '👍 '}<b>${x.likes || 0}</b></button>`;
-    return `<div class="suggest-item"><div class="sug-meta">${name}<span class="sug-tag">${sugMetaTime(x.t)}</span>${del}</div><div>${escapeHtml(txt)}</div><div>${like}</div></div>`;
+    const rp = (x.reply && String(x.reply).trim()) ? `<div class="sug-reply">🎯 助手回复<span class="sug-tag">${sugMetaTime(x.replyTime)}</span><br>${escapeHtml(String(x.reply).trim())}</div>` : '';
+    const rpBox = suggestAdmin ? `<div class="sug-reply-admin"><input id="rp_${escapeHtml(id)}" maxlength="300" placeholder="输入回复（公开显示）…" value="${escapeHtml((x.reply||'').trim())}"><button onclick="suggestReply('${escapeHtml(id)}')">回复</button></div>` : '';
+    return `<div class="suggest-item"><div class="sug-meta">${name}<span class="sug-tag">${sugMetaTime(x.t)}</span>${del}</div><div>${escapeHtml(txt)}</div><div>${like}</div>${rp}${rpBox}</div>`;
   }).join('');
   const clearRow = suggestAdmin ? '<div class="sug-clear-row"><button class="sug-clear-btn" onclick="suggestClear()">🗑 清空全部</button></div>' : '';
   box.innerHTML = clearRow + items;
@@ -4109,6 +4142,18 @@ function danmaku(it) {
   el.addEventListener('animationend', () => el.remove());
   el.addEventListener('mouseenter', () => { if (el.style.animationPlayState !== 'paused') el.style.animationPlayState = 'paused'; });
   el.addEventListener('mouseleave', () => { if (el.style.animationPlayState === 'paused') el.style.animationPlayState = 'running'; });
+}
+
+async function loadRepliesBoard() {
+  const box = document.getElementById('homeReplies');
+  if (!box) return;
+  try {
+    const list = await fetchJSON(WORKER_URL + '/suggest', 6000);
+    if (!Array.isArray(list)) { box.innerHTML = '（暂无回复公告）'; return; }
+    const rep = list.filter(x => x.reply && String(x.reply).trim());
+    if (!rep.length) { box.innerHTML = '<div class="rb-item">（暂无回复，建议可到「💡 弹幕交流」查看）</div>'; return; }
+    box.innerHTML = rep.slice(0, 3).map(x => '<div class="rb-item">✅ 建议“' + escapeHtml(String(x.text||'').trim().slice(0,14)) + (String(x.text||'').length>14?'…':'') + '”已处理<span class="rb-time">' + sugMetaTime(x.replyTime) + '</span><br><b>回复：</b>' + escapeHtml(String(x.reply).trim()) + '</div>').join('');
+  } catch (e) { box.innerHTML = '（回复加载失败）'; }
 }
 
 function startDanmaku() {
@@ -4438,6 +4483,7 @@ document.addEventListener('DOMContentLoaded', () => {
   try { initCountdown(); } catch (e) {}
   try { loadWeather(); } catch (e) {}
   try { startDanmaku(); } catch (e) {}
+  try { loadRepliesBoard(); } catch (e) {}
   try { startHealthTimer(); } catch (e) {}
 
   // Search overlay input

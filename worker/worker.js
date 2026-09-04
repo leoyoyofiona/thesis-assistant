@@ -48,7 +48,7 @@ export default {
           const k = String(x.name || '') + '|' + String(x.text || '');
           if (seen[k] != null) { out[seen[k]].likes = (out[seen[k]].likes || 0) + (x.likes || 0); continue; }
           seen[k] = out.length;
-          out.push({ id: x.id, t: x.t, name: x.name || '', text: x.text, likes: x.likes || 0 });
+          out.push({ id: x.id, t: x.t, name: x.name || '', text: x.text, likes: x.likes || 0, reply: x.reply || '', replyTime: x.replyTime || 0 });
         }
         return json(out.slice(-100).reverse());
       }
@@ -80,6 +80,21 @@ export default {
         if (j.pwd !== ADMIN_PWD) return json({ ok: false, msg: '密码错误' });
         let list = JSON.parse((await env.KV.get('suggestions')) || '[]');
         list = list.filter(x => String(x.id) !== String(j.id));
+        await env.KV.put('suggestions', JSON.stringify(list));
+        return json({ ok: true });
+      } catch (e) { return json({ ok: false }); }
+    }
+    // 管理员对某条建议回复（站密码）
+    if (url.pathname === '/suggest/reply' && request.method === 'POST') {
+      try {
+        const j = await request.json();
+        if (j.pwd !== ADMIN_PWD) return json({ ok: false, msg: '密码错误' });
+        const reply = String(j.reply || '').trim().slice(0, 300);
+        let list = JSON.parse((await env.KV.get('suggestions')) || '[]');
+        const it = list.find(x => String(x.id) === String(j.id));
+        if (!it) return json({ ok: false, msg: '未找到该条' });
+        it.reply = reply;
+        it.replyTime = Date.now();
         await env.KV.put('suggestions', JSON.stringify(list));
         return json({ ok: true });
       } catch (e) { return json({ ok: false }); }
